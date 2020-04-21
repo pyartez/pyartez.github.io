@@ -69,25 +69,32 @@ These are just a few of the *available* **configuration** options. Many configur
 
 #### Styled Code Block
 	
-{% highlight ruby linenos %}
-#!/usr/bin/ruby
-$LOAD_PATH << '.'
-require "support"
+{% highlight swift %}
+    private func setupObservers() {
+        self.fixtureDatasource.fixtures
+            .distinctUntilChanged()
+            .flatMap({ [weak self] fixtures in
+                Observable.combineLatest(
+                    Observable.just(fixtures),
+                    self?.setupPhotoDatasource(fixtures: fixtures).distinctUntilChanged()
+                        ?? Observable.just([])
+                )
+            })
+            .map({ (fixtures, photos) -> [BCNFixtureAndPhoto] in
+                let photosDict = photos.groupedByFixtureReference()
 
-class Decade
-include Week
-   no_of_yrs=10
-   def no_of_months
-      puts Week::FIRST_DAY
-      number=10*12
-      puts number
-   end
-end
-d1=Decade.new
-puts Week::FIRST_DAY
-Week.weeks_in_month
-Week.weeks_in_year
-d1.no_of_months
+                return fixtures.map { (fixture) -> BCNFixtureAndPhoto in
+                    return BCNFixtureAndPhoto(
+                        fixture: fixture,
+                        photo: photosDict[fixture.entityId]
+                    )
+                }
+            })
+            .subscribe(onNext: { [weak self] results in
+                self?.results.accept(results)
+            })
+            .disposed(by: self.disposeBag)
+    }
 {% endhighlight %}
 	
 #### Definition Lists
