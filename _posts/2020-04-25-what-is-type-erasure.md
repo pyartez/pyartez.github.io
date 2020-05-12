@@ -26,3 +26,58 @@ Having read many blog posts and guides about Type Erasure I still came away conf
 
 ## Setting the scene
 
+Let's take some example JSON so that you can follow along more easily.
+
+[Users List]: https://jsonplaceholder.typicode.com/users
+[Posts List]: https://jsonplaceholder.typicode.com/posts
+
+If you open the posts list URL in the JSON viewer of your choice you will see that it contains a list of posts looking something like this:
+
+{% highlight json %}
+
+{
+    "userId": 1,
+    "id": 1,
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto"
+}
+
+{% endhighlight %}
+
+As you can see, each post contains a userId, however we don't have any user objects so we won't be able to display who made the post. In order to do so we will need the list of users.
+
+### Codable Objects
+
+To begin, we will create some codable structs to represent the data in the JSON urls so we can quickly parse them using a JSONDecoder
+
+{% highlight swift %}
+
+struct User {
+    let id: Int
+    let name: String
+}
+
+struct Post {
+    let userId: Int
+    let id: Int
+    let title: String
+}
+
+{% endhighlight %}
+
+To keep this example simple we are just going to parse a few of the attributes for each, we don't need all of them for what we are doing here.
+
+### Services and View Model
+
+To continue this example we are going to create 2 service objects, one for each of the lists we are going to fetch.
+
+{% highlight swift %}
+
+struct PostService {
+
+​	
+
+}
+
+{% endhighlight %}
+

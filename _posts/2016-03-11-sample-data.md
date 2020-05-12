@@ -68,7 +68,7 @@ These are just a few of the *available* **configuration** options. Many configur
     This is code blog.
 
 #### Styled Code Block
-	
+
 {% highlight swift %}
     private func setupObservers() {
         self.fixtureDatasource.fixtures
@@ -98,7 +98,7 @@ These are just a few of the *available* **configuration** options. Many configur
 {% endhighlight %}
 	
 #### Definition Lists
-	
+
 <dl>
     <dt>Definition Title</dt>
     <dd>Definition Description</dd>
