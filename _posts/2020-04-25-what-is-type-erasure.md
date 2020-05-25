@@ -74,10 +74,102 @@ To continue this example we are going to create 2 service objects, one for each 
 {% highlight swift %}
 
 struct PostService {
+    func fetch(completion: ((Result<Post, Error>) -> Void)?) {
+        // Fetch code here
+    }
+}
 
-​	
-
+struct UserService {
+    func fetch(completion: ((Result<User, Error>) -> Void)?) {
+        // Fetch code here
+    }
 }
 
 {% endhighlight %}
 
+To make the requests to these 2 services so that we can combine them and send them to the UI for display we are going to use something called a ViewModel. This pattern is commonly seen in things like MVVM architecture, we won't go into detail about those here but feel free to read up on them. It may help with your understanding of the described problem.
+
+Our ViewModel may look something like this:
+
+{% highlight swift %}
+
+struct PostViewModel {
+    let postService: PostService
+    let userService: UserService
+
+    func load() {
+        postService.fetch({ result in 
+            // Process data here
+        })
+
+        userService.fetch({ result in 
+            // Process data here
+        })
+    }
+}
+
+{% endhighlight %}
+
+Now we have a view model here, that is holding 2 references to the services it needs. Now what is the problem here?
+
+* Testing - We are linking to the implementations of the post service and user service classes. We can't inject a mock inside a test to see how our view model behaves if either service throws an error for example.
+* Dependencies - This class now has 2 other dependencies. If we wanted to re-use this or move it into another project / framework we would need to take the service objects. And the dependencies of those objects, and their dependencies and so on and so on.
+
+### Refactoring to use protocols
+
+The first thing we can do to resolve this is to use protocols to remove the dependencies on the service classes.
+
+{% highlight swift %}
+
+protocol PostService {
+    func fetch(completion: ((Result<Post, Error>) -> Void)?)
+}
+
+protocol UserService {
+    func fetch(completion: ((Result<User, Error>) -> Void)?)
+}
+
+/* Implementations */
+
+struct remotePostService: PostService {
+    func fetch(completion: ((Result<Post, Error>) -> Void)?) {
+        // Fetch data
+    }
+}
+
+struct remoteUserService: UserService {
+    func fetch(completion: ((Result<User, Error>) -> Void)?) {
+        // Fetch data
+    }   
+}
+
+{% endhighlight %}
+
+Here we have created a protocol for each of the services and then provided implementations in our remote service classes. Now let's update the View Model
+
+{% highlight swift %}
+
+struct PostViewModel {
+    let postService: PostService
+    let userService: UserService
+
+    func load() {
+        postService.fetch({ result in 
+            // Process data here
+        })
+
+        userService.fetch({ result in 
+            // Process data here
+        })
+    }
+}
+
+{% endhighlight %}
+
+Wait a minute? Our ViewModel is exactly the same. Except now when we create it, we can inject mock services in our unit tests to make sure things are working as expected. I won't go into mocks and unit testing in this post but feel free to read further on the subject if you don't quite understand the above
+
+Now looking at the 2 protocols we created above there is a common theme. Both of the methods in the service protocols are the same. The only difference is the return type in the result. What if we needed to add further services for other return types? Then we would have a bunch of protocols that are all the same except the type that is being returned. How can we fix this? Generics.
+
+### Generics
+
+Now that we have identified our 
