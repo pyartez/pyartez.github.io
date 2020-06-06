@@ -97,3 +97,54 @@ typealias Users = [User]
 {% endhighlight %}
 
 How easy was that?! Obviously we will still need to check the structs, in the example above none of the fields are optional which means data must be passed in otherwise our decoding will fail. We don't need to worry about that here, but worth remembering when checking the generated code in your examples.
+
+## URLSession extension and Generics
+
+To solve our problem we are going to wrap the existing URLSession [dataTask](https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask) method. I'm sure if you have done any kind of request work in pure swift you will have used this method in some form so we aren't going to go into the details of how it works.
+
+{% highlight Swift %}
+
+extension URLSession {
+
+    enum SessionError: Error {
+        case noData
+    }
+
+    /// Wraps the standard dataTask method with a JSON decode attempt using the passed generic type.
+    /// Throws an error if decoding fails
+    /// - Parameters:
+    ///   - url: The URL to be retrieved.
+    ///   - completionHandler: The completion handler to be called once decoding is complete / fails
+    /// - Returns: The new session data task
+
+    // 1 
+    func dataTask<T: Decodable>(with url: URL,
+                                completionHandler: @escaping (T?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+
+        //2
+        return self.dataTask(with: url) { (data, response, error) in
+        	// 3
+            guard error == nil else {
+                completionHandler(nil, response, error)
+                return
+            }
+
+            // 4
+            guard let data = data else {
+                completionHandler(nil, response, SessionError.noData)
+                return
+            }
+
+            // 5
+            do {
+                let decoded = try JSONDecoder().decode(T.self, from: data)
+                completionHandler(decoded, response, nil)
+            } catch(let error) {
+                completionHandler(nil, response, error)
+            }
+        }
+    }
+}
+
+{% endhighlight %}
+
