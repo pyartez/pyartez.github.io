@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2020-04-20 21:00
+date: 2020-06-03 10:00
 title:  "What is type erasure in Swift"
 mood: happy
 category: 
@@ -247,4 +247,4 @@ Similar to our user example, we have created a new Product object and a fetcher 
 
 There is a lot to cover and understand here and hopefully this helps make some sense of type erasure and what it is used for. More importantly how to implement your own Any type erasure class for your own protocols so that they can be referenced in your code.
 
-[Download the playground](/files/type-erasure.playground.zip) and play around with the examples yourself
+[Download the playground](https://github.com/pyartez/blog-samples) and play around with the examples yourself
