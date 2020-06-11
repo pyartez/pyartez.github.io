@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2020-06-04 10:00
+date: 2020-06-11 10:00
 title:  "Simple JSON decoder in Swift and Combine"
 mood: happy
 category: 
@@ -103,12 +103,6 @@ How easy was that?! Obviously we will still need to check the structs, in the ex
 To solve our problem we are going to wrap the existing URLSession [dataTask](https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask) method. I'm sure if you have done any kind of request work in pure swift you will have used this method in some form so we aren't going to go into the details of how it works.
 
 {% highlight Swift %}
-
-extension HTTPURLResponse {
-    enum ResponseError: Error {
-        case statusCode
-    }
-}
 
 extension URLSession {
 
@@ -251,4 +245,39 @@ Similar to our previous example we have extended URLSession to provide this func
 
 ## Combine in action
 
-Now that we have built our wrapper class 
+Now that we have built our wrapper class let's take a look at this in action:
+
+{% highlight Swift %}
+
+let url = URL(string: "https://jsonplaceholder.typicode.com/users")!
+
+let token = URLSession.shared.dataTaskPublisher(for: url)
+	// 1
+    .sink(receiveCompletion: { (completion) in
+        switch completion {
+        // 2
+        case .finished:
+            break
+        case .failure(let error):
+            print(error.localizedDescription)
+        }
+    }) { (users: Users) in
+    	// 3
+        users.forEach({ print("\($0.name)\n") })
+    }
+
+{% endhighlight %}
+
+1. Here we have called our newly created dataTaskPublisher method which has returned our publisher. This is where reactive programming comes in. All of the code inside the dataTaskPublisher has not executed yet. We have simply returned a publisher who is waiting for a subscriber to come along and listen. A publisher will not execute unless a subscription has not been fulfilled. To subscribe to a stream we use the sink method. If you think of the chain of reactive methods flowing into a sink at the bottom, that is the best analogy here.
+2. The sink method has 2 parts. The first closure defines what happens once the stream is completed. Now this can come in the form of a finished state, which means the stream has completed what is doing and will no longer emit any more events. Or failure, which means some item further up the stream has raised an error which flows down into this sink where it can be handled.
+3. The second closure defines what we would like to do each time the event stream emits a change. In this case the publisher will send a users array once it has finished loading, here we are just printing out the user names.
+
+## Finally
+
+What have we learnt:
+
+- We have used [QuickType](https://app.quicktype.io) to convert our JSON into codable structs for decoding.
+- Wrapped the existing URLSession [dataTask](https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask) method with our own using [Generics](https://docs.swift.org/swift-book/LanguageGuide/Generics.html) so we can using any [Codable](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types) type to decode the response.
+- Similarly, using reactive programming and Apple's new [Combine](https://developer.apple.com/documentation/combine) framework have created our own Generic wrapper for the existing [dataTaskPublisher](https://developer.apple.com/documentation/foundation/urlsession/3329708-datataskpublisher) function.
+
+Feel free to [download the playground](https://github.com/pyartez/blog-samples) and play around with the examples yourself
