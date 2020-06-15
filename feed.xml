@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>Currently working for Pulselive, making great interactive digital products for some of the biggest names in sport!</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Jun 2020 12:36:16 +0100</pubDate>
-    <lastBuildDate>Mon, 15 Jun 2020 12:36:16 +0100</lastBuildDate>
+    <link>https://pyartez.github.io/</link>
+    <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 15 Jun 2020 14:23:47 +0100</pubDate>
+    <lastBuildDate>Mon, 15 Jun 2020 14:23:47 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -265,8 +265,8 @@
 &lt;p&gt;Feel free to &lt;a href=&quot;https://github.com/pyartez/blog-samples&quot;&gt;download the playground&lt;/a&gt; and play around with the examples yourself&lt;/p&gt;
 </description>
         <pubDate>Thu, 11 Jun 2020 10:00:00 +0100</pubDate>
-        <link>http://localhost:4000/codable/simple-json-decoder-in-swift-and-combine.html</link>
-        <guid isPermaLink="true">http://localhost:4000/codable/simple-json-decoder-in-swift-and-combine.html</guid>
+        <link>https://pyartez.github.io/codable/simple-json-decoder-in-swift-and-combine.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/codable/simple-json-decoder-in-swift-and-combine.html</guid>
         
         <category>swift</category>
         
@@ -492,8 +492,8 @@
 &lt;p&gt;&lt;a href=&quot;https://github.com/pyartez/blog-samples&quot;&gt;Download the playground&lt;/a&gt; and play around with the examples yourself&lt;/p&gt;
 </description>
         <pubDate>Wed, 03 Jun 2020 10:00:00 +0100</pubDate>
-        <link>http://localhost:4000/type-erasure/what-is-type-erasure.html</link>
-        <guid isPermaLink="true">http://localhost:4000/type-erasure/what-is-type-erasure.html</guid>
+        <link>https://pyartez.github.io/type-erasure/what-is-type-erasure.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/type-erasure/what-is-type-erasure.html</guid>
         
         <category>swift</category>
         
