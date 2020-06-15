@@ -4,10 +4,7 @@ date: 2020-06-11 10:00
 title:  "Simple JSON decoder in Swift and Combine"
 mood: happy
 category: 
-- swift
-- combine
-- generics
-- networking
+- Codable
 tags:
 - swift
 - combine

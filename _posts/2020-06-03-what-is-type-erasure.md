@@ -4,10 +4,7 @@ date: 2020-06-03 10:00
 title:  "What is type erasure in Swift"
 mood: happy
 category: 
-- swift
-- advanced
-- protocols
-- generics
+- type-erasure
 tags:
 - swift
 - advanced

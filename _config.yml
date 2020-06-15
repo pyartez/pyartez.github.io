@@ -60,7 +60,7 @@ url: "https://pyartez.github.io"
 baseurl: ""
 
 # Includes
-include: ["_pages"]
+# include: ["_pages"]
 
 # Outputting
 permalink: /:categories/:title.html
@@ -79,3 +79,5 @@ sass:
   sass_dir: assets/partials
   style: compressed
 
+plugins:
+  - jekyll-sitemap
