@@ -5,8 +5,8 @@
     <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up over the years.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 01 Jul 2020 12:58:32 +0100</pubDate>
-    <lastBuildDate>Wed, 01 Jul 2020 12:58:32 +0100</lastBuildDate>
+    <pubDate>Wed, 01 Jul 2020 13:01:52 +0100</pubDate>
+    <lastBuildDate>Wed, 01 Jul 2020 13:01:52 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -417,7 +417,7 @@ Request2 Cache Header: max-age=3
 
 &lt;p&gt;Feel free to &lt;a href=&quot;https://github.com/pyartez/blog-samples&quot;&gt;download the playground&lt;/a&gt; and play around with the examples yourself&lt;/p&gt;
 </description>
-        <pubDate>Thu, 11 Jun 2020 10:00:00 +0100</pubDate>
+        <pubDate>Wed, 01 Jul 2020 13:00:00 +0100</pubDate>
         <link>https://pyartez.github.io/networking/simple-offline-caching-in-swift-and-combine.html</link>
         <guid isPermaLink="true">https://pyartez.github.io/networking/simple-offline-caching-in-swift-and-combine.html</guid>
         

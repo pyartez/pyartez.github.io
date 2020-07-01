@@ -41,7 +41,7 @@ var store = [{
     "title": "Simple offline caching in Swift and Combine",
     "link": "/networking/simple-offline-caching-in-swift-and-combine.html",
     "image": null,
-    "date": "June 11, 2020",
+    "date": "July 1, 2020",
     "category": ["networking"],
     "excerpt": "Background Following on from the previous post where we explored simple JSON decoding. In this post we are going to..."
 },{
