@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title></title>
-    <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up over the years.</description>
+    <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 01 Jul 2020 13:01:52 +0100</pubDate>
-    <lastBuildDate>Wed, 01 Jul 2020 13:01:52 +0100</lastBuildDate>
+    <pubDate>Wed, 01 Jul 2020 13:04:59 +0100</pubDate>
+    <lastBuildDate>Wed, 01 Jul 2020 13:04:59 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
