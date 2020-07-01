@@ -9,8 +9,8 @@
     <meta property="og:title" content="Posts Tagged - combine | Phil Yates &mdash; Lead iOS Engineer and Manager " />
     <meta name="twitter:title" content="Posts Tagged - combine | Phil Yates &mdash; Lead iOS Engineer and Manager " />
 
-    <meta name="description" content="Currently working for Pulselive, making great interactive digital products for some of the biggest names in sport!">
-    <meta name="twitter:description" content="Currently working for Pulselive, making great interactive digital products for some of the biggest names in sport!" />
+    <meta name="description" content="Has been building software for over 15 years! Looking to share some of the knowledge picked up over the years.">
+    <meta name="twitter:description" content="Has been building software for over 15 years! Looking to share some of the knowledge picked up over the years." />
 
     <meta name="twitter:card" content="summary_large_image" />
     
@@ -155,11 +155,13 @@
             
                 
             
+                
+            
         </div>
         
      -->
 
-    <p class="about-me">Currently working for Pulselive, making great interactive digital products for some of the biggest names in sport!</p>
+    <p class="about-me">Has been building software for over 15 years! Looking to share some of the knowledge picked up over the years.</p>
 
     <ul class="socials">
         <li><a href="https://twitter.com/pyates"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/phil-yates-06486727"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/pyartez"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
@@ -221,12 +223,483 @@
                     
                     <li class="cats">
                         
-                            <a href="/categories/Codable/">Codable</a>
+                            <a href="/categories/networking/">networking</a>
                         
                     </li>
                     
                 </ul>
-                <h2 itemprop="name headline"><a href="https://pyartez.github.io/codable/simple-json-decoder-in-swift-and-combine.html">Simple JSON decoder in Swift and Combine</a></h2>
+                <h2 itemprop="name headline"><a href="https://pyartez.github.io/networking/simple-offline-caching-in-swift-and-combine.html">Simple offline caching in Swift and Combine</a></h2>
+            </header>
+
+            <div class="post-content">
+                <h2 id="background">Background</h2>
+
+<p>Following on from the previous post where we explored <a href="https://pyartez.github.io/codable/simple-json-decoder-in-swift-and-combine.html">simple JSON decoding</a>. In this post we are going to extend that simple networking example to include some offline caching so that if our network requests fail we can still provide content.</p>
+
+<p>I hear of a lot of people put off by providing a caching layer in their apps for data. Popular solutions include putting an actual relational database inside your app to cache the data such as using <a href="https://developer.apple.com/documentation/coredata">Core Data</a> or <a href="https://realm.io/docs/swift/latest/">Realm</a>. Now these solutions are fine if you are intending to levarage the power of a relational database to perform some kind of task. However they add a lot more complexity if you are simply using them as a caching layer. A few draw backs below:</p>
+
+<ul>
+  <li>If you are consuming in an house API you may be trying to replicate a back end database structure driven by a much more capable server side DBMS.</li>
+  <li>Whether you are mapping against a back end database or just the returned JSON. What happens when the structure changes? Do you need to update your parsing and data structure. Do you need to migrate data?</li>
+  <li>Not only do you need to make sure you can parse and store the data correctly, you then must make sure you query the data in the same way so that you get the same results as returned from the API.</li>
+  <li>What happens if multiple requests need to update the data? Handling concurrent data updates carries it’s own complexity and head aches.</li>
+</ul>
+
+<p>This is just a sample of the challenges faced when trying to use a relational database as a caching layer for your app. Now you could build some custom caching layer that writes things to disk or a library such as <a href="https://github.com/pinterest/PINCache">PINCache</a>. However what if I told you there is something simpler that is already built in to iOS as standard?</p>
+
+<h2 id="caching-headers">Caching Headers</h2>
+
+<p>To help explain this we need to explore how HTTP caching headers are intended to work. Now, most request to an API will return a bunch of HTTP headers. These provide information and advice to the receiver about the response to the request. We won’t cover them all but the one we are most interested in for this example is the <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html">Cache-Control</a> header.</p>
+
+<blockquote>
+  <p>Cache-control is an HTTP header used to specify browser caching policies in both client requests and server responses. Policies include how a resource is cached, where it’s cached and its maximum age before expiring (i.e., time to live)</p>
+</blockquote>
+
+<p>The part of this statement that talks about maximum age before expiring is what we will explore here. Most APIs will specify something called a max-age in the response headers. This is the length of time in seconds that the receiver should consider this information valid for. After that period of time the response should be considered stale and new data be fetched from the source.</p>
+
+<p>By default <a href="https://developer.apple.com/documentation/foundation/urlsession">URLSession</a> and <a href="https://developer.apple.com/documentation/foundation/urlrequest">URLRequest</a> have a cache policy of <a href="https://developer.apple.com/documentation/foundation/nsurlrequest/cachepolicy/useprotocolcachepolicy">useProtocolCachePolicy</a>. This means they will honour the HTTP caching headers when making requests. In the case of the above it will cache request responses for the time specified in the header. It is possible to override this behaviour if you wish using one of the <a href="https://developer.apple.com/documentation/foundation/nsurlrequest/cachepolicy">other options</a>.</p>
+
+<h2 id="postman">Postman</h2>
+
+<p>To demonstrate this behaviour in action we are going to use a tool called <a href="https://www.postman.com">Postman</a>. You may be using this already, it’s a fantastic tool for developing and testing APIs. One of the services that are provided by Postman is something called <a href="https://docs.postman-echo.com/?version=latest">Postman Echo</a>. This is a service that allows you to send various URL parameters to it and have postman reply those items back to you in a certain response format. To test our example we are going to use the response headers service that is provided, this allows us to specify headers and values in the url query string and have them played back to us in the actual response headers.</p>
+
+<p>If we hit the URL below, you will get a response with the specified headers that you send in the URL query params.</p>
+
+<p><code class="highlighter-rouge">https://postman-echo.com/response-headers?Cache-Control=max-age=30</code></p>
+
+<p>We get back a header in the response of <code class="highlighter-rouge">Cache-Control: max-age=30</code>. This means that anyone processing the response should cache the response for 30 seconds at the most before requesting fresh data, as discussed previously.</p>
+
+<p>We can use this to prove how the caching works in URLSession.</p>
+
+<h2 id="caching-in-urlsession">Caching in URLSession</h2>
+
+<p>Let’s setup an example below on how to test out these cache headers:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://postman-echo.com/response-headers?Content-Type=text/html&amp;Cache-Control=max-age=30"</span><span class="p">)</span><span class="o">!</span>
+<span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="nv">task</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+	<span class="c1">// 2</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+        <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">),</span>
+        <span class="k">let</span> <span class="nv">cacheControl</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Cache-Control"</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// 3</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request1 date: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request1 Cache Header: </span><span class="se">\(</span><span class="n">cacheControl</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">task</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span>
+
+<span class="c1">// 4</span>
+<span class="nf">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1">// 5</span>
+<span class="k">let</span> <span class="nv">task2</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">data</span> <span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+        <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">),</span>
+        <span class="k">let</span> <span class="nv">cacheControl</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Cache-Control"</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request2 date: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request2 Cache Header: </span><span class="se">\(</span><span class="n">cacheControl</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">task2</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span></code></pre></figure>
+
+<p>Let’s step through this example step by step to demonstrate what is happening:</p>
+
+<ol>
+  <li>First of all we setup our postman echo request, we will set this up to return cache headers of 30 seconds</li>
+  <li>We make a request using the standard <a href="https://developer.apple.com/documentation/foundation/urlsession/1407613-datatask">dataTask</a> method. When we get the response we cast it to an <a href="https://developer.apple.com/documentation/foundation/httpurlresponse">HTTPURLResponse</a>. An HTTPURLResponse contains a dictionary called <a href="https://developer.apple.com/documentation/foundation/httpurlresponse/1417930-allheaderfields">allHeaders</a> which is a dictionary containing all of the headers returned in the response. However this is error prone as dictionary keys are case sensitive. To combat this Apple have added a new function called <a href="https://developer.apple.com/documentation/foundation/httpurlresponse/3240613-value">value</a> that takes a key string but does a case-insensitive match against the header so you don’t have to.</li>
+  <li>With the code in point 2 we are grabbing the date of the response and the cache control header and printing them to the console so we can see what they are.</li>
+  <li>We sleep for 5 seconds then perform another request.</li>
+  <li>Here are performing the same request as above and fetching the values of the response headers again. This will help us to see how the caching works.</li>
+</ol>
+
+<p>If we run the above code in our playground we should see the following in the console:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 09:21:36 GMT
+Request1 Cache Header: max-age=30
+Request2 date: Tue, 23 Jun 2020 09:21:36 GMT
+Request2 Cache Header: max-age=30
+</code></pre></div></div>
+
+<p>So what does this tell us about our requests?</p>
+
+<ul>
+  <li>The first 2 lines show that our request executed at a certain date and time, the second line displays the cache header we configured in our postman echo request.</li>
+  <li>The last 2 lines show the same thing?</li>
+</ul>
+
+<p>This is because we set a cache time of 30 seconds in the request header. As you know from step 4 above, we slept for 5 seconds inbetween each request. The fact the date headers are the same shows that the second request response is in fact the same response as the first request, it has just been fetched from the cache.</p>
+
+<p>To prove this we can modify the request so that we only cache the response for 3 seconds, this way when we sleep for 5 seconds, the response from the first request should be considered stale and the second request should end up with a new response.</p>
+
+<p>Let’s modify the URL in our request to set the cache control to 3:</p>
+
+<p><code class="highlighter-rouge">https://postman-echo.com/response-headers?Cache-Control=max-age=3</code></p>
+
+<p>Now if we run the example above the console messages should look something like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 11:34:58 GMT
+Request1 Cache Header: max-age=3
+Request2 date: Tue, 23 Jun 2020 11:35:03 GMT
+Request2 Cache Header: max-age=3
+</code></pre></div></div>
+
+<p>How is this different from above. The main difference you will notice is that the request times are now different. The second request timestamp is 5 seconds after the first. This is because our cache time is 3 seconds now, so the second request is no longer pulling from the cache and is in fact a new request with a new response.</p>
+
+<h2 id="offline-and-the-network-conditioner">Offline and the Network Conditioner</h2>
+
+<p>Now you are probably asking yourself what this has to do with offline caching? To understand how we can leverage this caching behaviour we need to throttle our requests so that they fail. One of the tools at our disposal is something called the Network Conditioner. This is provided by Apple in the <a href="https://developer.apple.com/download/more/?q=Additional%20Tools">additional tools</a> download.</p>
+
+<p>If you download the tools and install the network conditioner preference pane, you should be able to launch it from your Mac preferences. Once open you should see something like the below:</p>
+
+<p><img src="/assets/images/network_conditioner.png" alt="Network Conditioner" title="Network Conditioner" /></p>
+
+<p>This tool allows you to create various network conditions on your mac, such as 100% packet loss, 3G, dial up etc. We are going to use this to replicate a connection failure in our example to see how we can begin to use some of URLSession’s properties to access cached request data.</p>
+
+<p>If we add the below into our second request callback so we can see if the request errors:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>If we run the sample again, however this time once we receive the first 2 console messages. We activate the network conditioner using 100% loss. This will cause the second request to fail (it may take a few seconds for the request to timeout).</p>
+
+<p>If done correctly we should see something like below in the console:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 12:36:09 GMT
+Request1 Cache Header: max-age=3
+The request timed out.
+</code></pre></div></div>
+
+<p>Now we aren’t getting a response from the second request. Instead we are receiving an error. This is expected behaviour as the second request is indeed failing. What we can do in this scenario is grab the response from the cache if we so wish. To do so add the code below to the second completion handler:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">if</span> <span class="k">let</span> <span class="nv">cachedResponse</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">urlCache</span><span class="p">?</span><span class="o">.</span><span class="nf">cachedResponse</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">request</span><span class="p">),</span>
+    <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">cachedResponse</span><span class="o">.</span><span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+    <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="s">"cached: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Part of the URLSession is the <a href="https://developer.apple.com/documentation/foundation/urlsessionconfiguration">URLSessionConfiguration</a>. This is an object which provides all of the configuration for the URLSession. One of the attributes here is the <a href="https://developer.apple.com/documentation/foundation/urlcache">URLCache</a>. This is where the magic happens. It is an in-memory and on-disk cache of the responses from URLRequests. It is responsible for storing and deleting the data, in our example that is controlled via the response headers.</p>
+
+<p>One of the methods on the URLCache is <a href="https://developer.apple.com/documentation/foundation/urlcache/1411817-cachedresponse">cachedResponse</a>. This will return the cached response for any URL request still in the cache.</p>
+
+<p>In the example above we are pulling the cached response and outputting the header of the attached HTTPURLResponse. If we take another look at our example with the additional 2 snippets above we should have something like below:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://postman-echo.com/response-headers?Content-Type=text/html&amp;Cache-Control=max-age=3"</span><span class="p">)</span><span class="o">!</span>
+<span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">task</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+        <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">),</span>
+        <span class="k">let</span> <span class="nv">cacheControl</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Cache-Control"</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request1 date: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request1 Cache Header: </span><span class="se">\(</span><span class="n">cacheControl</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">task</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span>
+
+<span class="nf">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="nv">task2</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">data</span> <span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+        <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">),</span>
+        <span class="k">let</span> <span class="nv">cacheControl</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Cache-Control"</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request2 date: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Request2 Cache Header: </span><span class="se">\(</span><span class="n">cacheControl</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">cachedResponse</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">urlCache</span><span class="p">?</span><span class="o">.</span><span class="nf">cachedResponse</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">request</span><span class="p">),</span>
+            <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">cachedResponse</span><span class="o">.</span><span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+            <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="nf">print</span><span class="p">(</span><span class="s">"cached: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">task2</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span></code></pre></figure>
+
+<p>Now if we follow the same test as before:</p>
+
+<ul>
+  <li>Run the playground</li>
+  <li>Wait for first request to finish</li>
+  <li>Activate network conditioner with 100% packet loss</li>
+</ul>
+
+<p>What we should see in the console is this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Sun, 28 Jun 2020 07:03:48 GMT
+Request1 Cache Header: max-age=3
+The request timed out.
+cached: Sun, 28 Jun 2020 07:03:48 GMT
+</code></pre></div></div>
+
+<p>So what is happening here?</p>
+
+<ul>
+  <li>The first request is completing successfully so we can see the date and cache header info. The same as before.</li>
+  <li>The seconds request is failing, hence the request timeout error</li>
+  <li>However this time, as the request has failed we are fetching the previously made request response from the cache and outputting the header from that.</li>
+</ul>
+
+<p>Now that we have shown how to grab cached requests from the cache, let’s wrap this up in a nice way so we can reuse it if we wish</p>
+
+<h2 id="wrapping-it-up">Wrapping it up</h2>
+
+<p>First of all lets create a standard swift example, then we will have a look at how we can do this in Combine and some of the challenges in doing so.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">extension</span> <span class="kt">URLSession</span> <span class="p">{</span>
+    <span class="c1">// 1</span>
+    <span class="kd">func</span> <span class="nf">dataTask</span><span class="p">(</span><span class="n">with</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                  <span class="nv">cachedResponseOnError</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span>
+                  <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Data</span><span class="p">?,</span> <span class="kt">URLResponse</span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span> <span class="p">{</span>
+
+        <span class="k">return</span> <span class="k">self</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+            <span class="c1">// 2</span>
+            <span class="k">if</span> <span class="n">cachedResponseOnError</span><span class="p">,</span>
+                <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span><span class="p">,</span>
+                <span class="k">let</span> <span class="nv">cachedResponse</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">urlCache</span><span class="p">?</span><span class="o">.</span><span class="nf">cachedResponse</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">))</span> <span class="p">{</span>
+
+                <span class="nf">completionHandler</span><span class="p">(</span><span class="n">cachedResponse</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cachedResponse</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+
+            <span class="c1">// 3</span>
+            <span class="nf">completionHandler</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So let’s walk through what we are doing here:</p>
+
+<ol>
+  <li>We have created a method the same as the standard <a href="https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask">dataTask</a> method on URLSession. However we have added a bool to control whether we would like to return the cached response on receiving a network error.</li>
+  <li>Here we take the example we used earlier in our example and applied it to this method. First we check whether we should return the cached response based on our cachedResponseOnError parameter. Then check to see if we do have an error, if we do then attempt to grab the cached response from the URLCache and return it’s data and response objects along with the error.</li>
+  <li>In the case where any of the above fails we simply return everything exactly as it was in returned by the normal dataTask method.</li>
+</ol>
+
+<p>As the completion handler returns Data, URLResponse and Error we are able to return the data and response even if there is an error. That is a bit of a disadvantage in this case as the function caller needs to be aware that they may receive an error but also the cached response as well so need to cater for those scenario themselves.</p>
+
+<h2 id="combine">Combine</h2>
+
+<p>Hopefully you have at least heard of <a href="https://developer.apple.com/documentation/combine">Combine</a> even if you haven’t had chance to use it yet in a production app. It is Apple’s own version of a reactive framework. Those of you who have already been using <a href="https://github.com/ReactiveX/RxSwift">RxSwift</a> will be right at home. We aren’t going to go into too much detail about what Combine is but here is a definition of what reactive programming is:</p>
+
+<blockquote>
+  <p>In computing, reactive programming is a declarative programming paradigm concerned with data streams and the propagation of change</p>
+</blockquote>
+
+<p>In more simplistic terms, reactive programming uses a observer pattern to allow classes to monitor different streams of data or state. When this state changes it emits an event with the new value which can trigger other streams to perform work or update such as UI code. If you are familier with <a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html">KVO</a> you will understand the basic concept. However reactive programming is far less painful and a lot more powerful than KVO.</p>
+
+<p>Now the approach described in the previous section works fine in the case of the completionHandler as it allows us to return all 3 items to the caller regardless of what happens. However in combine streams are designed to either return a value OR an error.</p>
+
+<p>First of all let’s look at a simple example:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">typealias</span> <span class="kt">ShortOutput</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="kt">DataTaskPublisher</span><span class="o">.</span><span class="kt">Output</span>
+
+<span class="kd">extension</span> <span class="kt">URLSession</span> <span class="p">{</span>
+    <span class="c1">// 2</span>
+    <span class="kd">func</span> <span class="nf">dataTaskPublisher</span><span class="p">(</span><span class="k">for</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                           <span class="nv">cachedResponseOnError</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">ShortOutput</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span> <span class="p">{</span>
+
+        <span class="k">return</span> <span class="k">self</span><span class="o">.</span><span class="nf">dataTaskPublisher</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+            <span class="c1">// 3</span>
+            <span class="o">.</span><span class="n">tryCatch</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">ShortOutput</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">in</span>
+                <span class="c1">// 4</span>
+                <span class="k">guard</span> <span class="n">cachedResponseOnError</span><span class="p">,</span>
+                    <span class="k">let</span> <span class="nv">urlCache</span> <span class="o">=</span> <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">urlCache</span><span class="p">,</span>
+                    <span class="k">let</span> <span class="nv">cachedResponse</span> <span class="o">=</span> <span class="n">urlCache</span><span class="o">.</span><span class="nf">cachedResponse</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">))</span> 
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="n">error</span>
+                <span class="p">}</span>
+
+                <span class="c1">// 5</span>
+                <span class="k">return</span> <span class="kt">Just</span><span class="p">(</span><span class="kt">ShortOutput</span><span class="p">(</span>
+                    <span class="nv">data</span><span class="p">:</span> <span class="n">cachedResponse</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                    <span class="nv">response</span><span class="p">:</span> <span class="n">cachedResponse</span><span class="o">.</span><span class="n">response</span>
+                <span class="p">))</span><span class="o">.</span><span class="nf">eraseToAnyPublisher</span><span class="p">()</span>
+        <span class="c1">// 6</span>
+        <span class="p">}</span><span class="o">.</span><span class="nf">eraseToAnyPublisher</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So let’s step through what is happening here:</p>
+
+<ol>
+  <li>First I am creating a typealias of the <a href="https://developer.apple.com/documentation/foundation/urlsession/datataskpublisher/output">dataTaskPublisher.Output</a>. This is mostly for code formatting reasons as the string is very long. This is simply a Data object and a URLResponse object in a tuple.</li>
+  <li>Here we have setup our function with the cachedResponseOnError flag the same as before. We are returning a publisher with our type aliased output.</li>
+  <li>First we call the standard <a href="https://developer.apple.com/documentation/foundation/urlsession/3329708-datataskpublisher">dataTaskPublisher</a> method to setup our request. We immediately chain that publisher using the new <a href="https://developer.apple.com/documentation/combine/publishers/trycompactmap/trycatch(_:)">tryCatch</a>. So what does this do? “<em>Handles errors from an upstream publisher by either replacing it with another publisher or throwing a new error.</em>” So here we catch any connection errors from the dataTaskPublisher and we can either throw another error or send another publisher down the chain.</li>
+  <li>So the same as our pure Swift example we attempt to fetch our response from the cache, except here if we fail to find anything in the cache we just rethrow the same error we received in the try catch block so it can be handled further down the stream.</li>
+  <li>If we were able to find a response in the cache then we use the <a href="https://developer.apple.com/documentation/combine/just">Just</a> publisher to send the new value down the stream wrapping our cached response.</li>
+  <li>We erase the types to AnyPublisher using type erasure so items further down the stream don’t need to know the types. For more info on type erasure see my <a href="/type-erasure/what-is-type-erasure.html">previous post</a>.</li>
+</ol>
+
+<p>Now let’s take our previous test and adapt it so we can see this in action:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://postman-echo.com/response-headers?Content-Type=text/html&amp;Cache-Control=max-age=3"</span><span class="p">)</span><span class="o">!</span>
+<span class="k">let</span> <span class="nv">publisher</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTaskPublisher</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="nv">cachedResponseOnError</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+
+<span class="c1">// 2</span>
+<span class="k">let</span> <span class="nv">token</span> <span class="o">=</span> <span class="n">publisher</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">completion</span><span class="p">)</span> <span class="k">in</span>
+        <span class="k">switch</span> <span class="n">completion</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">finished</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">})</span> <span class="p">{</span> <span class="p">(</span><span class="nv">responseHandler</span><span class="p">:</span> <span class="kt">URLSession</span><span class="o">.</span><span class="kt">DataTaskPublisher</span><span class="o">.</span><span class="kt">Output</span><span class="p">)</span> <span class="k">in</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">responseHandler</span><span class="o">.</span><span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+            <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">),</span>
+            <span class="k">let</span> <span class="nv">cacheControl</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Cache-Control"</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="nf">print</span><span class="p">(</span><span class="s">"Request1 date: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="s">"Request1 Cache Header: </span><span class="se">\(</span><span class="n">cacheControl</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="c1">// 3</span>
+<span class="nf">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1">// 4</span>
+<span class="k">let</span> <span class="nv">token2</span> <span class="o">=</span> <span class="n">publisher</span>
+    <span class="o">.</span><span class="nf">sink</span><span class="p">(</span><span class="nv">receiveCompletion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">completion</span><span class="p">)</span> <span class="k">in</span>
+        <span class="k">switch</span> <span class="n">completion</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">finished</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">})</span> <span class="p">{</span> <span class="p">(</span><span class="nv">responseHandler</span><span class="p">:</span> <span class="kt">URLSession</span><span class="o">.</span><span class="kt">DataTaskPublisher</span><span class="o">.</span><span class="kt">Output</span><span class="p">)</span> <span class="k">in</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">httpResponse</span> <span class="o">=</span> <span class="n">responseHandler</span><span class="o">.</span><span class="n">response</span> <span class="k">as?</span> <span class="kt">HTTPURLResponse</span><span class="p">,</span>
+            <span class="k">let</span> <span class="nv">date</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Date"</span><span class="p">),</span>
+            <span class="k">let</span> <span class="nv">cacheControl</span> <span class="o">=</span> <span class="n">httpResponse</span><span class="o">.</span><span class="nf">value</span><span class="p">(</span><span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Cache-Control"</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="nf">print</span><span class="p">(</span><span class="s">"Request2 date: </span><span class="se">\(</span><span class="n">date</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+            <span class="nf">print</span><span class="p">(</span><span class="s">"Request2 Cache Header: </span><span class="se">\(</span><span class="n">cacheControl</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>As we have done with our other examples let’s step through and see what happens.</p>
+
+<ol>
+  <li>First we create our request as we did in the pure Swift example, and then create our new publisher using our newly created function.</li>
+  <li>Now in Combine, publisher’s only execute once there is an unsatisfied subscription. This happens whenever the sink function is called. The first closure is called when either the stream completes or an error throws (which also terminates the stream). The second closure is called whenever a new value is published from the stream. In this first case we can a tuple containing Data and a URLResponse. As before we inspect the date header of the request.</li>
+  <li>As before we sleep for 5 seconds (we have set a timeout of 3 on using the cache control headers)</li>
+  <li>This matches the same as step 2 however we changed the output.</li>
+</ol>
+
+<p>If we follow the same steps as before and turn on packet loss using the network conditioner when we hit step 3 we should see a console log like below:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 30 Jun 2020 07:53:26 GMT
+Request1 Cache Header: max-age=3
+Request2 date: Tue, 30 Jun 2020 07:53:26 GMT
+Request2 Cache Header: max-age=3
+</code></pre></div></div>
+
+<p>Now, this proves that we are returning our cached response in the second request as we have no connection and we are still receiving a response. However what is the problem here?</p>
+
+<h3 id="there-is-no-error">There is no error</h3>
+
+<p>The above implementation works fine if we just want to display cached data. However you may wish to inform the user that there was a connection failure and they are viewing old / stale information. So how can we get around this? In order to send the cached value, then the error we would need to create a custom Combine publisher. We won’t cover that here as that is a post in itself.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We have shown how we can make use of built in functionality of URLSession and URLCache along with the HTTP standard headers to provide simple and basic offline caching.</p>
+
+<h3 id="advantages">Advantages</h3>
+
+<ul>
+  <li>Simple implementation, doesn’t require 3rd party frameworks or complex relational databases</li>
+  <li>Makes use of 1st party frameworks and relies on currently available standards (HTTP)</li>
+  <li>Concurrency handled automatically</li>
+</ul>
+
+<h3 id="disadvantages">Disadvantages</h3>
+
+<ul>
+  <li>Relies on cache-control headers being correctly used in the API being consumed</li>
+  <li>URLSession cache policies need to be configured correctly</li>
+  <li>Doesn’t support more complex caching requirements / rules if needed</li>
+  <li>URLCache will delete the cache if device memory becomes full, something to bear in mind using this approach</li>
+</ul>
+
+<p>In summary, this approach is simple and provides basic offline functionality for your app. If you have more complex needs / requirements for caching your data then other approaches may be more suitable.</p>
+
+<p>Feel free to <a href="https://github.com/pyartez/blog-samples">download the playground</a> and play around with the examples yourself</p>
+
+
+                
+                    <p><a href="/networking/simple-offline-caching-in-swift-and-combine.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Simple offline caching in Swift and Combine&p[summary]=Background
+
+Following on from the previous post where we explored simple JSON decoding. In this post we are going to extend that simple n...&p[url]=https://pyartez.github.io/networking/simple-offline-caching-in-swift-and-combine.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/networking/simple-offline-caching-in-swift-and-combine.html&text=Background
+
+Following on from the previous post where we explored simple JSON decoding. In this post we are going to extend that simple n...&hashtags=swift,combine,generics,networking,caching," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/combine">combine</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/generics">generics</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/networking">networking</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/caching">caching</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2020-06-11T10:00:00+01:00" itemprop="datePublished">11 Jun, 2020</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/networking/">networking</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://pyartez.github.io/networking/simple-json-decoder-in-swift-and-combine.html">Simple JSON decoder in Swift and Combine</a></h2>
             </header>
 
             <div class="post-content">
@@ -485,7 +958,7 @@
 
 
                 
-                    <p><a href="/codable/simple-json-decoder-in-swift-and-combine.html" role="button">Read More</a></p>
+                    <p><a href="/networking/simple-json-decoder-in-swift-and-combine.html" role="button">Read More</a></p>
                 
             </div>
 
@@ -494,8 +967,8 @@
                     <ul class="social-networks">
                         <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Simple JSON decoder in Swift and Combine&p[summary]=Intro
 
-Pretty much every app nowadays requires you to connect to the internet to access some content. The majority of those apps use JSON...&p[url]=https://pyartez.github.io/codable/simple-json-decoder-in-swift-and-combine.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/codable/simple-json-decoder-in-swift-and-combine.html&text=Intro
+Pretty much every app nowadays requires you to connect to the internet to access some content. The majority of those apps use JSON...&p[url]=https://pyartez.github.io/networking/simple-json-decoder-in-swift-and-combine.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/networking/simple-json-decoder-in-swift-and-combine.html&text=Intro
 
 Pretty much every app nowadays requires you to connect to the internet to access some content. The majority of those apps use JSON...&hashtags=swift,combine,generics,networking," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
                     </ul>
