@@ -157,6 +157,10 @@
             
                 
             
+                
+            
+                
+            
         </div>
         
      -->
@@ -211,6 +215,507 @@
 
                 <h1>Posts Tagged - generics</h1>
 
+
+    
+        
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2020-07-19T08:00:00+01:00" itemprop="datePublished">19 Jul, 2020</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/architecture/">architecture</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://pyartez.github.io/architecture/repository-pattern-in-swift-and-combine.html">Repository Pattern in Swift</a></h2>
+            </header>
+
+            <div class="post-content">
+                <h2 id="background">Background</h2>
+
+<p>All apps developed require data of some description. This data is stored somewhere, could be on the device itself, in a remote database/service or a combination. Let’s take a look at the most common sources of data:</p>
+
+<ul>
+  <li><a href="https://www.w3schools.com/whatis/whatis_json.asp">JSON</a> web services</li>
+  <li><a href="https://developer.apple.com/documentation/foundation/userdefaults">UserDefaults</a></li>
+  <li><a href="https://developer.apple.com/documentation/coredata">Core Data</a></li>
+  <li><a href="https://realm.io/docs/swift/latest/">Realm</a></li>
+  <li>Other 3rd party system</li>
+</ul>
+
+<p>Each of these methods saves data in a different format. Now I’m sure you will have used at least one of these methods in your apps at some point to retrieve / save data.</p>
+
+<p>When not using the repository pattern it is quite common to access and use these elements directly, either in your ViewController or in some other part of your app depending how it is structured.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>What’s the problem with this approach? Your app becomes difficult to maintain. Now if you only have a small app with a few screens then this isn’t much of a problem as there are only a few elements to change.</p>
+
+<p>However, what if you are working on a large app with several developers and lots of code? You could have <a href="https://developer.apple.com/documentation/coredata/nsmanagedobject">NSManagedObjects</a> or <a href="https://developer.apple.com/documentation/swift/codable">Codable</a> objects littered throughout the codebase for example. What happens if you wish to remove Core Data? Perhaps move to realm? You would need to modify all of the classes in your codebase where you had used your Core Data objects.</p>
+
+<p>Similarly, if you are using Codable objects directly from your JSON response. What happens when your backend team changes the API or you switch to a different API provider? The structure of the data may change which means your Codable objects might change. Again you will need to modify a large number of classes if you are working on a large app.</p>
+
+<p>We can also apply this to the other options such as accessing data from 3rd party frameworks. If we use the objects returned from the framework directly, they will all need changing if we change provider or the SDK changes.</p>
+
+<p>There is also the question of query language. Web services use headers and <a href="https://developer.apple.com/documentation/foundation/urlqueryitem">URLQueryItem</a>, Core Data uses <a href="https://developer.apple.com/documentation/foundation/nspredicate">Predicates</a> and so on. Every entry point to query the data must know and understand the underlying query language in order to get the information it once. Again, if this changes we need change every query point to the new format.</p>
+
+<p>Let’s have a look at the diagram below:</p>
+
+<p><img src="/assets/images/core-data-example.png" alt="Core Data Example" title="Core Data Example" /></p>
+
+<p>Here we have an app structure that is making use of Core Data. There is an object that is being used to access the stack that returns some data. Let’s say for this example that it is news articles. These new articles must inherit from NSManagedObject to be used in Core Data. Now if our data layer is returning NSManagedObjects to the rest of our app structure we now have a dependency between Core Data and the rest of the files in our app. If we wish to move to Realm for example, or switch to using some other form of data store we would need to modify all the of files in the app. The app in this example is only small, imagine having to do that for a much bigger app!</p>
+
+<h2 id="domain-objects-and-the-repository">Domain Objects and the Repository</h2>
+
+<p>This is where Domain Objects come in. Domain Objects are value objects that are defined by your application. Rather than using objects and structures defined outside of the app, we define what we want the objects to look like. It’s then up to the repository to map between the data storage object / structure to these value objects.</p>
+
+<p>When we do this, it means any changes to the data access layer, as we discussed earlier such as data structure changes or changes in provider don’t impact the rest of the app. The only part of the app that needs to be updated is the repository and it’s mapping to the domain objects.</p>
+
+<p>The below quote summarises the idea of the pattern:</p>
+
+<blockquote>
+  <p>Repositories are classes or components that encapsulate the logic required to access data sources. They centralize common data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.</p>
+</blockquote>
+
+<p>Let’s have a look at our previous example but modified to use the a repository and domain objects:</p>
+
+<p><img src="/assets/images/core-data-example-2.png" alt="Core Data Example 2" title="Core Data Example 2" /></p>
+
+<p>So what is the difference here? As you can see the Core Data stack is still returning NSManagedObjects, however the repository is converting that to a domain object. This object doesn’t inherit from NSManagedObject, also it’s structure and attributes are defined by the app rather than what is in the data store.</p>
+
+<p>Now if we wanted to move away from Core Data to something else the only classes that need to be changed are the Core Data stack and the repository. The rest of the app does not need to be changed as we can map the new data stores type to our domain objects using the repository.</p>
+
+<h2 id="example">Example</h2>
+
+<p>To show a small working example we are going to use a couple of <a href="https://github.com/public-apis/public-apis">Free Public APIs</a> (highly recommend this resource if you are looking to build a demo app or experiment). We will use 2 APIs that returns users. However they return them in a different format.</p>
+
+<p><a href="https://jsonplaceholder.typicode.com/users/1">https://jsonplaceholder.typicode.com/users/1</a></p>
+
+<p><a href="https://randomuser.me/api/">https://randomuser.me/api/</a></p>
+
+<p>As we have done in <a href="/networking/simple-json-decoder-in-swift-and-combine.html">previous blog posts</a> we are going to use <a href="https://app.quicktype.io">QuickType</a> to generate our Codable objects from our JSON response. We will start with our first request.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// MARK: - User</span>
+<span class="kd">struct</span> <span class="kt">User</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">address</span><span class="p">:</span> <span class="kt">Address</span>
+    <span class="k">let</span> <span class="nv">phone</span><span class="p">,</span> <span class="nv">website</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">company</span><span class="p">:</span> <span class="kt">Company</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Address</span>
+<span class="kd">struct</span> <span class="kt">Address</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">street</span><span class="p">,</span> <span class="n">suite</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="nv">zipcode</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">geo</span><span class="p">:</span> <span class="kt">Geo</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Geo</span>
+<span class="kd">struct</span> <span class="kt">Geo</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">lat</span><span class="p">,</span> <span class="nv">lng</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Company</span>
+<span class="kd">struct</span> <span class="kt">Company</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">,</span> <span class="n">catchPhrase</span><span class="p">,</span> <span class="nv">bs</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This structure will allow us to decode the response from the first request. Let’s make a simple example that takes the response and outputs some data. We will be using code from our <a href="/networking/simple-json-decoder-in-swift-and-combine.html">Simple JSON Decoder</a> to process the output so feel free to read up if the code you see doesn’t make sense.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://jsonplaceholder.typicode.com/users/1"</span><span class="p">)</span><span class="o">!</span>
+<span class="c1">// 1</span>
+<span class="k">let</span> <span class="nv">task</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">User</span><span class="p">?,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+	<span class="c1">// 2</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 3</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">street</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">zipcode</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">lng</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+<span class="n">task</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span></code></pre></figure>
+
+<p>So let’s step through what’s happening here:</p>
+
+<ol>
+  <li>First of all we are making the request using our <a href="/networking/simple-json-decoder-in-swift-and-combine.html">Simple JSON Decoder</a> to return our new User type.</li>
+  <li>Output any errors</li>
+  <li>So here we are outputting the name, address and location of the user we get back. Super simple right now.</li>
+</ol>
+
+<h2 id="managing-change">Managing change</h2>
+
+<p>Now let’s say we change provider. Maybe our backend team changes the API, or we switch data provider or from 2 different data provider SDKs. In our example we will switch from the first url (<a href="https://jsonplaceholder.typicode.com/users/1">https://jsonplaceholder.typicode.com/users/1</a>) to the second (<a href="https://randomuser.me/api/">https://randomuser.me/api/</a>).</p>
+
+<p>The first thing we will need to do is change all of our codable objects as the structure of the response is different. Let’s use QuickType again to give us the new structure:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// MARK: - Users</span>
+<span class="kd">struct</span> <span class="kt">Users</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">results</span><span class="p">:</span> <span class="p">[</span><span class="kt">Result</span><span class="p">]</span>
+    <span class="k">let</span> <span class="nv">info</span><span class="p">:</span> <span class="kt">Info</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Info</span>
+<span class="kd">struct</span> <span class="kt">Info</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">seed</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">results</span><span class="p">,</span> <span class="nv">page</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">version</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Result</span>
+<span class="kd">struct</span> <span class="kt">Result</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">gender</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">Name</span>
+    <span class="k">let</span> <span class="nv">location</span><span class="p">:</span> <span class="kt">Location</span>
+    <span class="k">let</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">login</span><span class="p">:</span> <span class="kt">Login</span>
+    <span class="k">let</span> <span class="nv">dob</span><span class="p">,</span> <span class="nv">registered</span><span class="p">:</span> <span class="kt">Dob</span>
+    <span class="k">let</span> <span class="nv">phone</span><span class="p">,</span> <span class="nv">cell</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">ID</span>
+    <span class="k">let</span> <span class="nv">picture</span><span class="p">:</span> <span class="kt">Picture</span>
+    <span class="k">let</span> <span class="nv">nat</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Dob</span>
+<span class="kd">struct</span> <span class="kt">Dob</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">date</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">age</span><span class="p">:</span> <span class="kt">Int</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - ID</span>
+<span class="kd">struct</span> <span class="kt">ID</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Location</span>
+<span class="kd">struct</span> <span class="kt">Location</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">street</span><span class="p">:</span> <span class="kt">Street</span>
+    <span class="k">let</span> <span class="nv">city</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="nv">country</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">postcode</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">coordinates</span><span class="p">:</span> <span class="kt">Coordinates</span>
+    <span class="k">let</span> <span class="nv">timezone</span><span class="p">:</span> <span class="kt">Timezone</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Coordinates</span>
+<span class="kd">struct</span> <span class="kt">Coordinates</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">latitude</span><span class="p">,</span> <span class="nv">longitude</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Street</span>
+<span class="kd">struct</span> <span class="kt">Street</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">number</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Timezone</span>
+<span class="kd">struct</span> <span class="kt">Timezone</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">offset</span><span class="p">,</span> <span class="nv">timezoneDescription</span><span class="p">:</span> <span class="kt">String</span>
+
+    <span class="kd">enum</span> <span class="kt">CodingKeys</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">CodingKey</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="n">offset</span>
+        <span class="k">case</span> <span class="n">timezoneDescription</span> <span class="o">=</span> <span class="s">"description"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Login</span>
+<span class="kd">struct</span> <span class="kt">Login</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">uuid</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="nv">salt</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">md5</span><span class="p">,</span> <span class="n">sha1</span><span class="p">,</span> <span class="nv">sha256</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Name</span>
+<span class="kd">struct</span> <span class="kt">Name</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">title</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="nv">last</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// MARK: - Picture</span>
+<span class="kd">struct</span> <span class="kt">Picture</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">large</span><span class="p">,</span> <span class="n">medium</span><span class="p">,</span> <span class="nv">thumbnail</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now this is more complicated that it needs to be for our example but I’m leaving it here as an extreme example of how different things can be. As you can probably tell the structure and types have change dramatically from our first example. So let’s try and output the same data from this example in our previous example. We can ignore the request part and just focus on the data output so we can see the differences:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Request 1 output</span>
+<span class="k">if</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">street</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">zipcode</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">lng</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<span class="c1">// Request 2 output</span>
+<span class="k">if</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">?</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">first</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">first</span><span class="se">)</span><span class="s"> </span><span class="se">\(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">last</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">street</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">postcode</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>As you can see from even this simple example. We would have to change 7 lines of code, just to produce the same output. Now imagine this change happening on a much bigger project! There could possibly be 100s of lines of code that would need updating, all because the API response has changed.</p>
+
+<h2 id="repository-pattern">Repository Pattern</h2>
+
+<p>Here is where the repository pattern comes in. We can create a user repository that fetches the user and converts it to our domain object. That way we don’t need to update the output.</p>
+
+<p>First thing to do is design our domain object that will represent a User in our system. Now all we are doing in this simple example is outputting a few attributes so let’s design our object with just those attributes as we don’t need the rest.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">DomainUser</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">street</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">city</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">postcode</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">latitude</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">longitude</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here we have a nice simple representation of our User object. There is no need to consider any of the other possible attributes returned from the API. We aren’t using them in our application and they will just sit around taking up valuable memory. You will also notice that this object doesn’t conform to Codable or subclass NSManagedObject. This is because DomainObject should not contain any knowledge about how they are stored. That is the responsibility of the repository.</p>
+
+<p>To design our repository we can make use of Generics and Protocols to design a repository we can use for anything, not just our DomainUser. Let take a look:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">protocol</span> <span class="kt">Repository</span> <span class="p">{</span>
+    <span class="kd">associatedtype</span> <span class="kt">T</span>
+    
+    <span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt">T</span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+    <span class="kd">func</span> <span class="nf">list</span><span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="p">([</span><span class="kt">T</span><span class="p">]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+    <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+    <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+    <span class="kd">func</span> <span class="nf">edit</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">CombineRepository</span> <span class="p">{</span>
+    <span class="kd">associatedtype</span> <span class="kt">T</span>
+    
+    <span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span>
+    <span class="kd">func</span> <span class="nf">list</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">T</span><span class="p">],</span> <span class="kt">Error</span><span class="o">&gt;</span>
+    <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span>
+    <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span>
+    <span class="kd">func</span> <span class="nf">edit</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here we have different functions for all of the operations we can do. What you will notice is that none of these functions specify where or how the data is stored. Remember when we talked about different storage options at the beginning? We could implement a repo that talks to an API (like in our example), one that stores things in Core Data or one that writes to UserDefaults. It’s up to the repository that implements the protocol to decide these details, all we care about is that we can load and save the data from somewhere.</p>
+
+<h2 id="see-it-action">See it action</h2>
+
+<p>Now we have defined what the repository pattern is, let’s create 2 implementations. One for our first request and one for the second. Both should return domain objects, rather than the type returned from the request.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">enum</span> <span class="kt">RepositoryError</span><span class="p">:</span> <span class="kt">Error</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">notFound</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">FirstRequestImp</span><span class="p">:</span> <span class="kt">Repository</span> <span class="p">{</span>
+    <span class="kd">typealias</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">DomainUser</span>
+    
+    <span class="c1">// 2</span>
+    <span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">DomainUser</span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://jsonplaceholder.typicode.com/users/1"</span><span class="p">)</span><span class="o">!</span>
+        <span class="k">let</span> <span class="nv">task</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">User</span><span class="p">?,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+                <span class="nf">completionHandler</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">completionHandler</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="kt">RepositoryError</span><span class="o">.</span><span class="n">notFound</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            
+            <span class="c1">// 3</span>
+            <span class="k">let</span> <span class="nv">domainUser</span> <span class="o">=</span> <span class="kt">DomainUser</span><span class="p">(</span>
+                <span class="nv">name</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="nv">street</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">street</span><span class="p">,</span>
+                <span class="nv">city</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">city</span><span class="p">,</span>
+                <span class="nv">postcode</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">zipcode</span><span class="p">,</span>
+                <span class="nv">latitude</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+                <span class="nv">longitude</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">lng</span>
+            <span class="p">)</span>
+            
+            <span class="nf">completionHandler</span><span class="p">(</span><span class="n">domainUser</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+        <span class="p">})</span>
+        <span class="n">task</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+     <span class="c1">// 4</span>
+    <span class="kd">func</span> <span class="nf">list</span><span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">DomainUser</span><span class="p">]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kd">func</span> <span class="nf">edit</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">SecondRequestImp</span><span class="p">:</span> <span class="kt">Repository</span> <span class="p">{</span>
+    <span class="kd">typealias</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">DomainUser</span>
+    
+    <span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">DomainUser</span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://randomuser.me/api/"</span><span class="p">)</span><span class="o">!</span>
+        <span class="k">let</span> <span class="nv">task</span> <span class="o">=</span> <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">users</span><span class="p">:</span> <span class="kt">Users</span><span class="p">?,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+                <span class="nf">completionHandler</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">users</span><span class="p">?</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">first</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">completionHandler</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="kt">RepositoryError</span><span class="o">.</span><span class="n">notFound</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            
+            <span class="c1">// 5</span>
+            <span class="k">let</span> <span class="nv">domainUser</span> <span class="o">=</span> <span class="kt">DomainUser</span><span class="p">(</span>
+                <span class="nv">name</span><span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">first</span><span class="se">)</span><span class="s"> </span><span class="se">\(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">last</span><span class="se">)</span><span class="s">"</span><span class="p">,</span>
+                <span class="nv">street</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">street</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="nv">city</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">city</span><span class="p">,</span>
+                <span class="nv">postcode</span><span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">postcode</span><span class="se">)</span><span class="s">"</span><span class="p">,</span>
+                <span class="nv">latitude</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                <span class="nv">longitude</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span>
+            <span class="p">)</span>
+            
+            <span class="nf">completionHandler</span><span class="p">(</span><span class="n">domainUser</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+        <span class="p">})</span>
+        <span class="n">task</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">list</span><span class="p">(</span><span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">DomainUser</span><span class="p">]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="kd">func</span> <span class="nf">edit</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>There’s quite a bit of code here so let’s step through it.</p>
+
+<ol>
+  <li>First of all we have defined a new error to send back if we don’t receive any user info from the API.</li>
+  <li>This is the same call we made in our example before.</li>
+  <li>Now here we are taking the returned Codable User and converting it to your new DomainUser class.</li>
+  <li>We aren’t implementing the other functions in this example so just leaving them empty for now to remove errors.</li>
+  <li>This struct is the second request we are making, and again here we are mapping our Users Codable type from the second request to our DomainUser.</li>
+</ol>
+
+<p>Now that we have made our two repositories, let’s show how we can quickly switch between them without breaking / changing code.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">repository</span><span class="p">:</span> <span class="kt">FirstRequestImp</span> <span class="o">=</span> <span class="kt">FirstRequestImp</span><span class="p">()</span>
+<span class="n">repository</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">street</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">postcode</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here is our example from earlier in the article but updated to use our new repositories. Here we go and fetch the user and print their details, the same as before. Now below we can switch to our second request and see how that will work.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">repository</span><span class="p">:</span> <span class="kt">SecondRequestImp</span> <span class="o">=</span> <span class="kt">SecondRequestImp</span><span class="p">()</span>
+<span class="n">repository</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">street</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">postcode</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now notice how the only part we changed was the implementation class? The rest of the code remained the same even though where the data was coming from has changed and is coming back in a completely different structure. Now imagine we are using this repo in many places to fetch user details. We can quickly switch between different data sources without changing the code that uses it. The only changes we have to make are to the repo and to the data mapping code. So only one change rather than a change in every single class that uses these objects.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So let’s recap what we have discussed here:</p>
+
+<ul>
+  <li>First of all we discussed the problem of using data storage classes throughout your codebase. Especially on large projects if you need to switch data source / structure.</li>
+  <li>We then discussed how using the repository pattern and mapping to domain objects rather than using data storage classes can make your code easier to change in the future.</li>
+  <li>We worked through some examples of how changing API structures can impact your code.</li>
+  <li>We then implemented a basic repository pattern with mapping to domain objects to show how doing this can make updating your project easier.</li>
+</ul>
+
+<p>Finally let’s discuss the pros and cons of the approach:</p>
+
+<h3 id="advantages">Advantages</h3>
+
+<ul>
+  <li>Code is easier to change if you need to switch data source or structure</li>
+  <li>Separates concerns of where / how data is stored away from the rest of your app</li>
+</ul>
+
+<h3 id="disadvantages">Disadvantages</h3>
+
+<ul>
+  <li>Adds more code and complexity</li>
+  <li>Need to write mappers for each object to domain objects</li>
+  <li>Not really needed on smaller solo projects</li>
+</ul>
+
+<p>Feel free to <a href="https://github.com/pyartez/blog-samples">download the playground</a> and play around with the examples yourself</p>
+
+
+                
+                    <p><a href="/architecture/repository-pattern-in-swift-and-combine.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Repository Pattern in Swift&p[summary]=Background
+
+All apps developed require data of some description. This data is stored somewhere, could be on the device itself, in a remot...&p[url]=https://pyartez.github.io/architecture/repository-pattern-in-swift-and-combine.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/architecture/repository-pattern-in-swift-and-combine.html&text=Background
+
+All apps developed require data of some description. This data is stored somewhere, could be on the device itself, in a remot...&hashtags=swift,combine,generics,architecture," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/combine">combine</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/generics">generics</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/architecture">architecture</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
+        
+    
 
     
         
