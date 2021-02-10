@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Using protocols, ObservableObject and @Published property wrappers in SwiftUI | Phil Yates &mdash; Lead iOS Engineer and Manager </title>
+    <meta property="og:title" content="Using protocols, ObservableObject and @Published property wrappers in SwiftUI | Phil Yates &mdash; Lead iOS Engineer and Manager " />
+    <meta name="twitter:title" content="Using protocols, ObservableObject and @Published property wrappers in SwiftUI | Phil Yates &mdash; Lead iOS Engineer and Manager " />
+
+    <meta name="description" content="Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.">
+    <meta name="twitter:description" content="Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <meta name="twitter:site" content="@pyates" />
+    
+    <meta property="og:url" content="https://pyartez.github.io/swiftui/using-protocols-observableobject-published-property-wrappers-swiftui.html" />
+
+    <meta property="og:image" content="" />
+    <meta name="twitter:image" content="" />
+
+    <meta name="author" content="Phil Yates" />
+
+    <meta name="copyright" content="Copyright by Phil Yates. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://pyartez.github.io/assets/css/main.css">
+
+    <link rel="canonical" href="https://pyartez.github.io/swiftui/using-protocols-observableobject-published-property-wrappers-swiftui.html">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://pyartez.github.io/feed.xml">
+
+    <script data-ad-client="ca-pub-6959344114005358" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://pyartez.github.io"><img alt="Avatar" src="http://www.gravatar.com/avatar/ab24a8a6753036f939b5c8d4b9de9941?s=400" /></a>
+        <div class="my-info">
+            <h1><strong class="my-name">Phil Yates</strong></h1>
+            <span class="my-job-title">Lead iOS Engineer and Manager</span>
+        </div>
+    </div>
+
+    <!-- 
+        
+        <div class="mainmenu">
+            <a href="https://pyartez.github.io" >Home</a>
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+     -->
+
+    <p class="about-me">Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</p>
+
+    <ul class="socials">
+        <li><a href="https://twitter.com/pyates"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/phil-yates-06486727"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/pyartez"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
+
+        
+
+        
+         <li><a href="https://pyartez.github.io/feed.xml"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#rss-icon"></use></svg></a></li>
+        
+    </ul>
+
+<!-- Begin Mailchimp Signup Form -->
+<link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    #mc_embed_signup{clear:left; margin-top: 20px}
+    /* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
+       We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+    #mc_embed_signup input.email { width: 100% }
+    #mc_embed_signup .button { background-color: #FF5B78 }
+</style>
+<div id="mc_embed_signup">
+<form action="https://github.us10.list-manage.com/subscribe/post?u=83e03da2b78f9036b74a6f6a1&amp;id=7aa3365d6b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+    <div id="mc_embed_signup_scroll">
+    <label for="mce-EMAIL">Subscribe</label>
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_83e03da2b78f9036b74a6f6a1_7aa3365d6b" tabindex="-1" value=""></div>
+    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+    </div>
+</form>
+</div>
+
+<!--End mc_embed_signup-->
+</aside>
+
+            <main class="the-content" role="main">
+                <div class="search" role="search">
+    <div>
+        <div class="show-results-count">0 Results</div>
+        <div class="search-holder">
+            <input type="text" id="search-input" placeholder="search for..." />
+        </div>
+    </div>
+    <ul id="results-container" class="results-container"></ul>
+</div>
+
+
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2021-02-09T08:00:00+00:00" itemprop="datePublished">9 Feb, 2021</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/SwiftUI/">SwiftUI</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Using protocols, ObservableObject and @Published property wrappers in SwiftUI</h2>
+    </header>
+
+    <div class="post-content">
+        <h2 id="background">Background</h2>
+
+<p>As I’m sure any iOS developer now knows, the future of iOS app development is <a href="https://developer.apple.com/xcode/swiftui/">SwiftUI</a>. Apple’s new UI development language is now on it’s 2nd major release. While my own personal feeling is that the framework is not quite ready for prime time (much like when Swift first arrived. It’s missing some fairly key features) and we are perhaps a version or 2 away from it realistically being an option for being used to build a complete app. There is no denying that it is the future and when it works well, it makes building UI a lot easier.</p>
+
+<p>As SwiftUI is the future, I’ve been investigating how teams might migrate their existing architectures across to the new technology. There a number of challenges presented by migrating to SwiftUI we will discuss below. As the title suggests we will be exploring how to use a presenter to control a SwiftUI view. It doesn’t matter which architecture you are using as such, whether it’s VIPER, MVVVM, VIP, MVP etc. As long as the logic and state of the view has been abstracted away from the view itself so it can be properly unit tested.</p>
+
+<h2 id="example">Example</h2>
+
+<h3 id="list-item-view">List Item View</h3>
+
+<p>Let’s start by creating an example in SwiftUI. We will create a simple list view to display some news for example. Let’s create a simple list view first of all:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">struct</span> <span class="kt">ListItemViewModel</span><span class="p">:</span> <span class="kt">Identifiable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+    <span class="k">let</span> <span class="nv">image</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">struct</span> <span class="kt">ListItemView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">viewModel</span><span class="p">:</span> <span class="kt">ListItemViewModel</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">HStack</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kt">Image</span><span class="p">(</span><span class="n">viewModel</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+            <span class="kt">VStack</span><span class="p">(</span><span class="nv">alignment</span><span class="p">:</span> <span class="o">.</span><span class="n">leading</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kt">Text</span><span class="p">(</span><span class="n">viewModel</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">headline</span><span class="p">)</span>
+                <span class="n">viewModel</span><span class="o">.</span><span class="n">subTitle</span><span class="o">.</span><span class="nf">map</span><span class="p">({</span>
+                    <span class="kt">Text</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">subheadline</span><span class="p">)</span>
+                <span class="p">})</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 3</span>
+<span class="kd">struct</span> <span class="kt">ListItemView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">ListItemView</span><span class="p">(</span>
+            <span class="nv">viewModel</span><span class="p">:</span> <span class="kt">ListItemViewModel</span><span class="p">(</span>
+                <span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="nv">title</span><span class="p">:</span> <span class="s">"Test Title"</span><span class="p">,</span>
+                <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"Test Subtitle"</span><span class="p">,</span>
+                <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is quite a straight forward view, but let’s step through it.</p>
+
+<ol>
+  <li>First of all we define our model for the view. We have an id so that we can conform to <a href="https://developer.apple.com/documentation/swift/identifiable">Identifiable</a>. This allows SwiftUI to uniquely identify each model in the view and helps with performing things like animation and reordering. We also have a title, optional subTitle and an image string. Hopefully nothing here is too scary.</li>
+  <li>Now we define the view inself. Views in SwiftUI are simple structs that conform to the View protocol, rather than subclasses of UIView like they used to be in UIKit. Its a simple Hstack with an image view then 2 labels stacked on top of each other. See the screen grab below.</li>
+  <li>Finally we have the preview code to inject an example model to use in the preview.</li>
+</ol>
+
+<p><img src="/assets/images/swiftui-listview.png" alt="SwiftUI ListItemView" title="SwiftUI ListItemView" /></p>
+
+<h3 id="list-view">List View</h3>
+
+<p>Now that we have the items in our list, lets create a simple list view that displays those items.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span>
+ 
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">listItems</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+            <span class="kt">ListItemView</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">struct</span> <span class="kt">ContentView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">items</span> <span class="o">=</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test2"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub1"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test3"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub2"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test4"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub3"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test5"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub4"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">)]</span>
+        
+        <span class="kt">ContentView</span><span class="p">(</span><span class="nv">listItems</span><span class="p">:</span> <span class="n">items</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Ok so what do we have here:</p>
+
+<ol>
+  <li>A simple ContentView who has an array of list item view models and a body. The body lists out the content of our list using the ListItemView we created earlier. Simple</li>
+  <li>Here we have some test data to show that our list is working. If we preview this view we will see something like this:</li>
+</ol>
+
+<p><img src="/assets/images/swiftui-fulllistview.png" alt="SwiftUI ListView" title="SwiftUI ListView" /></p>
+
+<p>That’s wonderful, however it is not particularly dynamic. This is where a presenter or view model would come in. If we look at the description of <a href="https://en.wikipedia.org/wiki/Model–view–presenter">MVP</a> or <a href="https://en.wikipedia.org/wiki/Model–view–viewmodel">MVVM</a> we will see they have a similar role:</p>
+
+<blockquote>
+  <p>The presenter acts upon the model and the view. It retrieves data from repositories (the model), and formats it for display in the view.</p>
+</blockquote>
+
+<p>There are further abstractions layers (such as interactors and use cases). However we are less concerned with them in this discussion and more on the relationship between the view and the presenter who is holding the state and logic of the view.</p>
+
+<h3 id="abstracting-the-state">Abstracting the state</h3>
+
+<p>So at the moment we have a pretty stateless SwiftUI view that simply displays a hardcoded list. Now let’s attempt to abstract the list items away into another object that is injected into the view. This object would be responsible for fetching our items and loading them for the view.</p>
+
+<p>This is where an <a href="https://developer.apple.com/documentation/combine/observableobject">ObservableObject</a> comes in.</p>
+
+<blockquote>
+  <p>When your type conforms to ObservableObject, you are creating a new source of truth and teaching SwiftUI how to react to changes. In other words, you are defining the data that a view needs to render its UI and perform its logic. SwiftUI uses this dependency to automatically keep your view consistent and show the correct representation of your data. We like to think of ObservableObject as your data dependency surface. This is the part of your model that exposes data to your view, but it’s not necessarily the full model.</p>
+</blockquote>
+
+<p>So lets update our example to move our list of items into a separate class that conforms to this protocol.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">final</span> <span class="kd">class</span> <span class="kt">ListPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">ListPresenter</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">ListPresenter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+ 
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+            <span class="kt">ListItemView</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The <a href="https://developer.apple.com/documentation/combine/published">@Published</a> property wrapper here works with the ObservableObject to notify SwiftUI whenever the value changes in order to trigger an update.</p>
+
+<p>We also see the <a href="https://developer.apple.com/documentation/swiftui/observedobject">@ObservedObject</a> property wrapper. This causes this view to subscribe to the ObservableObject that’s assigned to it, and invalidates the view any time the object updates.</p>
+
+<p>This is great and allows us to inject an object from outside of the view who can manage the fetching and supplying to the view, whenever the listItems var updates, the view will automatically update!</p>
+
+<h3 id="de-coupling-dependencies">De-coupling dependencies</h3>
+
+<p>Now there is one problem here, can you see it? This view has a dependency between the view itself and the presenter class. Now if you are following the SOLID principles for example, and like to separate dependencies between your classes and layers we will need to remove the dependency between the view and presenter.</p>
+
+<p>To do this lets change the ListPresenter class to be a protocol instead:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">final</span> <span class="kd">class</span> <span class="kt">ListPresenterImp</span><span class="p">:</span> <span class="kt">ListPresenter</span> <span class="p">{</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">ListPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">ListPresenter</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">ListPresenter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+ 
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+            <span class="kt">ListItemView</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This looks like it should be a straight forward change… Wrong! You will now start seeing errors galore. The primary cause coming from the decleration of our new protocol:</p>
+
+<blockquote>
+  <p>Property ‘listItems’ declared inside a protocol cannot have a wrapper</p>
+</blockquote>
+
+<p>The problem here being exactly as the error states. We cannot use property wrappers inside protocols! That is going to cause a bit of a problem as we now can’t make use of the nice integration with SwiftUI via @Published properties, or so it seems…</p>
+
+<p>Let’s take a step back for a moment, what exactly does the @Published property wrapper actually do? The @Published property wrapper essentially provides a publisher that the SwiftUI system can subscribe to in order to listen to updates to the value. This is in fact an implementation detail. One of the key points of protocol oriented programming is to abstract the implementation of functions are variables away from the dependency so that it is unaware of the inner workings. By trying to apply a property wrapper to the protocol we are trying to enforce how that variable should implemented under the hood. When infact should the implementing class of our protocol wish to, they could create their own custom implementation of the wrapper.</p>
+
+<h3 id="fixing-the-errors">Fixing the errors</h3>
+
+<p>Ok so let’s start by removing the @Published property wrapper from our protocol:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">final</span> <span class="kd">class</span> <span class="kt">ListPresenterImp</span><span class="p">:</span> <span class="kt">ListPresenter</span> <span class="p">{</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">ListPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">ListPresenter</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">ListPresenter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+ 
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+            <span class="kt">ListItemView</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Great! However there are now a bunch of different errors occuring… The key one that we need to pay attention to is this one:</p>
+
+<blockquote>
+  <p>Protocol ‘ListPresenter’ can only be used as a generic constraint because it has Self or associated type requirements</p>
+</blockquote>
+
+<p>Right, so we have solved the riddle of @Published but this has now surfaced another problem. In order for our ListPresenter protocol to be compatible with the ObervedObject property wrapper in the view, it must extend ObservableObject. Now the problem here is that the ObservableObject uses an associatedtype. Which means if we wish to use it or hold a reference to it we must do type erasure (for more info read my <a href="/type-erasure/what-is-type-erasure">previous post on type erasure</a>) or use a generic constraint.</p>
+
+<p>The simplest solution is for us to use a generic constraint on the view. View the code below:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">final</span> <span class="kd">class</span> <span class="kt">ListPresenterImp</span><span class="p">:</span> <span class="kt">ListPresenter</span> <span class="p">{</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">ListPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">ListPresenter</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">T</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+ 
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+            <span class="kt">ListItemView</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So what has changed here. You will now notice that we have added a generic type T to our view. We have also added a generic constraint when implementing the View protocol which signals that the init and body implementations here are only when type T is a ListPresenter. Now in this instance that works fine as we only intend to use this view with our ListPresenter class. This removes the errors and the code now compiles. Let’s update the code and run a little test to make sure we are still getting all the reactive goodness of SwiftUI.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">final</span> <span class="kd">class</span> <span class="kt">ListPresenterImp</span><span class="p">:</span> <span class="kt">ListPresenter</span> <span class="p">{</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kt">Timer</span><span class="o">.</span><span class="nf">scheduledTimer</span><span class="p">(</span><span class="nv">withTimeInterval</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span> <span class="nv">repeats</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="n">timer</span><span class="p">)</span> <span class="k">in</span>
+            <span class="k">let</span> <span class="nv">items</span> <span class="o">=</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                        <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test2"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub1"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">)]</span>
+            
+            <span class="k">self</span><span class="o">.</span><span class="n">listItems</span> <span class="o">=</span> <span class="n">items</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">protocol</span> <span class="kt">ListPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">listItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">ListPresenter</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">T</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+ 
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+            <span class="kt">ListItemView</span><span class="p">(</span><span class="nv">viewModel</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We have updated our list presenter implementation class to update our list items after 5 seconds. Nice and easy. If we initialise our view with a presenter with 5 items as below, then after 5 seconds our list should reduce to the 2 items as set in the timer.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">items</span> <span class="o">=</span> <span class="p">[</span><span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test2"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub1"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test3"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub2"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test4"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub3"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">),</span>
+                    <span class="kt">ListItemViewModel</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"test5"</span><span class="p">,</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="s">"test sub4"</span><span class="p">,</span> <span class="nv">image</span><span class="p">:</span> <span class="s">"first"</span><span class="p">)]</span>
+        
+<span class="k">let</span> <span class="nv">presenter</span> <span class="o">=</span> <span class="kt">ListPresenterImp</span><span class="p">()</span>
+<span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span> <span class="o">=</span> <span class="n">items</span>
+<span class="k">let</span> <span class="nv">contentView</span> <span class="o">=</span> <span class="kt">ContentView</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="n">presenter</span><span class="p">)</span></code></pre></figure>
+
+<p>Now let’s run this as part of an app and see what happens:</p>
+
+<p><img src="/assets/images/Demo.mov" alt="Presenter Demo" title="Presenter demo" /></p>
+
+<p>So as you can see, after 5 seconds the list of items is reduced after 5 seconds to 2 items, proving that our implementation works and we are still able to hook into the nice secret sauce that combine and swiftUI expose to us to allow us to update our views. I’ve seen some rather crazy implementations and workarounds on Stack Overflow. Hopefully this implementation is a little nicer!</p>
+
+<p>Download the <a href="https://github.com/pyartez/swiftui-presenter">sample project</a> to run it for yourself (Xcode 12.4)</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Using protocols, ObservableObject and @Published property wrappers in SwiftUI&p[summary]=Background
+
+As I’m sure any iOS developer now knows, the future of iOS app development is SwiftUI. Apple’s new UI development language is...&p[url]=https://pyartez.github.io/swiftui/using-protocols-observableobject-published-property-wrappers-swiftui.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/swiftui/using-protocols-observableobject-published-property-wrappers-swiftui.html&text=Background
+
+As I’m sure any iOS developer now knows, the future of iOS app development is SwiftUI. Apple’s new UI development language is...&hashtags=swift,combine,swiftui,architecture," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                
+                <li><a href="https://pyartez.github.io/tag/combine">combine</a></li>
+                
+                <li><a href="https://pyartez.github.io/tag/swiftui">swiftui</a></li>
+                
+                <li><a href="https://pyartez.github.io/tag/architecture">architecture</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
+<aside class="comments" role="complementary">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = 'https://pyartez.github.io/swiftui/using-protocols-observableobject-published-property-wrappers-swiftui.html';
+            this.page.identifier = '2/9/2021';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+
+            s.src = '//your_disqus_site.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+</aside>
+
+            </main>
+        </div>
+
+        <script src="https://pyartez.github.io/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://pyartez.github.io/assets/js/backtotop.js"></script>
+<script src="https://pyartez.github.io/assets/js/lunr.min.js"></script>
+<script src="https://pyartez.github.io/assets/js/lunr-feed.js"></script>
+<script src="https://pyartez.github.io/assets/js/jquery.fitvids.js"></script>
+<script src="https://pyartez.github.io/assets/js/svg4everybody.min.js"></script>
+<script src="https://pyartez.github.io/assets/js/scripts.js"></script>
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-163798308-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>
