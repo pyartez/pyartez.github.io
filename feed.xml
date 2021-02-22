@@ -5,9 +5,38 @@
     <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 12 Feb 2021 06:36:52 +0000</pubDate>
-    <lastBuildDate>Fri, 12 Feb 2021 06:36:52 +0000</lastBuildDate>
+    <pubDate>Mon, 22 Feb 2021 16:08:10 +0000</pubDate>
+    <lastBuildDate>Mon, 22 Feb 2021 16:08:10 +0000</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Weekly Mobile Digest - 22 Feb 2021</title>
+        <description>&lt;h2 id=&quot;apple-in-talks-to-buy-self-driving-car-sensors&quot;&gt;&lt;a href=&quot;https://www.businesstimes.com.sg/technology/apple-in-discussions-with-suppliers-for-self-driving-car-sensors&quot;&gt;Apple in talks to buy self driving car sensors&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The plot thickens! We have seen countless rumours of Apple engaging with various car manufacturers regarding a partnership to build self driving cars. However most of these appear to have been denied or the discussions have been cancelled. However it still appears based on this rumour that the self driving car tech is continuing with Apple exploring supply chains for self driving car sensors.&lt;/p&gt;
+
+&lt;h2 id=&quot;apple-leaks-radically-different-designs-for-airpods-max-in-new-patent&quot;&gt;&lt;a href=&quot;https://www.forbes.com/sites/davidphelan/2021/02/20/apple-leaks-radically-different-airpods-max-design-in-new-patent/&quot;&gt;Apple leaks radically different designs for AirPods Max in new patent&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;This is interesting, I haven’t had an opportunity myself to wear a pair of the AirPods Max myself however the reviews have been fairly mixed. I’ve heard a lot of good feedback on them however there are many reviews that they feel heavy and not at the right quality for the price point which is surprising for Apple as generally build quality if something they shine on. The fact they are already looking to modify the design heavily looks like they are aware of the issues and looking to make a change.&lt;/p&gt;
+
+&lt;h2 id=&quot;apple-increases-scrutiny-of-irrationally-high-app-prices&quot;&gt;&lt;a href=&quot;https://appleinsider.com/articles/21/02/19/apple-increases-scrutiny-of-irrationally-high-app-prices&quot;&gt;Apple increases scrutiny of ‘irrationally high’ app prices&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;I’m not sure how I feel about this one. Of course I expect Apple to try and protect users from getting stung by scammy apps however I would expect an end user to at least evaluate the prices for themselves before hitting the buy button. I feel they are treading a fine line here, especially as it is the app developers who are setting the price that they see fit for their products.&lt;/p&gt;
+
+&lt;h2 id=&quot;apple-tv-now-available-on-android-tv&quot;&gt;&lt;a href=&quot;https://www.techradar.com/how-to/how-to-get-apple-tv-plus-on-your-google-chromecast-with-google-tv&quot;&gt;Apple TV+ now available on Android TV&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Interesting to see Apple developer software for other platforms. As they have begun to pivot into services to supplement their hardware income they are almost forced to integrate some of these services across other platforms. Typically Apple develops services for their own products whilst largely ignoring other platforms. Personally I feel it can only be beneficial for both users and Apple if users are able to get access to Apple services on other platforms.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 22 Feb 2021 06:00:00 +0000</pubDate>
+        <link>https://pyartez.github.io/news/weekly-mobile-digest-22-Feb.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest-22-Feb.html</guid>
+        
+        <category>Apple</category>
+        
+        <category>Android</category>
+        
+        <category>Google</category>
+        
+        
+        <category>news</category>
+        
+      </item>
     
       <item>
         <title>Weekly Mobile Digest - 12 Feb 2021</title>
@@ -35,8 +64,8 @@
 &lt;p&gt;We’ve come a long way since Apple Maps disastrous launch and it’s great to see it getting these features. However I still feel it has a long way to go to winning back my confidence. I still find myself reluctantly using Google Maps for navigation.&lt;/p&gt;
 </description>
         <pubDate>Fri, 12 Feb 2021 06:00:00 +0000</pubDate>
-        <link>https://pyartez.github.io/news/weekly-mobile-digest.html</link>
-        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest.html</guid>
+        <link>https://pyartez.github.io/news/weekly-mobile-digest-12-Feb.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest-12-Feb.html</guid>
         
         <category>Apple</category>
         
@@ -45,7 +74,7 @@
         <category>Google</category>
         
         
-        <category>News</category>
+        <category>news</category>
         
       </item>
     
@@ -358,7 +387,7 @@
         <category>architecture</category>
         
         
-        <category>SwiftUI</category>
+        <category>swiftUI</category>
         
       </item>
     
