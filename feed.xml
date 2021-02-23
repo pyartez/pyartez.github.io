@@ -5,9 +5,141 @@
     <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 22 Feb 2021 16:08:10 +0000</pubDate>
-    <lastBuildDate>Mon, 22 Feb 2021 16:08:10 +0000</lastBuildDate>
+    <pubDate>Tue, 23 Feb 2021 21:27:29 +0000</pubDate>
+    <lastBuildDate>Tue, 23 Feb 2021 21:27:29 +0000</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Programmatic routing in SwiftUI</title>
+        <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;As I’m sure any iOS developer now knows, the future of iOS app development is &lt;a href=&quot;https://developer.apple.com/xcode/swiftui/&quot;&gt;SwiftUI&lt;/a&gt;. Apple’s new UI development language is now on it’s 2nd major release. While my own personal feeling is that the framework is not quite ready for prime time (much like when Swift first arrived. It’s missing some fairly key features) and we are perhaps a version or 2 away from it realistically being an option for being used to build a complete app. There is no denying that it is the future and when it works well, it makes building UI a lot easier.&lt;/p&gt;
+
+&lt;p&gt;If you are using an advanced iOS architecture VIPER, MVVM etc it is probably the case that you have abstracted your routing or creating of your view controllers away into a separate part of your architecture. When you need to navigate or deal with a deeplink for example, you will hopefully have something like a dependency injection framework or factory to create your view controller. This is than pushed onto the navigation stack or presented by the view controller depending on what you are trying to do.&lt;/p&gt;
+
+&lt;p&gt;This is something that is fairly straight forward in UIKit and makes a lot of sense. In this article we are going to discuss the workings of SwiftUI and how that approach is no longer possible.&lt;/p&gt;
+
+&lt;h2 id=&quot;example&quot;&gt;Example&lt;/h2&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContentView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;NavigationView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;NavigationLink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;destination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kt&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Navigate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+        
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Detail View&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This is a fairly simple SwiftUI example but let’s talk through it.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First we have a ContentView, this contains a &lt;a href=&quot;https://developer.apple.com/documentation/swiftui/navigationview&quot;&gt;NavigationView&lt;/a&gt; which is kind of similar to a UINavigationController in UIKit, however it is a lot more limited. We have a navigation link that allows the user to tap the text view and will ‘push’ the detail view on to the stack.&lt;/li&gt;
+  &lt;li&gt;Second we have our detail view that simply displays some text.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If we run the code and tap on the links we should get something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/navigation-clip.gif&quot; alt=&quot;SwiftUI Navigation&quot; title=&quot;SwiftUI Navigation&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Seems to work as intended right? What problems are there with this approach?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There is a tight coupling between the ContentView and the DetailView, what if we want to change the navigation destination?&lt;/li&gt;
+  &lt;li&gt;What if we want to use the ContentView in a different app that doesn’t contain a DetailView but something else?&lt;/li&gt;
+  &lt;li&gt;What if the DetailView has dependencies we need to inject when it’s created? How does the ContentView know what to do in order to create the DetailView?&lt;/li&gt;
+  &lt;li&gt;What if we wish to perform an event such as fire an analytics event before moving to the next view?&lt;/li&gt;
+  &lt;li&gt;What if we wish to present the view in a modal rather than pushing it to the navigation stack?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Many of the more advanced architectures and frameworks have already solved these problems using a router / co-ordinator pattern. These are responsible for handling any navigation logic and often talk to a dependency injection module in order to create the destination view and pushing it onto the navigation stack or presenting it.&lt;/p&gt;
+
+&lt;h2 id=&quot;decoupling-the-views&quot;&gt;Decoupling the Views&lt;/h2&gt;
+
+&lt;p&gt;The first thing we can try to do is abstract away the creation of the detail view. This will at least give us the opportunity to change the destination without the knowledge of the ContentView.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContentPresenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ObservableObject&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getDetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyView&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContentView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;@ObservedObject&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;presenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContentPresenter&lt;/span&gt;
+    
+    &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;presenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContentPresenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;presenter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;presenter&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;NavigationView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;NavigationLink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;destination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;presenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getDetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kt&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Navigate&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+        
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;View&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;Text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Detail View&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;So let’s have a look at what we are doing here:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First of all we have tried to separate out the creation of the destination view into another object. Ideally we could put this into a protocol but for the purpose of simplicity we have just used an object.&lt;/li&gt;
+  &lt;li&gt;We are injecting the presenter into the ContentView now, you will also notice in the NavigationLink we are now calling a method on the presenter to get the destination.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;What does this give us that the previous example doesn’t?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There is no longer tight coupling between the ContentView and the DetailView. The destination is no longer hardcoded. If we make the presenter using a protocol for example. We can inject different presenters and have different destinations.&lt;/li&gt;
+  &lt;li&gt;If the detailview has it’s own dependencies that need injecting then the presenter can take care of that as well without having to code them in here.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;However it’s not all tea and biscuits! There are still a number of issues highlighted earlier that this solution doesn’t solve:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We are still not able to trigger any analytics events or any other app behaviours off the back of the navigation trigger. Block the user from navigating until they have logged in for example.&lt;/li&gt;
+  &lt;li&gt;We can’t change or configure how the navigation happens, for example presenting a login vs actually performing navigation.&lt;/li&gt;
+  &lt;li&gt;We are also exposing navigation to the view, a presenter typically would not need to expose navigation functionality to the view. It would handle a tap event and then hand off that navigation logic to the router. Here we have to expose that functionality to the view itself.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;My personal feeling is that navigation in SwiftUI could do with some more work. Views themselves should not know or care about where they are navigating to and how. They should be a visual representation of state. Of course, the navigation could be a presentation of state too, however a quick peak at the NavigationView docs shows no access to any form of state at all. The navigation view polices its own state, nothing outside of the object has a way to modify that state.&lt;/p&gt;
+
+&lt;p&gt;Further to that, many of the methods we have come to expect from UINavigationController are simply not available here. Whether it’s lack of maturity or a slightly confused approach I don’t know. My recommendation for now would be to make use of UINavigationControllers and the &lt;a href=&quot;https://developer.apple.com/documentation/swiftui/uihostingcontroller&quot;&gt;UIHostingController&lt;/a&gt; to perform navigation for the time being, at least until a better way to manage and manipulate the navigation state is added to SwiftUI.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 23 Feb 2021 08:00:00 +0000</pubDate>
+        <link>https://pyartez.github.io/swiftui/programmatic-routing-swiftui.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/swiftui/programmatic-routing-swiftui.html</guid>
+        
+        <category>swift</category>
+        
+        <category>combine</category>
+        
+        <category>swiftui</category>
+        
+        
+        <category>SwiftUI</category>
+        
+      </item>
     
       <item>
         <title>Weekly Mobile Digest - 22 Feb 2021</title>
