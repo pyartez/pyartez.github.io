@@ -357,11 +357,59 @@
   <li>We are also exposing navigation to the view, a presenter typically would not need to expose navigation functionality to the view. It would handle a tap event and then hand off that navigation logic to the router. Here we have to expose that functionality to the view itself.</li>
 </ol>
 
-<h2 id="summary">Summary</h2>
+<h2 id="keep-with-uikit-for-navigation-for-now">Keep with UIKit for navigation, for now</h2>
 
 <p>My personal feeling is that navigation in SwiftUI could do with some more work. Views themselves should not know or care about where they are navigating to and how. They should be a visual representation of state. Of course, the navigation could be a presentation of state too, however a quick peak at the NavigationView docs shows no access to any form of state at all. The navigation view polices its own state, nothing outside of the object has a way to modify that state.</p>
 
 <p>Further to that, many of the methods we have come to expect from UINavigationController are simply not available here. Whether it’s lack of maturity or a slightly confused approach I don’t know. My recommendation for now would be to make use of UINavigationControllers and the <a href="https://developer.apple.com/documentation/swiftui/uihostingcontroller">UIHostingController</a> to perform navigation for the time being, at least until a better way to manage and manipulate the navigation state is added to SwiftUI.</p>
+
+<p>Let’s have a quick look at how that changes things. First we need to create a hosting controller and inject our SwiftUI view:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">presenter</span> <span class="o">=</span> <span class="kt">ContentPresenter</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">vc</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span><span class="nv">rootView</span><span class="p">:</span> <span class="kt">ContentView</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="n">presenter</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">navigationController</span> <span class="o">=</span> <span class="kt">UINavigationController</span><span class="p">(</span><span class="nv">rootViewController</span><span class="p">:</span> <span class="n">vc</span><span class="p">)</span>
+<span class="n">presenter</span><span class="o">.</span><span class="n">navigationController</span> <span class="o">=</span> <span class="n">navigationController</span></code></pre></figure>
+
+<p>So here we are creating our presenter and our view as before but adding them into a UIHostingViewController and a navigation controller. The UIHostingViewController allows us to put SwiftUI views into what is essentially a UIViewController and use it within a UIKit app.</p>
+
+<p>We have also passed a reference to the navigation controller to the presenter. Let’s have a look at our updated SwiftUI code now that we have refactored it into a UIHostingController.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">final</span> <span class="kd">class</span> <span class="kt">ContentPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="k">weak</span> <span class="k">var</span> <span class="nv">navigationController</span><span class="p">:</span> <span class="kt">UINavigationController</span><span class="p">?</span>
+    
+    <span class="kd">func</span> <span class="nf">buttonTapped</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Do whatever we like</span>
+        <span class="c1">// ...</span>
+        <span class="c1">// Navigate</span>
+        <span class="k">let</span> <span class="nv">vc</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span><span class="nv">rootView</span><span class="p">:</span> <span class="kt">DetailView</span><span class="p">())</span>
+        <span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">vc</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">ContentPresenter</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">ContentPresenter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="p">{</span> <span class="n">presenter</span><span class="o">.</span><span class="nf">buttonTapped</span><span class="p">()</span> <span class="p">})</span> <span class="p">{</span>
+            <span class="kt">Text</span><span class="p">(</span><span class="s">"Navigate"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>What’s changed here:</p>
+
+<ol>
+  <li>First of all our presenter has replaced our getDetailView with a more generic button tapped function. This function can do any number of things we need it to do, before finally navigating. Here you can see we are using our reference to the navigation controller to push the new view controller.</li>
+  <li>In our SwiftUI view you will see we no longer have a NavigationView or a NavigationLink. Our view has become far more generic and doesn’t contain and navigation specitic logic. You will also see that we have a button which has a tap action assigned by the presenter. This allows us to make the button do anything, not just trigger navigation.</li>
+</ol>
+
+<p>Hopefully you found this helpful when exploring navigation options in SwiftUI. You can find the <a href="https://github.com/pyartez/swiftUI-router">SwiftUI Sample</a> and the <a href="https://github.com/pyartez/swiftui-uihostingviewcontroller">UIHostingController</a> samples on github.</p>
 
 
                 
