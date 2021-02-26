@@ -250,7 +250,7 @@
             <div class="post-content">
                 <h2 id="background">Background</h2>
 
-<p>As I’m sure any iOS developer now knows, the future of iOS app development is <a href="https://developer.apple.com/xcode/swiftui/">SwiftUI</a>. Apple’s new UI development language is now on it’s 2nd major release. While my own personal feeling is that the framework is not quite ready for prime time (much like when Swift first arrived. It’s missing some fairly key features) and we are perhaps a version or 2 away from it realistically being an option for being used to build a complete app. There is no denying that it is the future and when it works well, it makes building UI a lot easier.</p>
+<p>As I’m sure any iOS developer now knows, the future of iOS app development is <a href="https://developer.apple.com/xcode/swiftui/">SwiftUI</a>. Apple’s new UI development language is now on its 2nd major release. While my own personal feeling is that the framework is not quite ready for prime time (much like when Swift first arrived. It’s missing some fairly key features) and we are perhaps a version or 2 away from it realistically being an option for being used to build a complete app. There is no denying that it is the future and when it works well, it makes building UI a lot easier.</p>
 
 <p>If you are using an advanced iOS architecture VIPER, MVVM etc it is probably the case that you have abstracted your routing or creating of your view controllers away into a separate part of your architecture. When you need to navigate or deal with a deeplink for example, you will hopefully have something like a dependency injection framework or factory to create your view controller. This is than pushed onto the navigation stack or presented by the view controller depending on what you are trying to do.</p>
 
@@ -346,7 +346,7 @@
 
 <ol>
   <li>There is no longer tight coupling between the ContentView and the DetailView. The destination is no longer hardcoded. If we make the presenter using a protocol for example. We can inject different presenters and have different destinations.</li>
-  <li>If the detailview has it’s own dependencies that need injecting then the presenter can take care of that as well without having to code them in here.</li>
+  <li>If the detailview has its own dependencies that need injecting then the presenter can take care of that as well without having to code them in here.</li>
 </ol>
 
 <p>However it’s not all tea and biscuits! There are still a number of issues highlighted earlier that this solution doesn’t solve:</p>
@@ -406,7 +406,7 @@
 
 <ol>
   <li>First of all our presenter has replaced our getDetailView with a more generic button tapped function. This function can do any number of things we need it to do, before finally navigating. Here you can see we are using our reference to the navigation controller to push the new view controller.</li>
-  <li>In our SwiftUI view you will see we no longer have a NavigationView or a NavigationLink. Our view has become far more generic and doesn’t contain and navigation specitic logic. You will also see that we have a button which has a tap action assigned by the presenter. This allows us to make the button do anything, not just trigger navigation.</li>
+  <li>In our SwiftUI view you will see we no longer have a NavigationView or a NavigationLink. Our view has become far more generic and doesn’t contain and navigation specific logic. You will also see that we have a button which has a tap action assigned by the presenter. This allows us to make the button do anything, not just trigger navigation.</li>
 </ol>
 
 <p>Hopefully you found this helpful when exploring navigation options in SwiftUI. You can find the <a href="https://github.com/pyartez/swiftUI-router">SwiftUI Sample</a> and the <a href="https://github.com/pyartez/swiftui-uihostingviewcontroller">UIHostingController</a> samples on github.</p>
