@@ -5,9 +5,38 @@
     <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 26 Feb 2021 09:21:29 +0000</pubDate>
-    <lastBuildDate>Fri, 26 Feb 2021 09:21:29 +0000</lastBuildDate>
+    <pubDate>Sun, 14 Mar 2021 06:52:59 +0000</pubDate>
+    <lastBuildDate>Sun, 14 Mar 2021 06:52:59 +0000</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Weekly Mobile Digest - 13 Mar 2021</title>
+        <description>&lt;h2 id=&quot;android-web-traffic-beats-out-ios-in-every-region-worldwide&quot;&gt;&lt;a href=&quot;https://www.emarketer.com/content/android-web-traffic-beats-ios-every-region-worldwide&quot;&gt;Android web traffic beats out iOS in every region worldwide&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;While this is not exactly surprising given the Android’s global market share is bigger than iOS. What these stats often over look is despite the fact Android user’s heavily out number iOS, it is often the iOS users who are easier to monetize and generate the most revenue per user.&lt;/p&gt;
+
+&lt;h2 id=&quot;apple-event-on-23-march-says-well-known-leaker&quot;&gt;&lt;a href=&quot;https://www.macworld.co.uk/news/apple-event-23-march-3802490/&quot;&gt;Apple event on 23 March, says well-known leaker&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;News about that there will be an Apple event on the 23rd March. New devices to include AirTags, iPad Pro, AirPods and Apple TV. I’ve had my 1080p Apple TV 4 for a whle now and have been patiently waiting for them to release a new version so I could switch to the 4k edition. Interested to see what the AirTags will be like as well as updated AirPods.&lt;/p&gt;
+
+&lt;h2 id=&quot;apple-issues-clarification-over-default-music-service-feature-for-ios-145-beta&quot;&gt;&lt;a href=&quot;https://gadgets.ndtv.com/apps/news/apple-ios-14-5-beta-music-app-play-spotify-siri-default-clarification-issue-2385091&quot;&gt;Apple Issues Clarification Over Default Music Service Feature for iOS 14.5 Beta&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;It was previously reported that Apple would allow users to select their default music service, similar to what users can now do for email and browser preferences. Apparently according to Apple this is no the case. Such a shame as Spotify user I was really looking forward to this, really frustrating that all music features on my phone default to Apple Music when I don’t have nor want an account with them.&lt;/p&gt;
+
+&lt;h2 id=&quot;apple-to-invest-12-billion-amid-eu-push-for-semiconductor-dominance&quot;&gt;&lt;a href=&quot;https://www.marketwatch.com/story/apple-to-invest-1-2-billion-amid-eu-push-for-semiconductor-dominance-11615397707&quot;&gt;Apple to invest $1.2 billion amid EU push for semiconductor dominance&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Seems like the big push to diversify the supply chain of tech is continuing. With China pretty much dominating the supply chain of electronic goods there appears to be a big push from the US and EU to try and remove that dependency and create further options for manufacturing. Possibly due to the global pandemic!&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Mar 2021 06:00:00 +0000</pubDate>
+        <link>https://pyartez.github.io/news/weekly-mobile-digest-13-Mar.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest-13-Mar.html</guid>
+        
+        <category>Apple</category>
+        
+        <category>Android</category>
+        
+        <category>Google</category>
+        
+        
+        <category>news</category>
+        
+      </item>
     
       <item>
         <title>Programmatic routing in SwiftUI</title>
