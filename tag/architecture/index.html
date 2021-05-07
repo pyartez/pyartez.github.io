@@ -173,6 +173,8 @@
             
                 
             
+                
+            
         </div>
         
      -->
@@ -227,6 +229,223 @@
 
                 <h1>Posts Tagged - architecture</h1>
 
+
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2021-05-07T06:00:00+01:00" itemprop="datePublished">7 May, 2021</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/architecture/">architecture</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://pyartez.github.io/architecture/solid-principles-in-swift-open-closed-principle.html">SOLID Principles in Swift - Open / Closed Principle</a></h2>
+            </header>
+
+            <div class="post-content">
+                <h2 id="background">Background</h2>
+
+<p>In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:</p>
+
+<ul>
+  <li>Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage</li>
+  <li>Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies</li>
+  <li>Rigidity: A change requires a lot of effort because it affects several parts of the project</li>
+</ul>
+
+<p>So what are the SOLID principles?</p>
+
+<ul>
+  <li>Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change</li>
+  <li>Open-Closed Principle - Software should be open for extension but closed for modification</li>
+  <li>Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program</li>
+  <li>Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface</li>
+  <li>Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions</li>
+</ul>
+
+<p>In this article we will focus on the Open-Closed Principle.</p>
+
+<h2 id="what-does-it-mean">What does it mean?</h2>
+
+<p>So the open-closed principle states:</p>
+
+<blockquote>
+  <p>Software should be open for extension but closed for modification</p>
+</blockquote>
+
+<p>What exactly does this mean? I think out of all the principles this is the hardest to understand. Mostly due to the fact the explanation leaves far too much open to interpretation. A simple Google search will offer up several examples of how this principle works. In this article I will present my take on the principle and how to build software that will comply with it.</p>
+
+<p>Let’s focus on a type that by design, violates the open closed principle.</p>
+
+<h2 id="enums">Enums</h2>
+
+<p><a href="https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html">Enums</a> are a very powerful tool in Swift. They are first class types and such can have associated values and conform to protocols for example. However when used at the boundary of a particular system or module they can present a particular problem.</p>
+
+<p>Let’s imagine an analytics system where we can log events. This is a design pattern I’ve seen in many places:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">enum</span> <span class="kt">AnalyticsEvent</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">newsList</span>
+    <span class="k">case</span> <span class="nf">newsDetail</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">class</span> <span class="kt">AnalyticsController</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">sendEvent</span><span class="p">(</span><span class="n">_</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">AnalyticsEvent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">title</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">title</span>
+        <span class="k">let</span> <span class="nv">params</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">params</span>
+        
+        <span class="c1">// Send data to analytics network</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 3</span>
+<span class="kd">extension</span> <span class="kt">AnalyticsEvent</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="k">self</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">newsList</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"News List"</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">newsDetail</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"News detail"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">params</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="k">self</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">newsList</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[:]</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">newsDetail</span><span class="p">(</span><span class="k">let</span> <span class="nv">id</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s">"id"</span><span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">id</span><span class="se">)</span><span class="s">"</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Let’s look at what we have here.</p>
+
+<ol>
+  <li>The first thing that is defined is an enum that houses all the different analytics events that are available. Some with associated values.</li>
+  <li>Next we have our analytics controller, this takes an event as a parameter, takes information from the event and would then send that on to our analytics system.</li>
+  <li>Here we have extended the AnalyticsEvent enum to add 2 variables, one for title and one for params that contain a switch for each of our events.</li>
+</ol>
+
+<p>On the surface or at first look this might appear an ok solution. We have hidden our implementation of the analytics network inside our AnalyticsController and setup a defined set of events that we can support.</p>
+
+<h3 id="the-problem">The Problem</h3>
+
+<p>Now lets look at the problems that this approach causes.</p>
+
+<ul>
+  <li>What happens if we need to add new events to our analytics system?</li>
+  <li>What if our analytics system was part of a separate package or module?</li>
+  <li>What happens when we have a lot of events?</li>
+</ul>
+
+<p>So first of all, every time we need to add / update or remove any of the events in our analytics system we need to modify the enum. We can’t just implement new events and have them be compatible with the system. Also if the number of events becomes very large then the code will grow large in size. Making it hard to read, maintain and a bit of a mess. Also the enum now has multiple responsibilities, as it covers many events breaking the <a href="/architecture/solid-principles-in-swift-single-responsibility-principle.html">single responsibility principle</a>.</p>
+
+<p>The second issue which is probably the more important one, is let’s say we are breaking our app down in to separate packages. This Analytics Controller and Event would be in a separate package, what if we wanted to re-use it across different projects? Both of these scenarios become very difficult because we are using an enum that would need to be updated to accommodate events for different apps. The package would need constantly updating as new events were added.</p>
+
+<h3 id="the-solution">The Solution</h3>
+
+<p>So we have identified some issues with the above implementation, how can we change it to make solve these issues we have identified? Look at the new example:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">struct</span> <span class="kt">NewsListEvent</span><span class="p">:</span> <span class="kt">AnalyticsEvent</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"News List"</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">params</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[:]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">NewsDetailEvent</span><span class="p">:</span> <span class="kt">AnalyticsEvent</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span>
+    
+    <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"News detail"</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">params</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">"id"</span><span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">id</span><span class="se">)</span><span class="s">"</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">protocol</span> <span class="kt">AnalyticsEvent</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">params</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="kt">AnalyticsController</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">sendEvent</span><span class="p">(</span><span class="n">_</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">AnalyticsEvent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">title</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">title</span>
+        <span class="k">let</span> <span class="nv">params</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">params</span>
+        
+        <span class="c1">// Send data to analytics network</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Let’s look at how we have changed the example:</p>
+
+<ol>
+  <li>
+    <p>First of all we have now removed the enum. Using an enum as a huge list of possible options is considered a code smell. Especially when it involves something that may change often. If you have a finite number of states that is unlikely to change, that is more suited to an enum than a list of analytics events. We have refactored those enum cases into 2 separate classes now.</p>
+  </li>
+  <li>
+    <p>We have switched the enum for a protocol that exposes the necessary items required by our analytics controller (we could have potentially done this in the previous example however we would still have the enum).</p>
+  </li>
+</ol>
+
+<p>So what advantages does this have over the previous implementation?</p>
+
+<ul>
+  <li>With the events now being in separate classes we are now following the <a href="/architecture/solid-principles-in-swift-single-responsibility-principle.html">single responsibility principle</a>, each event has its own class that can be updated whenever they need to be.</li>
+  <li>Now that we are using a protocol and not an enum, we are now able to add new events to our app without ever having to touch the analytics system. Simply create a new class and make it conform to AnalyticsEvent, and we can use it with the analytics controller.</li>
+  <li>Further to that we could have our analytics system in a separate reusable package, then our client apps could define their own set of events to use with the system.</li>
+</ul>
+
+<p>Our analytics code is now open for extension, but does not need to be modified to support new events. Unlike our enum example.</p>
+
+
+                
+                    <p><a href="/architecture/solid-principles-in-swift-open-closed-principle.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=SOLID Principles in Swift - Open / Closed Principle&p[summary]=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&p[url]=https://pyartez.github.io/architecture/solid-principles-in-swift-open-closed-principle.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/architecture/solid-principles-in-swift-open-closed-principle.html&text=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&hashtags=swift,architecture," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/architecture">architecture</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
 
     
         
