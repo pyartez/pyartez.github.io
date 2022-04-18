@@ -5,8 +5,8 @@
     <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Apr 2022 08:13:19 +0100</pubDate>
-    <lastBuildDate>Mon, 18 Apr 2022 08:13:19 +0100</lastBuildDate>
+    <pubDate>Mon, 18 Apr 2022 08:56:55 +0100</pubDate>
+    <lastBuildDate>Mon, 18 Apr 2022 08:56:55 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -195,9 +195,7 @@
 &lt;p&gt;Contra variance means that we can use change the type of method parameter to a super class of the type but not a subclass. This rules works basically in combination with the rule below:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;ol&gt;
-    &lt;li&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/li&gt;
-  &lt;/ol&gt;
+  &lt;p&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;What it means is, we can use a super class of a parameter, thus ‘weakening’ the restrictions of the method, but not a subclass of that type which would tighten the restrictions of the method.&lt;/p&gt;
@@ -207,9 +205,7 @@
 &lt;p&gt;Covariance means that the type being used can be a sub type of the class provided by the super class function return type. Similarly, this works in the same way as the 5th rule:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;ol&gt;
-    &lt;li&gt;Apply at the least the same rules to all output parameters as applied by the parent class.&lt;/li&gt;
-  &lt;/ol&gt;
+  &lt;p&gt;Apply at the least the same rules to all output parameters as applied by the parent class.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Now both of these rules aren’t possible to be broken as part of Swift. It’s not possible to overload functions providing alternative type specifications, at least while still referring to the super class type. We can override methods and provide different parameter types and return types but this requires the calling class to know the type of the subclass. When referring to the super class, the super class implementation is always called regardless of subclass functions with different params.&lt;/p&gt;

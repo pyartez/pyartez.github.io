@@ -419,9 +419,7 @@
 <p>Contra variance means that we can use change the type of method parameter to a super class of the type but not a subclass. This rules works basically in combination with the rule below:</p>
 
 <blockquote>
-  <ol>
-    <li>Don’t implement stricter validation rules on input parameters than those implemented by the parent class.</li>
-  </ol>
+  <p>Don’t implement stricter validation rules on input parameters than those implemented by the parent class.</p>
 </blockquote>
 
 <p>What it means is, we can use a super class of a parameter, thus ‘weakening’ the restrictions of the method, but not a subclass of that type which would tighten the restrictions of the method.</p>
@@ -431,9 +429,7 @@
 <p>Covariance means that the type being used can be a sub type of the class provided by the super class function return type. Similarly, this works in the same way as the 5th rule:</p>
 
 <blockquote>
-  <ol>
-    <li>Apply at the least the same rules to all output parameters as applied by the parent class.</li>
-  </ol>
+  <p>Apply at the least the same rules to all output parameters as applied by the parent class.</p>
 </blockquote>
 
 <p>Now both of these rules aren’t possible to be broken as part of Swift. It’s not possible to overload functions providing alternative type specifications, at least while still referring to the super class type. We can override methods and provide different parameter types and return types but this requires the calling class to know the type of the subclass. When referring to the super class, the super class implementation is always called regardless of subclass functions with different params.</p>
