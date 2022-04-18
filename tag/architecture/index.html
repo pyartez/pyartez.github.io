@@ -165,16 +165,6 @@
             
                 
             
-                
-            
-                
-            
-                
-            
-                
-            
-                
-            
         </div>
         
      -->
@@ -229,6 +219,263 @@
 
                 <h1>Posts Tagged - architecture</h1>
 
+
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2022-04-18T06:00:00+01:00" itemprop="datePublished">18 Apr, 2022</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/architecture/">architecture</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html">SOLID Principles in Swift - Liskov Substitution Principle</a></h2>
+            </header>
+
+            <div class="post-content">
+                <h2 id="background">Background</h2>
+
+<p>In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:</p>
+
+<ul>
+  <li>Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage</li>
+  <li>Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies</li>
+  <li>Rigidity: A change requires a lot of effort because it affects several parts of the project</li>
+</ul>
+
+<p>So what are the SOLID principles?</p>
+
+<ul>
+  <li>Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change</li>
+  <li>Open-Closed Principle - Software should be open for extension but closed for modification</li>
+  <li>Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program</li>
+  <li>Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface</li>
+  <li>Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions</li>
+</ul>
+
+<p>In this article we will focus on the Liskov Substitution Principle.</p>
+
+<h2 id="what-does-it-mean">What does it mean?</h2>
+
+<p>So the Liskov Substitution Principle states:</p>
+
+<blockquote>
+  <p>Derived classes must be substitutable for their base classes</p>
+</blockquote>
+
+<p>What exactly does this mean? In a basic sense it for example if you have a function that accepts a type of class which is a parent of other classes, any class that subclasses the parent class should be able to be passed in without it breaking the program.</p>
+
+<p>See a summary of the main points of the principle below:</p>
+
+<ol>
+  <li>Contra variance of method parameter types in the sub type.</li>
+  <li>Covariance of method return types in the sub type.</li>
+  <li>New exceptions cannot be thrown by the methods in the sub type, except if they are sub types of exceptions thrown by the methods of the super type.</li>
+  <li>Don’t implement stricter validation rules on input parameters than those implemented by the parent class.</li>
+  <li>Apply at the least the same rules to all output parameters as applied by the parent class.</li>
+</ol>
+
+<p>Let’s take a look at what these different rules mean for subclasses.</p>
+
+<h2 id="the-parent-class">The Parent Class</h2>
+
+<p>First of all, let’s define our parent class or base class that contains some functionality. Let’s use a vehicle class as an example, this vehicle has a throttle which can be set at any value between 0 and 100.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">enum</span> <span class="kt">VehicleError</span><span class="p">:</span> <span class="kt">Error</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">outOfBounds</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">class</span> <span class="kt">Vehicle</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">throttle</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1">// 3</span>
+    <span class="kd">func</span> <span class="nf">setThrottle</span><span class="p">(</span><span class="nv">throttle</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="nf">guard</span> <span class="p">(</span><span class="mi">0</span><span class="o">...</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">throttle</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">VehicleError</span><span class="o">.</span><span class="n">outOfBounds</span>
+        <span class="p">}</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">throttle</span> <span class="o">=</span> <span class="n">throttle</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Let’s step through it:</p>
+
+<ol>
+  <li>First of all we define a custom error to throw if the throttle is not within bounds</li>
+  <li>Here we define our vehicle class that has a throttle variable to store the value being set</li>
+  <li>We have a function to set the throttle value, there is a guard statement to check whether the value being set is in the appropriate range. If it is not, we throw an error, if it is we set the value</li>
+</ol>
+
+<h2 id="validation-rules-on-input-parameters">Validation rules on input parameters</h2>
+
+<p>Now let’s create a subclass that breaks the principle. We will make a lorry class that inherits from the super class but adds its own restrictions to the throttle function, only allowing the throttle to be set between 0 and 60 for example.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">class</span> <span class="kt">Lorry</span><span class="p">:</span> <span class="kt">Vehicle</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="kd">func</span> <span class="nf">setThrottle</span><span class="p">(</span><span class="nv">throttle</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="nf">guard</span> <span class="p">(</span><span class="mi">0</span><span class="o">...</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">throttle</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">VehicleError</span><span class="o">.</span><span class="n">outOfBounds</span>
+        <span class="p">}</span>
+        
+        <span class="k">try</span> <span class="k">super</span><span class="o">.</span><span class="nf">setThrottle</span><span class="p">(</span><span class="nv">throttle</span><span class="p">:</span> <span class="n">throttle</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So what is happening here? We have subclassed the Vehicle class and overriden the setThrottle method. Now what we have done here is we have added a guard statement to check if the throttle is between 0 and 60. We throw an error saying out of bounds if outside of that, if it is within bounds we call the super class method.</p>
+
+<p>Why is this a problem? Well imagine we are building a system / class that interacts with the Vehicle class. Now based on the Vehicle class you would expect to be able to set the throttle to anything between 0 and a 100. However now, if someone chooses to pass a Lorry subclass to your system / class, you will not be able to set the throttle above 60. Depending on how this other class or system is built this may have unintended side effects as you can’t set the values that you are expecting without getting an error.</p>
+
+<p>This example breaks the rule:</p>
+
+<blockquote>
+  <p>Don’t implement stricter validation rules on input parameters than those implemented by the parent class.</p>
+</blockquote>
+
+<h2 id="errors-in-the-liskov-principle">Errors in the liskov principle</h2>
+
+<p>Let’s modify our example to see how we could break the principle by throwing different errors. Let’s modify the Lorry subclass:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">enum</span> <span class="kt">LorryError</span><span class="p">:</span> <span class="kt">Error</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="n">outOfBounds</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="kt">Lorry</span><span class="p">:</span> <span class="kt">Vehicle</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="kd">func</span> <span class="nf">setThrottle</span><span class="p">(</span><span class="nv">throttle</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="nf">guard</span> <span class="p">(</span><span class="mi">0</span><span class="o">...</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">throttle</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">LorryError</span><span class="o">.</span><span class="n">outOfBounds</span>
+        <span class="p">}</span>
+        
+        <span class="k">try</span> <span class="k">super</span><span class="o">.</span><span class="nf">setThrottle</span><span class="p">(</span><span class="nv">throttle</span><span class="p">:</span> <span class="n">throttle</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So what is happening here:</p>
+
+<ul>
+  <li>We have added a new Error type called LorryError</li>
+  <li>When we have our bounds exception we are throwing this new error type instead of the one provided by the super class</li>
+</ul>
+
+<p>Why does that cause a problem? To find out let’s take a look at the error handling code:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="k">let</span> <span class="nv">vehicle</span><span class="p">:</span> <span class="kt">Vehicle</span> <span class="o">=</span> <span class="kt">Vehicle</span><span class="p">()</span>
+
+<span class="k">do</span> <span class="p">{</span>
+	<span class="c1">// 2</span>
+    <span class="k">try</span> <span class="n">vehicle</span><span class="o">.</span><span class="nf">setThrottle</span><span class="p">(</span><span class="nv">throttle</span><span class="p">:</span> <span class="mi">110</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="kt">VehicleError</span><span class="o">.</span><span class="n">outOfBounds</span> <span class="p">{</span>
+	<span class="c1">// 3</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"System shutdown"</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+	<span class="c1">// 4</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Show generic error"</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Let’s step through this code:</p>
+
+<ol>
+  <li>We are creating a Vehicle super class object.</li>
+  <li>We are calling our function with a value considered out of bounds</li>
+  <li>We catch the outOfBounds exception and print a system shutdown message</li>
+  <li>We have a generic catch for other errors where we show a generic error message</li>
+</ol>
+
+<p>Now if we run this code we see the below message in the console as expected:</p>
+
+<blockquote>
+  <p>System shutdown</p>
+</blockquote>
+
+<p>So what happens if we replace our Lorry subclass with its new error and put it in place of the Vehicle super class? If we change line one to read:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">vehicle</span><span class="p">:</span> <span class="kt">Vehicle</span> <span class="o">=</span> <span class="kt">Lorry</span><span class="p">()</span></code></pre></figure>
+
+<p>If we run the code above we will now see a different error:</p>
+
+<blockquote>
+  <p>Show generic error</p>
+</blockquote>
+
+<p>The error handling code is not aware of subclass specific errors so is no longer able to handle them accordingly. Imagine a mission critical system that needs to shut down if an out of bounds happens, in this case the error would be missed as it would require the error handling class to have knowledge of all possible sub types in order to handle all the errors appropriate. Defeating the point of using the super class and thus breaking the principle:</p>
+
+<blockquote>
+  <p>New exceptions cannot be thrown by the methods in the sub type, except if they are sub types of exceptions thrown by the methods of the super type.</p>
+</blockquote>
+
+<h2 id="contra-variance-and-covariance-of-parameters-and-return-types">Contra variance and Covariance of parameters and return types</h2>
+
+<p>In the list of rules you may recall seeing two items talking about contra variance and covariance of parameters and return types. What does that mean exactly?</p>
+
+<ol>
+  <li>Contra variance of method parameter types in the sub type.</li>
+  <li>Covariance of method return types in the sub type.</li>
+</ol>
+
+<h3 id="contra-variance-of-method-parameter-types-in-the-sub-type">Contra variance of method parameter types in the sub type</h3>
+
+<p>Contra variance means that we can use change the type of method parameter to a super class of the type but not a subclass. This rules works basically in combination with the rule below:</p>
+
+<blockquote>
+  <ol>
+    <li>Don’t implement stricter validation rules on input parameters than those implemented by the parent class.</li>
+  </ol>
+</blockquote>
+
+<p>What it means is, we can use a super class of a parameter, thus ‘weakening’ the restrictions of the method, but not a subclass of that type which would tighten the restrictions of the method.</p>
+
+<h3 id="covariance-of-method-return-types-in-the-sub-type">Covariance of method return types in the sub type</h3>
+
+<p>Covariance means that the type being used can be a sub type of the class provided by the super class function return type. Similarly, this works in the same way as the 5th rule:</p>
+
+<blockquote>
+  <ol>
+    <li>Apply at the least the same rules to all output parameters as applied by the parent class.</li>
+  </ol>
+</blockquote>
+
+<p>Now both of these rules aren’t possible to be broken as part of Swift. It’s not possible to overload functions providing alternative type specifications, at least while still referring to the super class type. We can override methods and provide different parameter types and return types but this requires the calling class to know the type of the subclass. When referring to the super class, the super class implementation is always called regardless of subclass functions with different params.</p>
+
+
+
+                
+                    <p><a href="/architecture/solid-principles-in-swift-liskov-substitution-principle.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=SOLID Principles in Swift - Liskov Substitution Principle&p[summary]=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&p[url]=https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html&text=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&hashtags=swift,architecture," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/architecture">architecture</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
 
     
         
@@ -753,30 +1000,6 @@ In this series of posts we are going to be covering the SOLID principles of soft
                 
             </footer>
         </article>
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
         
     
 

@@ -5,9 +5,228 @@
     <description>Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 07 May 2021 15:18:20 +0100</pubDate>
-    <lastBuildDate>Fri, 07 May 2021 15:18:20 +0100</lastBuildDate>
+    <pubDate>Mon, 18 Apr 2022 08:13:19 +0100</pubDate>
+    <lastBuildDate>Mon, 18 Apr 2022 08:13:19 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>SOLID Principles in Swift - Liskov Substitution Principle</title>
+        <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage&lt;/li&gt;
+  &lt;li&gt;Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies&lt;/li&gt;
+  &lt;li&gt;Rigidity: A change requires a lot of effort because it affects several parts of the project&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So what are the SOLID principles?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change&lt;/li&gt;
+  &lt;li&gt;Open-Closed Principle - Software should be open for extension but closed for modification&lt;/li&gt;
+  &lt;li&gt;Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program&lt;/li&gt;
+  &lt;li&gt;Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface&lt;/li&gt;
+  &lt;li&gt;Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In this article we will focus on the Liskov Substitution Principle.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-does-it-mean&quot;&gt;What does it mean?&lt;/h2&gt;
+
+&lt;p&gt;So the Liskov Substitution Principle states:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Derived classes must be substitutable for their base classes&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What exactly does this mean? In a basic sense it for example if you have a function that accepts a type of class which is a parent of other classes, any class that subclasses the parent class should be able to be passed in without it breaking the program.&lt;/p&gt;
+
+&lt;p&gt;See a summary of the main points of the principle below:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Contra variance of method parameter types in the sub type.&lt;/li&gt;
+  &lt;li&gt;Covariance of method return types in the sub type.&lt;/li&gt;
+  &lt;li&gt;New exceptions cannot be thrown by the methods in the sub type, except if they are sub types of exceptions thrown by the methods of the super type.&lt;/li&gt;
+  &lt;li&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/li&gt;
+  &lt;li&gt;Apply at the least the same rules to all output parameters as applied by the parent class.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let’s take a look at what these different rules mean for subclasses.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-parent-class&quot;&gt;The Parent Class&lt;/h2&gt;
+
+&lt;p&gt;First of all, let’s define our parent class or base class that contains some functionality. Let’s use a vehicle class as an example, this vehicle has a throttle which can be set at any value between 0 and 100.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Let’s step through it:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First of all we define a custom error to throw if the throttle is not within bounds&lt;/li&gt;
+  &lt;li&gt;Here we define our vehicle class that has a throttle variable to store the value being set&lt;/li&gt;
+  &lt;li&gt;We have a function to set the throttle value, there is a guard statement to check whether the value being set is in the appropriate range. If it is not, we throw an error, if it is we set the value&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;validation-rules-on-input-parameters&quot;&gt;Validation rules on input parameters&lt;/h2&gt;
+
+&lt;p&gt;Now let’s create a subclass that breaks the principle. We will make a lorry class that inherits from the super class but adds its own restrictions to the throttle function, only allowing the throttle to be set between 0 and 60 for example.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lorry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;So what is happening here? We have subclassed the Vehicle class and overriden the setThrottle method. Now what we have done here is we have added a guard statement to check if the throttle is between 0 and 60. We throw an error saying out of bounds if outside of that, if it is within bounds we call the super class method.&lt;/p&gt;
+
+&lt;p&gt;Why is this a problem? Well imagine we are building a system / class that interacts with the Vehicle class. Now based on the Vehicle class you would expect to be able to set the throttle to anything between 0 and a 100. However now, if someone chooses to pass a Lorry subclass to your system / class, you will not be able to set the throttle above 60. Depending on how this other class or system is built this may have unintended side effects as you can’t set the values that you are expecting without getting an error.&lt;/p&gt;
+
+&lt;p&gt;This example breaks the rule:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;errors-in-the-liskov-principle&quot;&gt;Errors in the liskov principle&lt;/h2&gt;
+
+&lt;p&gt;Let’s modify our example to see how we could break the principle by throwing different errors. Let’s modify the Lorry subclass:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;LorryError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lorry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;LorryError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;So what is happening here:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We have added a new Error type called LorryError&lt;/li&gt;
+  &lt;li&gt;When we have our bounds exception we are throwing this new error type instead of the one provided by the super class&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Why does that cause a problem? To find out let’s take a look at the error handling code:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;vehicle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vehicle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;110&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;System shutdown&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// 4&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Show generic error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Let’s step through this code:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We are creating a Vehicle super class object.&lt;/li&gt;
+  &lt;li&gt;We are calling our function with a value considered out of bounds&lt;/li&gt;
+  &lt;li&gt;We catch the outOfBounds exception and print a system shutdown message&lt;/li&gt;
+  &lt;li&gt;We have a generic catch for other errors where we show a generic error message&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now if we run this code we see the below message in the console as expected:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;System shutdown&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So what happens if we replace our Lorry subclass with its new error and put it in place of the Vehicle super class? If we change line one to read:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;vehicle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lorry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If we run the code above we will now see a different error:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Show generic error&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The error handling code is not aware of subclass specific errors so is no longer able to handle them accordingly. Imagine a mission critical system that needs to shut down if an out of bounds happens, in this case the error would be missed as it would require the error handling class to have knowledge of all possible sub types in order to handle all the errors appropriate. Defeating the point of using the super class and thus breaking the principle:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;New exceptions cannot be thrown by the methods in the sub type, except if they are sub types of exceptions thrown by the methods of the super type.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;contra-variance-and-covariance-of-parameters-and-return-types&quot;&gt;Contra variance and Covariance of parameters and return types&lt;/h2&gt;
+
+&lt;p&gt;In the list of rules you may recall seeing two items talking about contra variance and covariance of parameters and return types. What does that mean exactly?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Contra variance of method parameter types in the sub type.&lt;/li&gt;
+  &lt;li&gt;Covariance of method return types in the sub type.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;contra-variance-of-method-parameter-types-in-the-sub-type&quot;&gt;Contra variance of method parameter types in the sub type&lt;/h3&gt;
+
+&lt;p&gt;Contra variance means that we can use change the type of method parameter to a super class of the type but not a subclass. This rules works basically in combination with the rule below:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What it means is, we can use a super class of a parameter, thus ‘weakening’ the restrictions of the method, but not a subclass of that type which would tighten the restrictions of the method.&lt;/p&gt;
+
+&lt;h3 id=&quot;covariance-of-method-return-types-in-the-sub-type&quot;&gt;Covariance of method return types in the sub type&lt;/h3&gt;
+
+&lt;p&gt;Covariance means that the type being used can be a sub type of the class provided by the super class function return type. Similarly, this works in the same way as the 5th rule:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Apply at the least the same rules to all output parameters as applied by the parent class.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now both of these rules aren’t possible to be broken as part of Swift. It’s not possible to overload functions providing alternative type specifications, at least while still referring to the super class type. We can override methods and provide different parameter types and return types but this requires the calling class to know the type of the subclass. When referring to the super class, the super class implementation is always called regardless of subclass functions with different params.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 18 Apr 2022 06:00:00 +0100</pubDate>
+        <link>https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html</guid>
+        
+        <category>swift</category>
+        
+        <category>architecture</category>
+        
+        
+        <category>architecture</category>
+        
+      </item>
     
       <item>
         <title>SOLID Principles in Swift - Open / Closed Principle</title>
@@ -460,35 +679,6 @@
       </item>
     
       <item>
-        <title>Weekly Mobile Digest - 13 Mar 2021</title>
-        <description>&lt;h2 id=&quot;android-web-traffic-beats-out-ios-in-every-region-worldwide&quot;&gt;&lt;a href=&quot;https://www.emarketer.com/content/android-web-traffic-beats-ios-every-region-worldwide&quot;&gt;Android web traffic beats out iOS in every region worldwide&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;While this is not exactly surprising given the Android’s global market share is bigger than iOS. What these stats often over look is despite the fact Android user’s heavily out number iOS, it is often the iOS users who are easier to monetize and generate the most revenue per user.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-event-on-23-march-says-well-known-leaker&quot;&gt;&lt;a href=&quot;https://www.macworld.co.uk/news/apple-event-23-march-3802490/&quot;&gt;Apple event on 23 March, says well-known leaker&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;News about that there will be an Apple event on the 23rd March. New devices to include AirTags, iPad Pro, AirPods and Apple TV. I’ve had my 1080p Apple TV 4 for a whle now and have been patiently waiting for them to release a new version so I could switch to the 4k edition. Interested to see what the AirTags will be like as well as updated AirPods.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-issues-clarification-over-default-music-service-feature-for-ios-145-beta&quot;&gt;&lt;a href=&quot;https://gadgets.ndtv.com/apps/news/apple-ios-14-5-beta-music-app-play-spotify-siri-default-clarification-issue-2385091&quot;&gt;Apple Issues Clarification Over Default Music Service Feature for iOS 14.5 Beta&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;It was previously reported that Apple would allow users to select their default music service, similar to what users can now do for email and browser preferences. Apparently according to Apple this is no the case. Such a shame as Spotify user I was really looking forward to this, really frustrating that all music features on my phone default to Apple Music when I don’t have nor want an account with them.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-to-invest-12-billion-amid-eu-push-for-semiconductor-dominance&quot;&gt;&lt;a href=&quot;https://www.marketwatch.com/story/apple-to-invest-1-2-billion-amid-eu-push-for-semiconductor-dominance-11615397707&quot;&gt;Apple to invest $1.2 billion amid EU push for semiconductor dominance&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Seems like the big push to diversify the supply chain of tech is continuing. With China pretty much dominating the supply chain of electronic goods there appears to be a big push from the US and EU to try and remove that dependency and create further options for manufacturing. Possibly due to the global pandemic!&lt;/p&gt;
-</description>
-        <pubDate>Sat, 13 Mar 2021 06:00:00 +0000</pubDate>
-        <link>https://pyartez.github.io/news/weekly-mobile-digest-13-Mar.html</link>
-        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest-13-Mar.html</guid>
-        
-        <category>apple</category>
-        
-        <category>android</category>
-        
-        <category>google</category>
-        
-        
-        <category>news</category>
-        
-      </item>
-    
-      <item>
         <title>Programmatic routing in SwiftUI</title>
         <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
 
@@ -665,75 +855,6 @@
         
         
         <category>swiftUI</category>
-        
-      </item>
-    
-      <item>
-        <title>Weekly Mobile Digest - 22 Feb 2021</title>
-        <description>&lt;h2 id=&quot;apple-in-talks-to-buy-self-driving-car-sensors&quot;&gt;&lt;a href=&quot;https://www.businesstimes.com.sg/technology/apple-in-discussions-with-suppliers-for-self-driving-car-sensors&quot;&gt;Apple in talks to buy self driving car sensors&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;The plot thickens! We have seen countless rumours of Apple engaging with various car manufacturers regarding a partnership to build self driving cars. However most of these appear to have been denied or the discussions have been cancelled. However it still appears based on this rumour that the self driving car tech is continuing with Apple exploring supply chains for self driving car sensors.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-leaks-radically-different-designs-for-airpods-max-in-new-patent&quot;&gt;&lt;a href=&quot;https://www.forbes.com/sites/davidphelan/2021/02/20/apple-leaks-radically-different-airpods-max-design-in-new-patent/&quot;&gt;Apple leaks radically different designs for AirPods Max in new patent&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;This is interesting, I haven’t had an opportunity myself to wear a pair of the AirPods Max myself however the reviews have been fairly mixed. I’ve heard a lot of good feedback on them however there are many reviews that they feel heavy and not at the right quality for the price point which is surprising for Apple as generally build quality if something they shine on. The fact they are already looking to modify the design heavily looks like they are aware of the issues and looking to make a change.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-increases-scrutiny-of-irrationally-high-app-prices&quot;&gt;&lt;a href=&quot;https://appleinsider.com/articles/21/02/19/apple-increases-scrutiny-of-irrationally-high-app-prices&quot;&gt;Apple increases scrutiny of ‘irrationally high’ app prices&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;I’m not sure how I feel about this one. Of course I expect Apple to try and protect users from getting stung by scammy apps however I would expect an end user to at least evaluate the prices for themselves before hitting the buy button. I feel they are treading a fine line here, especially as it is the app developers who are setting the price that they see fit for their products.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-tv-now-available-on-android-tv&quot;&gt;&lt;a href=&quot;https://www.techradar.com/how-to/how-to-get-apple-tv-plus-on-your-google-chromecast-with-google-tv&quot;&gt;Apple TV+ now available on Android TV&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Interesting to see Apple developer software for other platforms. As they have begun to pivot into services to supplement their hardware income they are almost forced to integrate some of these services across other platforms. Typically Apple develops services for their own products whilst largely ignoring other platforms. Personally I feel it can only be beneficial for both users and Apple if users are able to get access to Apple services on other platforms.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 22 Feb 2021 06:00:00 +0000</pubDate>
-        <link>https://pyartez.github.io/news/weekly-mobile-digest-22-Feb.html</link>
-        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest-22-Feb.html</guid>
-        
-        <category>apple</category>
-        
-        <category>android</category>
-        
-        <category>google</category>
-        
-        
-        <category>news</category>
-        
-      </item>
-    
-      <item>
-        <title>Weekly Mobile Digest - 12 Feb 2021</title>
-        <description>&lt;h2 id=&quot;hyundai-says-it-is-not-in-talks-with-apple-to-make-self-driving-cars&quot;&gt;&lt;a href=&quot;https://finance.yahoo.com/news/hyundai-kia-aren-t-ev-001457674.html?guccounter=1&amp;amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;amp;guce_referrer_sig=AQAAADpBK44QnstjTyaggwaIfjP6tL4Y07rz4UWy-E9ZsRX8EsFCCnlAcdNmfv1m_lgs7TeKRphoEQ8624hCWO27GH0brngxkg_Bk0y-6DDa3eP3hWxi9xpFBd_uJCKmoyzBjt12Q60U4rUkdGy6i_Ex59sH-a8PLTQBjjm77D-OxL1N&quot;&gt;Hyundai says it is not in talks with Apple to make self-driving cars&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;We keep hearing lots of interesting rumours regarding the self driving car project at Apple. The project supposedly named ‘Titan’ first rumoured 2014–2015 looked dead in the water after a number of employees were laid off in 2019.&lt;/p&gt;
-
-&lt;p&gt;Recently news had been swirling that Apple were engaging in talks with car manufacturers but has been put to bed. Still intrigued to see where this goes. Will they look to make their own car? Or look to sell the tech required to automakers to use in their own vehicles?&lt;/p&gt;
-
-&lt;h2 id=&quot;macbooks-might-be-losing-the-touchbar&quot;&gt;&lt;a href=&quot;https://www.cnn.com/2021/02/07/tech/apple-macbook-touch-bar-2021/index.html&quot;&gt;MacBooks might be losing the Touch Bar&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Honestly I can’t say I’ll miss it. While on the surface it looks like a neat feature in reality it was something that I rarely used as my main focus is always on my screen. Most people can touch type these days so having to stop and look down seems to have been a deal breaker. Maybe they have some analytics to back up my opinion!&lt;/p&gt;
-
-&lt;h2 id=&quot;users-can-now-unlock-their-iphone-with-the-apple-watch-if-face-mask-isdetected&quot;&gt;&lt;a href=&quot;https://edition.cnn.com/2021/02/07/tech/apple-macbook-touch-bar-2021/index.html&quot;&gt;Users can now unlock their iPhone with the Apple Watch if face mask is detected&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;This is a great feature and something I am very looking forward to. While I do like Face ID, it has been a pain since the beginning of the pandemic so have to constantly have to put in your passcode when out with a mask on. Oh how spoiled we have become by Touch ID / Face ID. Remember when the only way to unlock your phone was with a passcode?&lt;/p&gt;
-
-&lt;h2 id=&quot;ios-145-lets-users-change-the-default-music-service-for-youriphone&quot;&gt;&lt;a href=&quot;https://www.forbes.com/sites/kateoflahertyuk/2021/02/07/ios-145-what-you-need-to-know-about-apples-exciting-new-iphone-unlock-feature/?sh=457b68dc39ac&quot;&gt;iOS 14.5 lets users change the default music service for your iPhone&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;As a Spotify user myself, this has been a long time coming. It’s always frustrated me that I haven’t been able to control music playback using voice commands. Glad to see this change finally come through, hopefully their will be app updates soon to help support the integration&lt;/p&gt;
-
-&lt;h2 id=&quot;google-looking-to-add-apple-style-anti-tracking-feature-toandroid&quot;&gt;&lt;a href=&quot;https://www.bloomberg.com/news/articles/2021-02-04/google-explores-alternative-to-apple-s-new-anti-tracking-feature&quot;&gt;Google looking to add Apple style anti-tracking feature to Android&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Seems a strange idea for a platform who’s main design goal is spy on end users as much as possible to facilitate better ad targeting. Sounds more like they want to be seen to be protecting user privacy as users are becoming more aware of the issues, but without actually doing anything to protect said users&lt;/p&gt;
-
-&lt;h2 id=&quot;leak-reveals-new-android-12design&quot;&gt;&lt;a href=&quot;https://www.pcworld.com/article/3606850/this-android-12-leak-looks-an-awful-lot-like-ios-14.html&quot;&gt;Leak reveals new Android 12 design&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Glad I’m not the only one who thought it looked a lot like iOS after viewing the screenshots. Continuing the trend of both platforms copying features / ideas from each other.&lt;/p&gt;
-
-&lt;h2 id=&quot;apple-maps-can-now-report-accidents-hazards-and-speedchecks&quot;&gt;&lt;a href=&quot;https://www.zdnet.com/article/ios-14-5-apple-maps-is-gaining-ability-to-report-accidents-hazards-or-speed-checks/&quot;&gt;Apple Maps can now report accidents, hazards and speed checks&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;We’ve come a long way since Apple Maps disastrous launch and it’s great to see it getting these features. However I still feel it has a long way to go to winning back my confidence. I still find myself reluctantly using Google Maps for navigation.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 12 Feb 2021 06:00:00 +0000</pubDate>
-        <link>https://pyartez.github.io/news/weekly-mobile-digest-12-Feb.html</link>
-        <guid isPermaLink="true">https://pyartez.github.io/news/weekly-mobile-digest-12-Feb.html</guid>
-        
-        <category>apple</category>
-        
-        <category>android</category>
-        
-        <category>google</category>
-        
-        
-        <category>news</category>
         
       </item>
     
@@ -2205,6 +2326,233 @@ Request2 Cache Header: max-age=3
         
         
         <category>networking</category>
+        
+      </item>
+    
+      <item>
+        <title>What is type erasure in Swift</title>
+        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Wtf is type erasure?&lt;/li&gt;
+  &lt;li&gt;Why do I need it?&lt;/li&gt;
+  &lt;li&gt;This seems complicated?&lt;/li&gt;
+  &lt;li&gt;Isn’t there a simpler way?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These are are just some of the questions I found myself asking once I first starting exploring type erasure. Like many other developers, I have been making use of protocols in my code to remove dependencies and make my classes easy to unit test. It wasn’t until I then started to add generics to my protocols that I discovered the need to apply type erasure.&lt;/p&gt;
+
+&lt;p&gt;Having read many blog posts and guides about type erasure I still came away confused as to what it was, why it was needed and why it seemed to add so much complexity. By trying to add generics to protocols in a project I was working on I finally saw the light! I am going to try and walk you through the topic using an example which is similar to the one I was trying to solve in my project. Hopefully this will help those of you who are looking to understand the topic further in the same way it helped me.&lt;/p&gt;
+
+&lt;h2 id=&quot;generics-and-associated-types&quot;&gt;Generics and Associated Types&lt;/h2&gt;
+
+&lt;p&gt;I am assuming that as you are here you have a fairly advanced knowledge of Swift and have potentially begun or have been using protocols with generics in your code. Below is a simple protocol called Fetchable. The idea of the protocol is to go and fetch some objects of type FetchType from somewhere and call the completion handler with the result once it’s finished whatever it is doing.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;associatedtype&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now that we have our protocols lets create a couple of structs to implement the protocol.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UserFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;typealias&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Phil&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;So here we have created a dummy data class, User. Our fetch struct has implemented the generic protocol and has specified the type of object that will be returned in the protocol using a typealias. Everything here is great, we can implement this protocol as many times as we like and return whatever object types we want without the need to create a new protocol for each one.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Now, here in lies the problem. If we wish to hold a reference to an object that has implemented this protocol. How do we know what type it is going to return? See the below example:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SomeStruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;What you will also find here is that you will see an error, something like the below&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Protocol ‘Fetchable’ can only be used as a generic constraint because it has Self or associated type requirements&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So we can’t even use this type as a reference to the object, as it has an associated type which we cannot see at this point and have no way of specifying.&lt;/p&gt;
+
+&lt;p&gt;Now we could do something like below, however this creates a dependency between SomeStruct and the userFetch object. If we are following the SOLID principles we want to avoid having dependencies and hide implementation details.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SomeStruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UserFetch&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Ok, so let’s try adding a type like we do with other generic types such as arrays and dictionaries:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SomeStruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If you try the above you will probably end up with an error something like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Cannot specialize non-generic type ‘Fetchable’&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;See generic protocols, unlike generic types cannot have their type inferred in the type declaration. The type is only specified during implementation.&lt;/p&gt;
+
+&lt;h3 id=&quot;type-erasure-to-the-rescue&quot;&gt;Type Erasure to the rescue&lt;/h3&gt;
+
+&lt;p&gt;So this is where type erasure comes in. In order for us to know the type returned we need to implement a new class that can be used to infer the type of object returned so that we know what to expect when we call fetch.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyFetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;typealias&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;_fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// 4&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fetchable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;_fetch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// 5&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;_fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Whoooa! There is a lot going on here so let us go through it piece by piece to explain what is happening.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Here our AnyFetchable class is implementing the Fetchable protocol. But also we see that we now have a generic type specification. This means that we can specify what type is being used while storing a reference to this struct.&lt;/li&gt;
+  &lt;li&gt;Our generic type T being specified in the line above is then used in the typealias and mapped to the FetchType associated value of the protocol.&lt;/li&gt;
+  &lt;li&gt;Now this is where things get fiddly. In order for us to erase the type of the injected class we must first &lt;strong&gt;create an attribute which is a closure with a matching signature for each function in the protocol&lt;/strong&gt;. In this scenario we only have 1 method which is the fetch method. Here you can see the fetch attribute has the same method signature as the one in the protocol.&lt;/li&gt;
+  &lt;li&gt;Lets break this down a bit. First of all we are saying that this init method is only available for an object that has implemented Fetchable, called U. The where clause at the end of the line is a generic type restriction which states that the FetchType of the Fetchable U must be the same as the one being used in this class. This might not make too much sense right now, but stay with me. When the fetchable type U is passed in, we store a reference to its fetch method in our own internal variable. This is what helps us erase the type, we store a reference to all of the objects methods without actually storing a reference to the object. That way we don’t need to know the type.&lt;/li&gt;
+  &lt;li&gt;Here is our implementation of the Fetchable protocols fetch method, however all we are doing is calling the reference to passed in objects fetch method and calling that instead.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Hopefully some of this makes sense, some of this may be new or confusing especially point 4. Let’s show how we can use our class in this example.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SomeStruct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyFetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UserFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;anyFetchable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyFetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;someStruct&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SomeStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;anyFetchable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 4&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;someStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;failure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First we create an instance of our UserFetch object from earlier in the example that returns our example user.&lt;/li&gt;
+  &lt;li&gt;We pass this into our AnyFetchable object. Now remember we had a generic type constraint on our init in point 4 of the previous example. This is being satisfied because we have specified that the AnyFetchable should return a User type, and the UserFetch object we are passing in has the FetchType User.&lt;/li&gt;
+  &lt;li&gt;We can now pass in the AnyFetchable to our struct.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why?&lt;/h3&gt;
+
+&lt;p&gt;Now you are probably thinking, why do all of this? Well, let’s try another example:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// New Dave user struct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DaveFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;typealias&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Dave&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Example implementation 2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;daveFetch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DaveFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;anyDaveFetchable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyFetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;daveFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;someDaveStruct&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SomeStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;anyDaveFetchable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;someDaveStruct&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userFetch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;failure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;So here we have created a new object that implements Fetchable and returns a user called Dave. We can then pass this into our SomeStruct using our type erasure class and it works exactly the same. The SomeStruct class doesn’t need to be changed in order to work with the new dave class as it’s type has been erased. In a production app we could inject any class we want as long as it fetches a User, whether that comes from the web, core data, the file system. It doesn’t matter we could switch it at any time without making changes to our SomeStruct class.&lt;/p&gt;
+
+&lt;h3 id=&quot;finally&quot;&gt;Finally&lt;/h3&gt;
+
+&lt;p&gt;The last example here is that we can use our Any class for other types, not just User. See the example below:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Product Type&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Product&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;price&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ProductFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Fetchable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;typealias&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Product&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;FetchType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;product&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;My Product&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;price&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;10.99&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;productFetch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ProductFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;anyProductFetch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnyFetchable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;productFetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;anyProductFetch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;product&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;failure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Similar to our user example, we have created a new Product object and a fetcher that returns a product object. However we can re-use our AnyFetchable here but specifying the return type as Product.&lt;/p&gt;
+
+&lt;p&gt;There is a lot to cover and understand here and hopefully this helps make some sense of type erasure and what it is used for. More importantly how to implement your own Any type erasure class for your own protocols so that they can be referenced in your code.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/pyartez/blog-samples&quot;&gt;Download the playground&lt;/a&gt; and play around with the examples yourself&lt;/p&gt;
+</description>
+        <pubDate>Wed, 03 Jun 2020 10:00:00 +0100</pubDate>
+        <link>https://pyartez.github.io/type-erasure/what-is-type-erasure.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/type-erasure/what-is-type-erasure.html</guid>
+        
+        <category>swift</category>
+        
+        <category>advanced</category>
+        
+        <category>protocols</category>
+        
+        <category>generics</category>
+        
+        
+        <category>type-erasure</category>
         
       </item>
     
