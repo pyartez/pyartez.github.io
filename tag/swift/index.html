@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - swift | Phil Yates &mdash; Lead iOS Engineer and Manager </title>
-    <meta property="og:title" content="Posts Tagged - swift | Phil Yates &mdash; Lead iOS Engineer and Manager " />
-    <meta name="twitter:title" content="Posts Tagged - swift | Phil Yates &mdash; Lead iOS Engineer and Manager " />
+    <title>Posts Tagged - swift | Phil Yates &mdash; Mobile Engineer and Engineering Manager </title>
+    <meta property="og:title" content="Posts Tagged - swift | Phil Yates &mdash; Mobile Engineer and Engineering Manager " />
+    <meta name="twitter:title" content="Posts Tagged - swift | Phil Yates &mdash; Mobile Engineer and Engineering Manager " />
 
-    <meta name="description" content="Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.">
-    <meta name="twitter:description" content="Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way." />
+    <meta name="description" content="Has been building software for over 17 years! Looking to share some of the knowledge picked up along the way.">
+    <meta name="twitter:description" content="Has been building software for over 17 years! Looking to share some of the knowledge picked up along the way." />
 
     <meta name="twitter:card" content="summary_large_image" />
     
@@ -100,6 +100,16 @@
     <link rel="alternate" type="application/rss+xml" title="" href="https://pyartez.github.io/feed.xml">
 
     <script data-ad-client="ca-pub-6959344114005358" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7CNTV430MK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-7CNTV430MK');
+    </script>
 </head>
 
     <body>
@@ -116,7 +126,7 @@
         <a class="avatar" href="https://pyartez.github.io"><img alt="Avatar" src="http://www.gravatar.com/avatar/ab24a8a6753036f939b5c8d4b9de9941?s=400" /></a>
         <div class="my-info">
             <h1><strong class="my-name">Phil Yates</strong></h1>
-            <span class="my-job-title">Lead iOS Engineer and Manager</span>
+            <span class="my-job-title">Mobile Engineer and Engineering Manager</span>
         </div>
     </div>
 
@@ -165,11 +175,13 @@
             
                 
             
+                
+            
         </div>
         
      -->
 
-    <p class="about-me">Has been building software for over 15 years! Looking to share some of the knowledge picked up along the way.</p>
+    <p class="about-me">Has been building software for over 17 years! Looking to share some of the knowledge picked up along the way.</p>
 
     <ul class="socials">
         <li><a href="https://twitter.com/pyates"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/phil-yates-06486727"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/pyartez"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
@@ -202,6 +214,19 @@
 </form>
 </div>
 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<!-- Left hand column -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8297101226"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 <!--End mc_embed_signup-->
 </aside>
 
@@ -219,6 +244,417 @@
 
                 <h1>Posts Tagged - swift</h1>
 
+
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2023-05-09T06:00:00+01:00" itemprop="datePublished">9 May, 2023</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/architecture/">architecture</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://pyartez.github.io/architecture/solid-principles-in-swift-dependency-inversion-principle.html">SOLID Principles in Swift - Dependency Inversion Principle</a></h2>
+            </header>
+
+            <div class="post-content">
+                <h2 id="background">Background</h2>
+
+<p>In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:</p>
+
+<ul>
+  <li>Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage</li>
+  <li>Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies</li>
+  <li>Rigidity: A change requires a lot of effort because it affects several parts of the project</li>
+</ul>
+
+<p>So what are the SOLID principles?</p>
+
+<ul>
+  <li>Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change</li>
+  <li>Open-Closed Principle - Software should be open for extension but closed for modification</li>
+  <li>Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program</li>
+  <li>Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface</li>
+  <li>Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions</li>
+</ul>
+
+<p>In this article we will focus on the Dependency Inversion Principle.</p>
+
+<h2 id="what-does-it-mean">What does it mean?</h2>
+
+<p>This principle has 2 main components described below:</p>
+
+<blockquote>
+  <p>High-level modules should not import anything from low-level modules. Both should depend on abstractions (e.g., interfaces)
+Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions</p>
+</blockquote>
+
+<p>I’ve interviewed many iOS developers over the years and I struggle to recall a single person who has actually got this part of the SOLID principles 100% right. I think a large part of this comes from the fact many use simple architectures such as MVVM that don’t break applications down into smaller layers and components/modules. This isn’t a criticism, not every app needs a VIPER/Clean architecture approach with multiple layers.</p>
+
+<p>Most iOS developers I speak to come to the conclusion that this principle just means using protocols instead of concrete classes and injecting dependencies to help with testing/mocking. While this principle does rely on this to work it is not the primary purpose of the principle and exposes an issue once you start to depend on abstractions used across multiple layers / modules.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="setup">Setup</h2>
+
+<p>Lets setup a simple example in Xcode where we have two separate modules that depend on each other in order to provide some functionality.</p>
+
+<p>If we create a simple Swift UI project using Xcode, then using File -&gt; New -&gt; Package create 2 new swift packages and add them to the project. One called LibraryA and one called LibraryB. Be sure to select your project in the ‘Add to’ drop down when naming your libraries. You should have something that looks like below Xcode.</p>
+
+<p><img src="/assets/images/packages-setup.png" alt="Swift Packages Setup" title="Swift Packages Setup" /></p>
+
+<p>Let’s start by adding a protocol and some custom data structure that we are going to be using across the 2 libraries we are working. Add a file called Protocol.swift in LibraryA and add the following code below:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">MyData</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MyData</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We have a simple one function protocol and a small struct, this is what we will be using to separate dependencies between our 2 libraries.</p>
+
+<p>Next, lets create an implementation in LibraryA that has these protocols as a dependency. Create a file in LibraryA with the name ImplementationA:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationA</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span>
+    
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">something</span> <span class="o">=</span> <span class="n">something</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is just a simple class that has the MyProtocol protocol has a dependency. Simple enough so far!</p>
+
+<p>Now let’s create a class in LibraryB that implements the protocol that is being used in our class in LibraryA. Create a class in LibraryB called ImplementationB:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">LibraryA</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationB</span><span class="p">:</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">LibraryA</span><span class="o">.</span><span class="kt">MyData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Do something"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We have our class in LibraryB that is implementing the protocol we previously created in LibraryA. For this reason you will notice that we have to import LibraryA in this class as well. There is one additional step we need to do before this will compile correctly, we need to define our dependency in our package file. Let’s open the LibraryB package file and edit it to add the dependency between the 2 packages:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="c1">// Assign LibraryA as dependency</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../LibraryA"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="c1">// Add dependency to target</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryBTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>We won’t go into all the options you need in the swift package file but hopefully by reading this you can see we have defined a dependency and added it to our LibraryB target. If you attempt to build the project it should compile successfully.</p>
+
+<p>Now let’s look at the structure of these 2 libraries and their relationship to each other.</p>
+
+<p><img src="/assets/images/libraryb-to-a.png" alt="LibraryB to LibraryA Dependency" title="LibraryB to LibraryA Dependency" /></p>
+
+<p>As you can see, we have LibraryA, this contains the protocols and LibraryB that implements the protocols. In order for LibraryB to implement the protocols it needs a dependency to LibraryA in order to work.</p>
+
+<h2 id="problem-1">Problem 1</h2>
+
+<p>Now what happens if we want to use the protocols in another Library? Let’s call this LibraryC? At moment the protocols are contained in LibraryA where they are being used and implemented by Library B.</p>
+
+<ul>
+  <li>We can’t use the protocols in another library without adding LibraryA which may contain code and other assets we don’t want.</li>
+  <li>We could copy the protocols to LibraryC, however if you needed LibraryA and LibraryC in the same project you would get class clashes.</li>
+  <li>We would need to edit LibraryB to add another dependency in this case. What happens if we are not the owners of LibraryB? How would we even do this?</li>
+</ul>
+
+<p>One solution we can try is moving the protocols from LibraryA to LibraryB. This reverses the dependencies and helps to solve the problems highlighted above. Let’s go ahead and do this now.</p>
+
+<ul>
+  <li>Copy the Protocols.swift file we created from LibraryA to LibraryB</li>
+  <li>Remove the import of LibraryA from the implementationB.swift</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationB</span><span class="p">:</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">MyData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Do something"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li>Add an import of LibraryB to the top of implementationA.swift</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">LibraryB</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationA</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span>
+    
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">something</span> <span class="o">=</span> <span class="n">something</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li>Update the LibraryB package file to remove the LibraryA dependency</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="c1">// Assign LibraryA as dependency</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="c1">// Add dependency to target</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryBTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>Update the LibraryA package file to add the LibraryB dependency</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../LibraryB"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryATests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>Now let’s see a diagram of what we have done. Now if we look at our 2 libraries at a high level the dependencies look like this.</p>
+
+<p><img src="/assets/images/librarya-to-b.png" alt="LibraryA to LibraryB Dependency" title="LibraryA to LibraryB Dependency" /></p>
+
+<p>So now, our LibraryA has a dependency on LibraryB. LibraryA is using the protocols that are defined AND implemented in LibraryB! Problem solved… right… Not entirely.</p>
+
+<p>If we review the problems we discussed earlier, if LibraryC wanted to make use of the protocols and implementation in LibraryB that is now possible as LibraryB has no knowledge of LibraryA or LibraryC. However this creates a new problem…</p>
+
+<h2 id="problem-2">Problem 2</h2>
+
+<p>What if LibraryA and LibraryC want to use different implementations of the protocols from each other? What if we introduced LibraryD that wanted to implement the protocols and be used by another library such as LibraryC? In order to facilitate this we would need to create a dependency between LibraryD and LibraryB. What problems does this create?</p>
+
+<p>We are introducing a dependency to a library we don’t need, in order to implement the protocols within it. In our example there isn’t much in LibraryB but imagine LibraryB had lots of other code and its own dependencies? Now we are including all of those in our project in order to have access to the protocols.</p>
+
+<p><img src="/assets/images/librarya-to-b-problems.png" alt="LibraryA to LibraryB Dependency Problems" title="LibraryA to LibraryB Dependency Problems" /></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>This is where Dependency Inversion comes in. What we need to do is create a separate library for the protocols and any data that passes through them. Then, we make the dependencies between our different libraries to that one, thus removing the dependencies between our different layers. Let’s do that now.</p>
+
+<ul>
+  <li>Create a new package and add it to your project, naming it Protocols. Now move the Protocols.swift file that we created earlier into the Protocols package. Your Xcode project file explorer should look like below:</li>
+</ul>
+
+<p><img src="/assets/images/packages-protocol-setup.png" alt="Protocols in own package" title="Protocols in own package" /></p>
+
+<ul>
+  <li>Now lets edit the dependencies of our packages so that both LibraryA and LibraryB depend on protocols. Your package files for LibraryA and B should now look like the below:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../Protocols"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Protocols"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryATests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../Protocols"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Protocols"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryBTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>Now update the imports of your implementation files so that they import Protocols instead. Your implementation files should look like the below:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">Protocols</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationA</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span>
+    
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">something</span> <span class="o">=</span> <span class="n">something</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">Protocols</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationB</span><span class="p">:</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">MyData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Do something"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Let’s have a look at what we have done here. We have moved the dependencies between the layers into a separate package and are now pointing both sides at that rather than one way or the other. Let’s update our diagram to show how this helps us.</p>
+
+<p><img src="/assets/images/dependency-inversion.png" alt="Dependency Inversion" title="Dependency Inversion" /></p>
+
+<p>Now if we want to use LibraryA, B, C, or D it does not matter in our dependency graph. They all point to the protocols and data and can be used interchangeably without the need to modify the libraries, so they depend on each other. We also avoid importing any unnecessary classes that we don’t need in order to satisfy the dependencies.</p>
+
+<p>This is what dependency inversion is. It’s separating protocols and data dependencies from the dependencies themselves and putting them into their own package. This way you completely separate the layers from each other, and they can be used together without any knowledge of each other. Awesome!</p>
+
+
+                
+                    <p><a href="/architecture/solid-principles-in-swift-dependency-inversion-principle.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=SOLID Principles in Swift - Dependency Inversion Principle&p[summary]=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&p[url]=https://pyartez.github.io/architecture/solid-principles-in-swift-dependency-inversion-principle.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/architecture/solid-principles-in-swift-dependency-inversion-principle.html&text=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&hashtags=swift,architecture," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                        
+                        <li><a href="https://pyartez.github.io/tag/architecture">architecture</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        
+    
+        
+    
 
     
         
@@ -341,6 +777,13 @@
 
 <p>This protocol breaks the interface segregation principle.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="a-better-solution">A better solution</h2>
 
 <p>To improve the solution we could break the one big interface down into smaller protocols. That way we could conform to only the protocols we were interested in implementing for our functionality. This may looks something like:</p>
@@ -361,6 +804,13 @@
 <figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">typealias</span> <span class="kt">Codable</span> <span class="o">=</span> <span class="kt">Decodable</span> <span class="o">&amp;</span> <span class="kt">Encodable</span></code></pre></figure>
 
 <p>Basically Codable is just the combination of 2 other protocols: Decodable and Encodable. This is a great example of how to do the interface segregation. If you are building say a JSON parse struct, you may wish to only conform to Decodable so you can decode the JSON. If in the future you wanted to serialize the struct for something like say data storage you can conform to Encoding later if needed.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="summary">Summary</h2>
 
@@ -398,6 +848,17 @@ In this series of posts we are going to be covering the SOLID principles of soft
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -464,6 +925,13 @@ In this series of posts we are going to be covering the SOLID principles of soft
 </ol>
 
 <p>Let’s take a look at what these different rules mean for subclasses.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="the-parent-class">The Parent Class</h2>
 
@@ -612,6 +1080,13 @@ In this series of posts we are going to be covering the SOLID principles of soft
 
 <h3 id="covariance-of-method-return-types-in-the-sub-type">Covariance of method return types in the sub type</h3>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p>Covariance means that the type being used can be a sub type of the class provided by the super class function return type. Similarly, this works in the same way as the 5th rule:</p>
 
 <blockquote>
@@ -651,6 +1126,17 @@ In this series of posts we are going to be covering the SOLID principles of soft
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -707,6 +1193,13 @@ In this series of posts we are going to be covering the SOLID principles of soft
 <p>What exactly does this mean? I think out of all the principles this is the hardest to understand. Mostly due to the fact the explanation leaves far too much open to interpretation. A simple Google search will offer up several examples of how this principle works. In this article I will present my take on the principle and how to build software that will comply with it.</p>
 
 <p>Let’s focus on a type that by design, violates the open closed principle.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="enums">Enums</h2>
 
@@ -774,6 +1267,13 @@ In this series of posts we are going to be covering the SOLID principles of soft
 <p>So first of all, every time we need to add / update or remove any of the events in our analytics system we need to modify the enum. We can’t just implement new events and have them be compatible with the system. Also if the number of events becomes very large then the code will grow large in size. Making it hard to read, maintain and a bit of a mess. Also the enum now has multiple responsibilities, as it covers many events breaking the <a href="/architecture/solid-principles-in-swift-single-responsibility-principle.html">single responsibility principle</a>.</p>
 
 <p>The second issue which is probably the more important one, is let’s say we are breaking our app down in to separate packages. This Analytics Controller and Event would be in a separate package, what if we wanted to re-use it across different projects? Both of these scenarios become very difficult because we are using an enum that would need to be updated to accommodate events for different apps. The package would need constantly updating as new events were added.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h3 id="the-solution">The Solution</h3>
 
@@ -868,6 +1368,17 @@ In this series of posts we are going to be covering the SOLID principles of soft
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -1177,6 +1688,17 @@ In this series of posts we are going to be covering the SOLID principles of soft
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -1395,6 +1917,17 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -1748,6 +2281,17 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -2249,6 +2793,17 @@ All apps developed require data of some description. This data is stored somewhe
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -2718,6 +3273,17 @@ Following on from the previous post where we explored simple JSON decoding. In t
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -3034,6 +3600,17 @@ Pretty much every app nowadays requires you to connect to the internet to access
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
@@ -3317,6 +3894,17 @@ These are are just some of th...&hashtags=swift,advanced,protocols,generics," re
                 
             </footer>
         </article>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         
     
         
