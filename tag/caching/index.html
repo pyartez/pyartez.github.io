@@ -348,6 +348,13 @@
 
 <p>This is just a sample of the challenges faced when trying to use a relational database as a caching layer for your app. Now you could build some custom caching layer that writes things to disk or a library such as <a href="https://github.com/pinterest/PINCache">PINCache</a>. However what if I told you there is something simpler that is already built in to iOS as standard?</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="caching-headers">Caching Headers</h2>
 
 <p>To help explain this we need to explore how HTTP caching headers are intended to work. Now, most request to an API will return a bunch of HTTP headers. These provide information and advice to the receiver about the response to the request. We won’t cover them all but the one we are most interested in for this example is the <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html">Cache-Control</a> header.</p>
@@ -450,6 +457,13 @@ Request2 Cache Header: max-age=3
 </code></pre></div></div>
 
 <p>How is this different from above. The main difference you will notice is that the request times are now different. The second request timestamp is 5 seconds after the first. This is because our cache time is 3 seconds now, so the second request is no longer pulling from the cache and is in fact a new request with a new response.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="offline-and-the-network-conditioner">Offline and the Network Conditioner</h2>
 
@@ -554,6 +568,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 
 <p>Now that we have shown how to grab cached requests from the cache, let’s wrap this up in a nice way so we can reuse it if we wish</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="wrapping-it-up">Wrapping it up</h2>
 
 <p>First of all lets create a standard swift example, then we will have a look at how we can do this in Combine and some of the challenges in doing so.</p>
@@ -589,6 +610,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 </ol>
 
 <p>As the completion handler returns Data, URLResponse and Error we are able to return the data and response even if there is an error. That is a bit of a disadvantage in this case as the function caller needs to be aware that they may receive an error but also the cached response as well so need to cater for those scenario themselves.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="combine">Combine</h2>
 
@@ -713,6 +741,13 @@ Request2 Cache Header: max-age=3
 <h3 id="there-is-no-error">There is no error</h3>
 
 <p>The above implementation works fine if we just want to display cached data. However you may wish to inform the user that there was a connection failure and they are viewing old / stale information. So how can we get around this? In order to send the cached value, then the error we would need to create a custom Combine publisher. We won’t cover that here as that is a post in itself.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="conclusion">Conclusion</h2>
 

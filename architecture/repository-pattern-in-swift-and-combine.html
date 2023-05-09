@@ -280,6 +280,13 @@
 
 <p>When not using the repository pattern it is quite common to access and use these elements directly, either in your ViewController or in some other part of your app depending how it is structured.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="the-problem">The problem</h2>
 
 <p>What’s the problem with this approach? Your app becomes difficult to maintain. Now if you only have a small app with a few screens then this isn’t much of a problem as there are only a few elements to change.</p>
@@ -317,6 +324,13 @@
 <p>So what is the difference here? As you can see the Core Data stack is still returning NSManagedObjects, however the repository is converting that to a domain object. This object doesn’t inherit from NSManagedObject, also it’s structure and attributes are defined by the app rather than what is in the data store.</p>
 
 <p>Now if we wanted to move away from Core Data to something else the only classes that need to be changed are the Core Data stack and the repository. The rest of the app does not need to be changed as we can map the new data stores type to our domain objects using the repository.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="example">Example</h2>
 
@@ -383,6 +397,13 @@
   <li>Output any errors</li>
   <li>So here we are outputting the name, address and location of the user we get back. Super simple right now.</li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="managing-change">Managing change</h2>
 
@@ -501,6 +522,13 @@
 <p>As you can see from even this simple example. We would have to change 7 lines of code, just to produce the same output. Now imagine this change happening on a much bigger project! There could possibly be 100s of lines of code that would need updating, all because the API response has changed.</p>
 
 <h2 id="repository-pattern">Repository Pattern</h2>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <p>Here is where the repository pattern comes in. We can create a user repository that fetches the user and converts it to our domain object. That way we don’t need to update the output.</p>
 
@@ -626,6 +654,13 @@
     <span class="kd">func</span> <span class="nf">edit</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
 <span class="p">}</span></code></pre></figure>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p>There’s quite a bit of code here so let’s step through it.</p>
 
 <ol>
@@ -703,6 +738,13 @@
 </ul>
 
 <p>Feel free to <a href="https://github.com/pyartez/blog-samples">download the playground</a> and play around with the examples yourself</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
     </div>
 

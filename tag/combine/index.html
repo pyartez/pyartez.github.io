@@ -307,6 +307,13 @@
 
 <p>This is something that is fairly straight forward in UIKit and makes a lot of sense. In this article we are going to discuss the workings of SwiftUI and how that approach is no longer possible.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="example">Example</h2>
 
 <figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
@@ -408,6 +415,13 @@
   <li>We are also exposing navigation to the view, a presenter typically would not need to expose navigation functionality to the view. It would handle a tap event and then hand off that navigation logic to the router. Here we have to expose that functionality to the view itself.</li>
 </ol>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="keep-with-uikit-for-navigation-for-now">Keep with UIKit for navigation, for now</h2>
 
 <p>My personal feeling is that navigation in SwiftUI could do with some more work. Views themselves should not know or care about where they are navigating to and how. They should be a visual representation of state. Of course, the navigation could be a presentation of state too, however a quick peak at the NavigationView docs shows no access to any form of state at all. The navigation view polices its own state, nothing outside of the object has a way to modify that state.</p>
@@ -461,6 +475,13 @@
 </ol>
 
 <p>Hopefully you found this helpful when exploring navigation options in SwiftUI. You can find the <a href="https://github.com/pyartez/swiftUI-router">SwiftUI Sample</a> and the <a href="https://github.com/pyartez/swiftui-uihostingviewcontroller">UIHostingController</a> samples on github.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 
                 
@@ -536,6 +557,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 
 <p>As SwiftUI is the future, I’ve been investigating how teams might migrate their existing architectures across to the new technology. There a number of challenges presented by migrating to SwiftUI we will discuss below. As the title suggests we will be exploring how to use a presenter to control a SwiftUI view. It doesn’t matter which architecture you are using as such, whether it’s VIPER, MVVVM, VIP, MVP etc. As long as the logic and state of the view has been abstracted away from the view itself so it can be properly unit tested.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="example">Example</h2>
 
 <h3 id="list-item-view">List Item View</h3>
@@ -593,6 +621,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 
 <p><img src="/assets/images/swiftui-listview.png" alt="SwiftUI ListItemView" title="SwiftUI ListItemView" /></p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h3 id="list-view">List View</h3>
 
 <p>Now that we have the items in our list, lets create a simple list view that displays those items.</p>
@@ -639,6 +674,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 <p>There are further abstractions layers (such as interactors and use cases). However we are less concerned with them in this discussion and more on the relationship between the view and the presenter who is holding the state and logic of the view.</p>
 
 <h3 id="abstracting-the-state">Abstracting the state</h3>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <p>So at the moment we have a pretty stateless SwiftUI view that simply displays a hardcoded list. Now let’s attempt to abstract the list items away into another object that is injected into the view. This object would be responsible for fetching our items and loading them for the view.</p>
 
@@ -816,6 +858,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 <span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span> <span class="o">=</span> <span class="n">items</span>
 <span class="k">let</span> <span class="nv">contentView</span> <span class="o">=</span> <span class="kt">ContentView</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="n">presenter</span><span class="p">)</span></code></pre></figure>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p>Now let’s run this as part of an app and see what happens:</p>
 
 <p><img src="/assets/images/Demo.mov" alt="Presenter Demo" title="Presenter demo" /></p>
@@ -912,6 +961,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 
 <p>When not using the repository pattern it is quite common to access and use these elements directly, either in your ViewController or in some other part of your app depending how it is structured.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="the-problem">The problem</h2>
 
 <p>What’s the problem with this approach? Your app becomes difficult to maintain. Now if you only have a small app with a few screens then this isn’t much of a problem as there are only a few elements to change.</p>
@@ -949,6 +1005,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 <p>So what is the difference here? As you can see the Core Data stack is still returning NSManagedObjects, however the repository is converting that to a domain object. This object doesn’t inherit from NSManagedObject, also it’s structure and attributes are defined by the app rather than what is in the data store.</p>
 
 <p>Now if we wanted to move away from Core Data to something else the only classes that need to be changed are the Core Data stack and the repository. The rest of the app does not need to be changed as we can map the new data stores type to our domain objects using the repository.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="example">Example</h2>
 
@@ -1015,6 +1078,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
   <li>Output any errors</li>
   <li>So here we are outputting the name, address and location of the user we get back. Super simple right now.</li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="managing-change">Managing change</h2>
 
@@ -1133,6 +1203,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 <p>As you can see from even this simple example. We would have to change 7 lines of code, just to produce the same output. Now imagine this change happening on a much bigger project! There could possibly be 100s of lines of code that would need updating, all because the API response has changed.</p>
 
 <h2 id="repository-pattern">Repository Pattern</h2>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <p>Here is where the repository pattern comes in. We can create a user repository that fetches the user and converts it to our domain object. That way we don’t need to update the output.</p>
 
@@ -1258,6 +1335,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
     <span class="kd">func</span> <span class="nf">edit</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">DomainUser</span><span class="p">,</span> <span class="nv">completionHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{}</span>
 <span class="p">}</span></code></pre></figure>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p>There’s quite a bit of code here so let’s step through it.</p>
 
 <ol>
@@ -1335,6 +1419,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 </ul>
 
 <p>Feel free to <a href="https://github.com/pyartez/blog-samples">download the playground</a> and play around with the examples yourself</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 
                 
@@ -1422,6 +1513,13 @@ All apps developed require data of some description. This data is stored somewhe
 </ul>
 
 <p>This is just a sample of the challenges faced when trying to use a relational database as a caching layer for your app. Now you could build some custom caching layer that writes things to disk or a library such as <a href="https://github.com/pinterest/PINCache">PINCache</a>. However what if I told you there is something simpler that is already built in to iOS as standard?</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="caching-headers">Caching Headers</h2>
 
@@ -1526,6 +1624,13 @@ Request2 Cache Header: max-age=3
 
 <p>How is this different from above. The main difference you will notice is that the request times are now different. The second request timestamp is 5 seconds after the first. This is because our cache time is 3 seconds now, so the second request is no longer pulling from the cache and is in fact a new request with a new response.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="offline-and-the-network-conditioner">Offline and the Network Conditioner</h2>
 
 <p>Now you are probably asking yourself what this has to do with offline caching? To understand how we can leverage this caching behaviour we need to throttle our requests so that they fail. One of the tools at our disposal is something called the Network Conditioner. This is provided by Apple in the <a href="https://developer.apple.com/download/more/?q=Additional%20Tools">additional tools</a> download.</p>
@@ -1629,6 +1734,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 
 <p>Now that we have shown how to grab cached requests from the cache, let’s wrap this up in a nice way so we can reuse it if we wish</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="wrapping-it-up">Wrapping it up</h2>
 
 <p>First of all lets create a standard swift example, then we will have a look at how we can do this in Combine and some of the challenges in doing so.</p>
@@ -1664,6 +1776,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 </ol>
 
 <p>As the completion handler returns Data, URLResponse and Error we are able to return the data and response even if there is an error. That is a bit of a disadvantage in this case as the function caller needs to be aware that they may receive an error but also the cached response as well so need to cater for those scenario themselves.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="combine">Combine</h2>
 
@@ -1789,6 +1908,13 @@ Request2 Cache Header: max-age=3
 
 <p>The above implementation works fine if we just want to display cached data. However you may wish to inform the user that there was a connection failure and they are viewing old / stale information. So how can we get around this? In order to send the cached value, then the error we would need to create a custom Combine publisher. We won’t cover that here as that is a post in itself.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>We have shown how we can make use of built in functionality of URLSession and URLCache along with the HTTP standard headers to provide simple and basic offline caching.</p>
@@ -1898,6 +2024,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
 
 <p>In this post we are going to demonstrate how we can use <a href="https://docs.swift.org/swift-book/LanguageGuide/Generics.html">Generics</a> and <a href="https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types">Codable</a> to help us build a simple reusable JSON decoder to download and parse responses from our endpoints.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="building-our-codable-objects">Building our codable objects</h2>
 
 <p>The first thing we need to do is build our codable objects. Objects that implement the Codable protocol allow <a href="https://developer.apple.com/documentation/swift/encoder">Encoders</a> and <a href="https://developer.apple.com/documentation/swift/decoder">Decoders</a> to encode or decode them to and from an external representation such as JSON.</p>
@@ -1965,6 +2098,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
 
 <p>How easy was that?! Obviously we will still need to check the structs, in the example above none of the fields are optional which means data must be passed in otherwise our decoding will fail. We don’t need to worry about that here, but worth remembering when checking the generated code in your examples.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="urlsession-extension-and-generics">URLSession extension and Generics</h2>
 
 <p>To solve our problem we are going to wrap the existing URLSession <a href="https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask">dataTask</a> method. I’m sure if you have done any kind of request work in pure swift you will have used this method in some form so we aren’t going to go into the details of how it works.</p>
@@ -2030,6 +2170,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
   <li>The third check we perform is to unwrap data ready for decoding. If this fails (as in it’s nil) then we call the completionHandler with the response and our custom error defined in step 1.</li>
   <li>The final piece of the puzzle is to attempt to decode the data into type T we defined in the method signature as part of step 2. If this succeeds we can call our completion handler with our decoded type and response. If it throws an error we capture the error and return it using the catch block below.</li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="see-it-in-action">See it in action</h2>
 
@@ -2103,6 +2250,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
   <li>Here we are using the built in <a href="https://developer.apple.com/documentation/combine/publishers/merge/3208943-decode">decode</a> method to attempt to decode our custom type using the JSONDecoder. Similar to the tryMap function above, any errors are pushed downstream to be handler later.</li>
   <li>The final piece of the puzzle is to use <a href="https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html">type erasure</a>. This removes the publisher class type and makes it AnyPublisher. For more info on type erasure see my <a href="https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html">previous post</a></li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="combine-in-action">Combine in action</h2>
 

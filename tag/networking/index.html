@@ -346,6 +346,13 @@
 
 <p>This is just a sample of the challenges faced when trying to use a relational database as a caching layer for your app. Now you could build some custom caching layer that writes things to disk or a library such as <a href="https://github.com/pinterest/PINCache">PINCache</a>. However what if I told you there is something simpler that is already built in to iOS as standard?</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="caching-headers">Caching Headers</h2>
 
 <p>To help explain this we need to explore how HTTP caching headers are intended to work. Now, most request to an API will return a bunch of HTTP headers. These provide information and advice to the receiver about the response to the request. We won’t cover them all but the one we are most interested in for this example is the <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html">Cache-Control</a> header.</p>
@@ -448,6 +455,13 @@ Request2 Cache Header: max-age=3
 </code></pre></div></div>
 
 <p>How is this different from above. The main difference you will notice is that the request times are now different. The second request timestamp is 5 seconds after the first. This is because our cache time is 3 seconds now, so the second request is no longer pulling from the cache and is in fact a new request with a new response.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="offline-and-the-network-conditioner">Offline and the Network Conditioner</h2>
 
@@ -552,6 +566,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 
 <p>Now that we have shown how to grab cached requests from the cache, let’s wrap this up in a nice way so we can reuse it if we wish</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="wrapping-it-up">Wrapping it up</h2>
 
 <p>First of all lets create a standard swift example, then we will have a look at how we can do this in Combine and some of the challenges in doing so.</p>
@@ -587,6 +608,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 </ol>
 
 <p>As the completion handler returns Data, URLResponse and Error we are able to return the data and response even if there is an error. That is a bit of a disadvantage in this case as the function caller needs to be aware that they may receive an error but also the cached response as well so need to cater for those scenario themselves.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="combine">Combine</h2>
 
@@ -712,6 +740,13 @@ Request2 Cache Header: max-age=3
 
 <p>The above implementation works fine if we just want to display cached data. However you may wish to inform the user that there was a connection failure and they are viewing old / stale information. So how can we get around this? In order to send the cached value, then the error we would need to create a custom Combine publisher. We won’t cover that here as that is a post in itself.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>We have shown how we can make use of built in functionality of URLSession and URLCache along with the HTTP standard headers to provide simple and basic offline caching.</p>
@@ -821,6 +856,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
 
 <p>In this post we are going to demonstrate how we can use <a href="https://docs.swift.org/swift-book/LanguageGuide/Generics.html">Generics</a> and <a href="https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types">Codable</a> to help us build a simple reusable JSON decoder to download and parse responses from our endpoints.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="building-our-codable-objects">Building our codable objects</h2>
 
 <p>The first thing we need to do is build our codable objects. Objects that implement the Codable protocol allow <a href="https://developer.apple.com/documentation/swift/encoder">Encoders</a> and <a href="https://developer.apple.com/documentation/swift/decoder">Decoders</a> to encode or decode them to and from an external representation such as JSON.</p>
@@ -888,6 +930,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
 
 <p>How easy was that?! Obviously we will still need to check the structs, in the example above none of the fields are optional which means data must be passed in otherwise our decoding will fail. We don’t need to worry about that here, but worth remembering when checking the generated code in your examples.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="urlsession-extension-and-generics">URLSession extension and Generics</h2>
 
 <p>To solve our problem we are going to wrap the existing URLSession <a href="https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask">dataTask</a> method. I’m sure if you have done any kind of request work in pure swift you will have used this method in some form so we aren’t going to go into the details of how it works.</p>
@@ -953,6 +1002,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
   <li>The third check we perform is to unwrap data ready for decoding. If this fails (as in it’s nil) then we call the completionHandler with the response and our custom error defined in step 1.</li>
   <li>The final piece of the puzzle is to attempt to decode the data into type T we defined in the method signature as part of step 2. If this succeeds we can call our completion handler with our decoded type and response. If it throws an error we capture the error and return it using the catch block below.</li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="see-it-in-action">See it in action</h2>
 
@@ -1026,6 +1082,13 @@ Following on from the previous post where we explored simple JSON decoding. In t
   <li>Here we are using the built in <a href="https://developer.apple.com/documentation/combine/publishers/merge/3208943-decode">decode</a> method to attempt to decode our custom type using the JSONDecoder. Similar to the tryMap function above, any errors are pushed downstream to be handler later.</li>
   <li>The final piece of the puzzle is to use <a href="https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html">type erasure</a>. This removes the publisher class type and makes it AnyPublisher. For more info on type erasure see my <a href="https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html">previous post</a></li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="combine-in-action">Combine in action</h2>
 

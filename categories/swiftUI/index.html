@@ -273,6 +273,13 @@
 
 <p>This is something that is fairly straight forward in UIKit and makes a lot of sense. In this article we are going to discuss the workings of SwiftUI and how that approach is no longer possible.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="example">Example</h2>
 
 <figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
@@ -374,6 +381,13 @@
   <li>We are also exposing navigation to the view, a presenter typically would not need to expose navigation functionality to the view. It would handle a tap event and then hand off that navigation logic to the router. Here we have to expose that functionality to the view itself.</li>
 </ol>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="keep-with-uikit-for-navigation-for-now">Keep with UIKit for navigation, for now</h2>
 
 <p>My personal feeling is that navigation in SwiftUI could do with some more work. Views themselves should not know or care about where they are navigating to and how. They should be a visual representation of state. Of course, the navigation could be a presentation of state too, however a quick peak at the NavigationView docs shows no access to any form of state at all. The navigation view polices its own state, nothing outside of the object has a way to modify that state.</p>
@@ -427,6 +441,13 @@
 </ol>
 
 <p>Hopefully you found this helpful when exploring navigation options in SwiftUI. You can find the <a href="https://github.com/pyartez/swiftUI-router">SwiftUI Sample</a> and the <a href="https://github.com/pyartez/swiftui-uihostingviewcontroller">UIHostingController</a> samples on github.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 
         
@@ -496,6 +517,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 
 <p>As SwiftUI is the future, I’ve been investigating how teams might migrate their existing architectures across to the new technology. There a number of challenges presented by migrating to SwiftUI we will discuss below. As the title suggests we will be exploring how to use a presenter to control a SwiftUI view. It doesn’t matter which architecture you are using as such, whether it’s VIPER, MVVVM, VIP, MVP etc. As long as the logic and state of the view has been abstracted away from the view itself so it can be properly unit tested.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="example">Example</h2>
 
 <h3 id="list-item-view">List Item View</h3>
@@ -553,6 +581,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 
 <p><img src="/assets/images/swiftui-listview.png" alt="SwiftUI ListItemView" title="SwiftUI ListItemView" /></p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h3 id="list-view">List View</h3>
 
 <p>Now that we have the items in our list, lets create a simple list view that displays those items.</p>
@@ -599,6 +634,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 <p>There are further abstractions layers (such as interactors and use cases). However we are less concerned with them in this discussion and more on the relationship between the view and the presenter who is holding the state and logic of the view.</p>
 
 <h3 id="abstracting-the-state">Abstracting the state</h3>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <p>So at the moment we have a pretty stateless SwiftUI view that simply displays a hardcoded list. Now let’s attempt to abstract the list items away into another object that is injected into the view. This object would be responsible for fetching our items and loading them for the view.</p>
 
@@ -775,6 +817,13 @@ As I’m sure any iOS developer now knows, the future of iOS app development is 
 <span class="k">let</span> <span class="nv">presenter</span> <span class="o">=</span> <span class="kt">ListPresenterImp</span><span class="p">()</span>
 <span class="n">presenter</span><span class="o">.</span><span class="n">listItems</span> <span class="o">=</span> <span class="n">items</span>
 <span class="k">let</span> <span class="nv">contentView</span> <span class="o">=</span> <span class="kt">ContentView</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="n">presenter</span><span class="p">)</span></code></pre></figure>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <p>Now let’s run this as part of an app and see what happens:</p>
 

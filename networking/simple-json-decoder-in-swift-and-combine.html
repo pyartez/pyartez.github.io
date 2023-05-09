@@ -272,6 +272,13 @@
 
 <p>In this post we are going to demonstrate how we can use <a href="https://docs.swift.org/swift-book/LanguageGuide/Generics.html">Generics</a> and <a href="https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types">Codable</a> to help us build a simple reusable JSON decoder to download and parse responses from our endpoints.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="building-our-codable-objects">Building our codable objects</h2>
 
 <p>The first thing we need to do is build our codable objects. Objects that implement the Codable protocol allow <a href="https://developer.apple.com/documentation/swift/encoder">Encoders</a> and <a href="https://developer.apple.com/documentation/swift/decoder">Decoders</a> to encode or decode them to and from an external representation such as JSON.</p>
@@ -339,6 +346,13 @@
 
 <p>How easy was that?! Obviously we will still need to check the structs, in the example above none of the fields are optional which means data must be passed in otherwise our decoding will fail. We don’t need to worry about that here, but worth remembering when checking the generated code in your examples.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <h2 id="urlsession-extension-and-generics">URLSession extension and Generics</h2>
 
 <p>To solve our problem we are going to wrap the existing URLSession <a href="https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask">dataTask</a> method. I’m sure if you have done any kind of request work in pure swift you will have used this method in some form so we aren’t going to go into the details of how it works.</p>
@@ -404,6 +418,13 @@
   <li>The third check we perform is to unwrap data ready for decoding. If this fails (as in it’s nil) then we call the completionHandler with the response and our custom error defined in step 1.</li>
   <li>The final piece of the puzzle is to attempt to decode the data into type T we defined in the method signature as part of step 2. If this succeeds we can call our completion handler with our decoded type and response. If it throws an error we capture the error and return it using the catch block below.</li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="see-it-in-action">See it in action</h2>
 
@@ -477,6 +498,13 @@
   <li>Here we are using the built in <a href="https://developer.apple.com/documentation/combine/publishers/merge/3208943-decode">decode</a> method to attempt to decode our custom type using the JSONDecoder. Similar to the tryMap function above, any errors are pushed downstream to be handler later.</li>
   <li>The final piece of the puzzle is to use <a href="https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html">type erasure</a>. This removes the publisher class type and makes it AnyPublisher. For more info on type erasure see my <a href="https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html">previous post</a></li>
 </ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="combine-in-action">Combine in action</h2>
 

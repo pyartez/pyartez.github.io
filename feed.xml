@@ -5,8 +5,8 @@
     <description>Has been building software for over 17 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 09 May 2023 13:08:48 +0100</pubDate>
-    <lastBuildDate>Tue, 09 May 2023 13:08:48 +0100</lastBuildDate>
+    <pubDate>Tue, 09 May 2023 15:56:39 +0100</pubDate>
+    <lastBuildDate>Tue, 09 May 2023 15:56:39 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -976,6 +976,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 
 &lt;p&gt;In this article we will focus on the Single Responsibility Principle.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
 
 &lt;p&gt;The first principle in the list is the Single Responsibility Principle. This principle is defined as follows:&lt;/p&gt;
@@ -1085,6 +1092,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 
 &lt;p&gt;Our URL builder isn’t particularly complex so doesn’t need many tests. But at least here with it being in a separate component we can test the construction and make sure it’s being created correctly. We could expand this test to test other elements of the request if needed, or if we needed different parameters to build the request.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;parser&quot;&gt;Parser&lt;/h3&gt;
 
 &lt;p&gt;Next lets take the parser and put that into it’s own class.&lt;/p&gt;
@@ -1158,6 +1172,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;I’m aware that we aren’t handling errors in this example, this has been done to try and keep things as simple as possible&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;putting-it-all-together&quot;&gt;Putting it all together&lt;/h2&gt;
 
 &lt;p&gt;Now that we have separated out these components into separate pieces, lets see how our datasource looks now.&lt;/p&gt;
@@ -1209,6 +1230,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;/ul&gt;
 
 &lt;p&gt;Feel free to &lt;a href=&quot;https://github.com/pyartez/single-responsibility&quot;&gt;download the sample&lt;/a&gt; and play around with the tests yourself!&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 10 Apr 2021 06:00:00 +0100</pubDate>
         <link>https://pyartez.github.io/architecture/solid-principles-in-swift-single-responsibility-principle.html</link>
@@ -1232,6 +1260,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;p&gt;If you are using an advanced iOS architecture VIPER, MVVM etc it is probably the case that you have abstracted your routing or creating of your view controllers away into a separate part of your architecture. When you need to navigate or deal with a deeplink for example, you will hopefully have something like a dependency injection framework or factory to create your view controller. This is than pushed onto the navigation stack or presented by the view controller depending on what you are trying to do.&lt;/p&gt;
 
 &lt;p&gt;This is something that is fairly straight forward in UIKit and makes a lot of sense. In this article we are going to discuss the workings of SwiftUI and how that approach is no longer possible.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;example&quot;&gt;Example&lt;/h2&gt;
 
@@ -1334,6 +1369,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
   &lt;li&gt;We are also exposing navigation to the view, a presenter typically would not need to expose navigation functionality to the view. It would handle a tap event and then hand off that navigation logic to the router. Here we have to expose that functionality to the view itself.&lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;keep-with-uikit-for-navigation-for-now&quot;&gt;Keep with UIKit for navigation, for now&lt;/h2&gt;
 
 &lt;p&gt;My personal feeling is that navigation in SwiftUI could do with some more work. Views themselves should not know or care about where they are navigating to and how. They should be a visual representation of state. Of course, the navigation could be a presentation of state too, however a quick peak at the NavigationView docs shows no access to any form of state at all. The navigation view polices its own state, nothing outside of the object has a way to modify that state.&lt;/p&gt;
@@ -1387,6 +1429,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;/ol&gt;
 
 &lt;p&gt;Hopefully you found this helpful when exploring navigation options in SwiftUI. You can find the &lt;a href=&quot;https://github.com/pyartez/swiftUI-router&quot;&gt;SwiftUI Sample&lt;/a&gt; and the &lt;a href=&quot;https://github.com/pyartez/swiftui-uihostingviewcontroller&quot;&gt;UIHostingController&lt;/a&gt; samples on github.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 23 Feb 2021 08:00:00 +0000</pubDate>
         <link>https://pyartez.github.io/swiftui/programmatic-routing-swiftui.html</link>
@@ -1410,6 +1459,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;p&gt;As I’m sure any iOS developer now knows, the future of iOS app development is &lt;a href=&quot;https://developer.apple.com/xcode/swiftui/&quot;&gt;SwiftUI&lt;/a&gt;. Apple’s new UI development language is now on it’s 2nd major release. While my own personal feeling is that the framework is not quite ready for prime time (much like when Swift first arrived. It’s missing some fairly key features) and we are perhaps a version or 2 away from it realistically being an option for being used to build a complete app. There is no denying that it is the future and when it works well, it makes building UI a lot easier.&lt;/p&gt;
 
 &lt;p&gt;As SwiftUI is the future, I’ve been investigating how teams might migrate their existing architectures across to the new technology. There a number of challenges presented by migrating to SwiftUI we will discuss below. As the title suggests we will be exploring how to use a presenter to control a SwiftUI view. It doesn’t matter which architecture you are using as such, whether it’s VIPER, MVVVM, VIP, MVP etc. As long as the logic and state of the view has been abstracted away from the view itself so it can be properly unit tested.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;example&quot;&gt;Example&lt;/h2&gt;
 
@@ -1468,6 +1524,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/swiftui-listview.png&quot; alt=&quot;SwiftUI ListItemView&quot; title=&quot;SwiftUI ListItemView&quot; /&gt;&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;list-view&quot;&gt;List View&lt;/h3&gt;
 
 &lt;p&gt;Now that we have the items in our list, lets create a simple list view that displays those items.&lt;/p&gt;
@@ -1514,6 +1577,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;p&gt;There are further abstractions layers (such as interactors and use cases). However we are less concerned with them in this discussion and more on the relationship between the view and the presenter who is holding the state and logic of the view.&lt;/p&gt;
 
 &lt;h3 id=&quot;abstracting-the-state&quot;&gt;Abstracting the state&lt;/h3&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;So at the moment we have a pretty stateless SwiftUI view that simply displays a hardcoded list. Now let’s attempt to abstract the list items away into another object that is injected into the view. This object would be responsible for fetching our items and loading them for the view.&lt;/p&gt;
 
@@ -1691,6 +1761,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;span class=&quot;n&quot;&gt;presenter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;listItems&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;items&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;contentView&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ContentView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;presenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;presenter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;p&gt;Now let’s run this as part of an app and see what happens:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/Demo.mov&quot; alt=&quot;Presenter Demo&quot; title=&quot;Presenter demo&quot; /&gt;&lt;/p&gt;
@@ -1734,6 +1811,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 
 &lt;p&gt;When not using the repository pattern it is quite common to access and use these elements directly, either in your ViewController or in some other part of your app depending how it is structured.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
 
 &lt;p&gt;What’s the problem with this approach? Your app becomes difficult to maintain. Now if you only have a small app with a few screens then this isn’t much of a problem as there are only a few elements to change.&lt;/p&gt;
@@ -1771,6 +1855,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;p&gt;So what is the difference here? As you can see the Core Data stack is still returning NSManagedObjects, however the repository is converting that to a domain object. This object doesn’t inherit from NSManagedObject, also it’s structure and attributes are defined by the app rather than what is in the data store.&lt;/p&gt;
 
 &lt;p&gt;Now if we wanted to move away from Core Data to something else the only classes that need to be changed are the Core Data stack and the repository. The rest of the app does not need to be changed as we can map the new data stores type to our domain objects using the repository.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;example&quot;&gt;Example&lt;/h2&gt;
 
@@ -1837,6 +1928,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
   &lt;li&gt;Output any errors&lt;/li&gt;
   &lt;li&gt;So here we are outputting the name, address and location of the user we get back. Super simple right now.&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;managing-change&quot;&gt;Managing change&lt;/h2&gt;
 
@@ -1955,6 +2053,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;p&gt;As you can see from even this simple example. We would have to change 7 lines of code, just to produce the same output. Now imagine this change happening on a much bigger project! There could possibly be 100s of lines of code that would need updating, all because the API response has changed.&lt;/p&gt;
 
 &lt;h2 id=&quot;repository-pattern&quot;&gt;Repository Pattern&lt;/h2&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;Here is where the repository pattern comes in. We can create a user repository that fetches the user and converts it to our domain object. That way we don’t need to update the output.&lt;/p&gt;
 
@@ -2080,6 +2185,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
     &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;edit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DomainUser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completionHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;@escaping&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;p&gt;There’s quite a bit of code here so let’s step through it.&lt;/p&gt;
 
 &lt;ol&gt;
@@ -2157,6 +2269,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;/ul&gt;
 
 &lt;p&gt;Feel free to &lt;a href=&quot;https://github.com/pyartez/blog-samples&quot;&gt;download the playground&lt;/a&gt; and play around with the examples yourself&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 </description>
         <pubDate>Sun, 19 Jul 2020 08:00:00 +0100</pubDate>
         <link>https://pyartez.github.io/architecture/repository-pattern-in-swift-and-combine.html</link>
@@ -2191,6 +2310,13 @@ Abstractions should not depend on details. Details (concrete implementations) sh
 &lt;/ul&gt;
 
 &lt;p&gt;This is just a sample of the challenges faced when trying to use a relational database as a caching layer for your app. Now you could build some custom caching layer that writes things to disk or a library such as &lt;a href=&quot;https://github.com/pinterest/PINCache&quot;&gt;PINCache&lt;/a&gt;. However what if I told you there is something simpler that is already built in to iOS as standard?&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;caching-headers&quot;&gt;Caching Headers&lt;/h2&gt;
 
@@ -2295,6 +2421,13 @@ Request2 Cache Header: max-age=3
 
 &lt;p&gt;How is this different from above. The main difference you will notice is that the request times are now different. The second request timestamp is 5 seconds after the first. This is because our cache time is 3 seconds now, so the second request is no longer pulling from the cache and is in fact a new request with a new response.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;offline-and-the-network-conditioner&quot;&gt;Offline and the Network Conditioner&lt;/h2&gt;
 
 &lt;p&gt;Now you are probably asking yourself what this has to do with offline caching? To understand how we can leverage this caching behaviour we need to throttle our requests so that they fail. One of the tools at our disposal is something called the Network Conditioner. This is provided by Apple in the &lt;a href=&quot;https://developer.apple.com/download/more/?q=Additional%20Tools&quot;&gt;additional tools&lt;/a&gt; download.&lt;/p&gt;
@@ -2398,6 +2531,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 
 &lt;p&gt;Now that we have shown how to grab cached requests from the cache, let’s wrap this up in a nice way so we can reuse it if we wish&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;wrapping-it-up&quot;&gt;Wrapping it up&lt;/h2&gt;
 
 &lt;p&gt;First of all lets create a standard swift example, then we will have a look at how we can do this in Combine and some of the challenges in doing so.&lt;/p&gt;
@@ -2433,6 +2573,13 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 &lt;/ol&gt;
 
 &lt;p&gt;As the completion handler returns Data, URLResponse and Error we are able to return the data and response even if there is an error. That is a bit of a disadvantage in this case as the function caller needs to be aware that they may receive an error but also the cached response as well so need to cater for those scenario themselves.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;combine&quot;&gt;Combine&lt;/h2&gt;
 
@@ -2558,6 +2705,13 @@ Request2 Cache Header: max-age=3
 
 &lt;p&gt;The above implementation works fine if we just want to display cached data. However you may wish to inform the user that there was a connection failure and they are viewing old / stale information. So how can we get around this? In order to send the cached value, then the error we would need to create a custom Combine publisher. We won’t cover that here as that is a post in itself.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;We have shown how we can make use of built in functionality of URLSession and URLCache along with the HTTP standard headers to provide simple and basic offline caching.&lt;/p&gt;
@@ -2611,6 +2765,13 @@ Request2 Cache Header: max-age=3
 &lt;p&gt;There is high chance you will have some code in your app to download, parse and return objects for your app to use from an endpoint (unless you are using a network library such as &lt;a href=&quot;https://github.com/Alamofire/Alamofire&quot;&gt;Alamofire&lt;/a&gt;)&lt;/p&gt;
 
 &lt;p&gt;In this post we are going to demonstrate how we can use &lt;a href=&quot;https://docs.swift.org/swift-book/LanguageGuide/Generics.html&quot;&gt;Generics&lt;/a&gt; and &lt;a href=&quot;https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types&quot;&gt;Codable&lt;/a&gt; to help us build a simple reusable JSON decoder to download and parse responses from our endpoints.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;building-our-codable-objects&quot;&gt;Building our codable objects&lt;/h2&gt;
 
@@ -2679,6 +2840,13 @@ Request2 Cache Header: max-age=3
 
 &lt;p&gt;How easy was that?! Obviously we will still need to check the structs, in the example above none of the fields are optional which means data must be passed in otherwise our decoding will fail. We don’t need to worry about that here, but worth remembering when checking the generated code in your examples.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;urlsession-extension-and-generics&quot;&gt;URLSession extension and Generics&lt;/h2&gt;
 
 &lt;p&gt;To solve our problem we are going to wrap the existing URLSession &lt;a href=&quot;https://developer.apple.com/documentation/foundation/urlsession/1410330-datatask&quot;&gt;dataTask&lt;/a&gt; method. I’m sure if you have done any kind of request work in pure swift you will have used this method in some form so we aren’t going to go into the details of how it works.&lt;/p&gt;
@@ -2744,6 +2912,13 @@ Request2 Cache Header: max-age=3
   &lt;li&gt;The third check we perform is to unwrap data ready for decoding. If this fails (as in it’s nil) then we call the completionHandler with the response and our custom error defined in step 1.&lt;/li&gt;
   &lt;li&gt;The final piece of the puzzle is to attempt to decode the data into type T we defined in the method signature as part of step 2. If this succeeds we can call our completion handler with our decoded type and response. If it throws an error we capture the error and return it using the catch block below.&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;see-it-in-action&quot;&gt;See it in action&lt;/h2&gt;
 
@@ -2817,6 +2992,13 @@ Request2 Cache Header: max-age=3
   &lt;li&gt;Here we are using the built in &lt;a href=&quot;https://developer.apple.com/documentation/combine/publishers/merge/3208943-decode&quot;&gt;decode&lt;/a&gt; method to attempt to decode our custom type using the JSONDecoder. Similar to the tryMap function above, any errors are pushed downstream to be handler later.&lt;/li&gt;
   &lt;li&gt;The final piece of the puzzle is to use &lt;a href=&quot;https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html&quot;&gt;type erasure&lt;/a&gt;. This removes the publisher class type and makes it AnyPublisher. For more info on type erasure see my &lt;a href=&quot;https://pyartez.github.io/swift/apdvanced/protocols/generics/what-is-type-erasure.html&quot;&gt;previous post&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;combine-in-action&quot;&gt;Combine in action&lt;/h2&gt;
 
