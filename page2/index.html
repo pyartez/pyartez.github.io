@@ -191,6 +191,8 @@
             
                 
             
+                
+            
         </div>
         
      -->
@@ -257,6 +259,250 @@
 
 
                 
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2021-02-23T08:00:00+00:00" itemprop="datePublished">23 Feb, 2021</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/swiftUI/">swiftUI</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://pyartez.github.io/swiftui/programmatic-routing-swiftui.html">Programmatic routing in SwiftUI</a></h2>
+    </header>
+
+    <div class="post-content">
+        <h2 id="background">Background</h2>
+
+<p>As I’m sure any iOS developer now knows, the future of iOS app development is <a href="https://developer.apple.com/xcode/swiftui/">SwiftUI</a>. Apple’s new UI development language is now on its 2nd major release. While my own personal feeling is that the framework is not quite ready for prime time (much like when Swift first arrived. It’s missing some fairly key features) and we are perhaps a version or 2 away from it realistically being an option for being used to build a complete app. There is no denying that it is the future and when it works well, it makes building UI a lot easier.</p>
+
+<p>If you are using an advanced iOS architecture VIPER, MVVM etc it is probably the case that you have abstracted your routing or creating of your view controllers away into a separate part of your architecture. When you need to navigate or deal with a deeplink for example, you will hopefully have something like a dependency injection framework or factory to create your view controller. This is than pushed onto the navigation stack or presented by the view controller depending on what you are trying to do.</p>
+
+<p>This is something that is fairly straight forward in UIKit and makes a lot of sense. In this article we are going to discuss the workings of SwiftUI and how that approach is no longer possible.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="example">Example</h2>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kt">NavigationLink</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">DetailView</span><span class="p">())</span> <span class="p">{</span>
+                <span class="kt">Text</span><span class="p">(</span><span class="s">"Navigate"</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        
+    <span class="p">}</span> 
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">struct</span> <span class="kt">DetailView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">Text</span><span class="p">(</span><span class="s">"Detail View"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is a fairly simple SwiftUI example but let’s talk through it.</p>
+
+<ol>
+  <li>First we have a ContentView, this contains a <a href="https://developer.apple.com/documentation/swiftui/navigationview">NavigationView</a> which is kind of similar to a UINavigationController in UIKit, however it is a lot more limited. We have a navigation link that allows the user to tap the text view and will ‘push’ the detail view on to the stack.</li>
+  <li>Second we have our detail view that simply displays some text.</li>
+</ol>
+
+<p>If we run the code and tap on the links we should get something like this:</p>
+
+<p><img src="/assets/images/navigation-clip.gif" alt="SwiftUI Navigation" title="SwiftUI Navigation" /></p>
+
+<p>Seems to work as intended right? What problems are there with this approach?</p>
+
+<ol>
+  <li>There is a tight coupling between the ContentView and the DetailView, what if we want to change the navigation destination?</li>
+  <li>What if we want to use the ContentView in a different app that doesn’t contain a DetailView but something else?</li>
+  <li>What if the DetailView has dependencies we need to inject when it’s created? How does the ContentView know what to do in order to create the DetailView?</li>
+  <li>What if we wish to perform an event such as fire an analytics event before moving to the next view?</li>
+  <li>What if we wish to present the view in a modal rather than pushing it to the navigation stack?</li>
+</ol>
+
+<p>Many of the more advanced architectures and frameworks have already solved these problems using a router / co-ordinator pattern. These are responsible for handling any navigation logic and often talk to a dependency injection module in order to create the destination view and pushing it onto the navigation stack or presenting it.</p>
+
+<h2 id="decoupling-the-views">Decoupling the Views</h2>
+
+<p>The first thing we can try to do is abstract away the creation of the detail view. This will at least give us the opportunity to change the destination without the knowledge of the ContentView.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">final</span> <span class="kd">class</span> <span class="kt">ContentPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">getDetailView</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">AnyView</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">AnyView</span><span class="p">(</span><span class="kt">DetailView</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">ContentPresenter</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">ContentPresenter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kt">NavigationLink</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="n">presenter</span><span class="o">.</span><span class="nf">getDetailView</span><span class="p">())</span> <span class="p">{</span>
+                <span class="kt">Text</span><span class="p">(</span><span class="s">"Navigate"</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+        
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">DetailView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">Text</span><span class="p">(</span><span class="s">"Detail View"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>So let’s have a look at what we are doing here:</p>
+
+<ol>
+  <li>First of all we have tried to separate out the creation of the destination view into another object. Ideally we could put this into a protocol but for the purpose of simplicity we have just used an object.</li>
+  <li>We are injecting the presenter into the ContentView now, you will also notice in the NavigationLink we are now calling a method on the presenter to get the destination.</li>
+</ol>
+
+<p>What does this give us that the previous example doesn’t?</p>
+
+<ol>
+  <li>There is no longer tight coupling between the ContentView and the DetailView. The destination is no longer hardcoded. If we make the presenter using a protocol for example. We can inject different presenters and have different destinations.</li>
+  <li>If the detailview has its own dependencies that need injecting then the presenter can take care of that as well without having to code them in here.</li>
+</ol>
+
+<p>However it’s not all tea and biscuits! There are still a number of issues highlighted earlier that this solution doesn’t solve:</p>
+
+<ol>
+  <li>We are still not able to trigger any analytics events or any other app behaviours off the back of the navigation trigger. Block the user from navigating until they have logged in for example.</li>
+  <li>We can’t change or configure how the navigation happens, for example presenting a login vs actually performing navigation.</li>
+  <li>We are also exposing navigation to the view, a presenter typically would not need to expose navigation functionality to the view. It would handle a tap event and then hand off that navigation logic to the router. Here we have to expose that functionality to the view itself.</li>
+</ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="keep-with-uikit-for-navigation-for-now">Keep with UIKit for navigation, for now</h2>
+
+<p>My personal feeling is that navigation in SwiftUI could do with some more work. Views themselves should not know or care about where they are navigating to and how. They should be a visual representation of state. Of course, the navigation could be a presentation of state too, however a quick peak at the NavigationView docs shows no access to any form of state at all. The navigation view polices its own state, nothing outside of the object has a way to modify that state.</p>
+
+<p>Further to that, many of the methods we have come to expect from UINavigationController are simply not available here. Whether it’s lack of maturity or a slightly confused approach I don’t know. My recommendation for now would be to make use of UINavigationControllers and the <a href="https://developer.apple.com/documentation/swiftui/uihostingcontroller">UIHostingController</a> to perform navigation for the time being, at least until a better way to manage and manipulate the navigation state is added to SwiftUI.</p>
+
+<p>Let’s have a quick look at how that changes things. First we need to create a hosting controller and inject our SwiftUI view:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">presenter</span> <span class="o">=</span> <span class="kt">ContentPresenter</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">vc</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span><span class="nv">rootView</span><span class="p">:</span> <span class="kt">ContentView</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="n">presenter</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">navigationController</span> <span class="o">=</span> <span class="kt">UINavigationController</span><span class="p">(</span><span class="nv">rootViewController</span><span class="p">:</span> <span class="n">vc</span><span class="p">)</span>
+<span class="n">presenter</span><span class="o">.</span><span class="n">navigationController</span> <span class="o">=</span> <span class="n">navigationController</span></code></pre></figure>
+
+<p>So here we are creating our presenter and our view as before but adding them into a UIHostingViewController and a navigation controller. The UIHostingViewController allows us to put SwiftUI views into what is essentially a UIViewController and use it within a UIKit app.</p>
+
+<p>We have also passed a reference to the navigation controller to the presenter. Let’s have a look at our updated SwiftUI code now that we have refactored it into a UIHostingController.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
+<span class="kd">final</span> <span class="kd">class</span> <span class="kt">ContentPresenter</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="k">weak</span> <span class="k">var</span> <span class="nv">navigationController</span><span class="p">:</span> <span class="kt">UINavigationController</span><span class="p">?</span>
+    
+    <span class="kd">func</span> <span class="nf">buttonTapped</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Do whatever we like</span>
+        <span class="c1">// ...</span>
+        <span class="c1">// Navigate</span>
+        <span class="k">let</span> <span class="nv">vc</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span><span class="nv">rootView</span><span class="p">:</span> <span class="kt">DetailView</span><span class="p">())</span>
+        <span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">vc</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 2</span>
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presenter</span><span class="p">:</span> <span class="kt">ContentPresenter</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">presenter</span><span class="p">:</span> <span class="kt">ContentPresenter</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">presenter</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="p">{</span> <span class="n">presenter</span><span class="o">.</span><span class="nf">buttonTapped</span><span class="p">()</span> <span class="p">})</span> <span class="p">{</span>
+            <span class="kt">Text</span><span class="p">(</span><span class="s">"Navigate"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>What’s changed here:</p>
+
+<ol>
+  <li>First of all our presenter has replaced our getDetailView with a more generic button tapped function. This function can do any number of things we need it to do, before finally navigating. Here you can see we are using our reference to the navigation controller to push the new view controller.</li>
+  <li>In our SwiftUI view you will see we no longer have a NavigationView or a NavigationLink. Our view has become far more generic and doesn’t contain and navigation specific logic. You will also see that we have a button which has a tap action assigned by the presenter. This allows us to make the button do anything, not just trigger navigation.</li>
+</ol>
+
+<p>Hopefully you found this helpful when exploring navigation options in SwiftUI. You can find the <a href="https://github.com/pyartez/swiftUI-router">SwiftUI Sample</a> and the <a href="https://github.com/pyartez/swiftui-uihostingviewcontroller">UIHostingController</a> samples on github.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Programmatic routing in SwiftUI&p[summary]=Background
+
+As I’m sure any iOS developer now knows, the future of iOS app development is SwiftUI. Apple’s new UI development language is...&p[url]=https://pyartez.github.io/swiftui/programmatic-routing-swiftui.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/swiftui/programmatic-routing-swiftui.html&text=Background
+
+As I’m sure any iOS developer now knows, the future of iOS app development is SwiftUI. Apple’s new UI development language is...&hashtags=swift,combine,swiftui," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                
+                <li><a href="https://pyartez.github.io/tag/combine">combine</a></li>
+                
+                <li><a href="https://pyartez.github.io/tag/swiftui">swiftui</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
