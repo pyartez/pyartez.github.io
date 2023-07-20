@@ -5,9 +5,105 @@
     <description>Has been building software for over 17 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 30 Jun 2023 06:40:36 +0100</pubDate>
-    <lastBuildDate>Fri, 30 Jun 2023 06:40:36 +0100</lastBuildDate>
+    <pubDate>Thu, 20 Jul 2023 16:51:55 +0100</pubDate>
+    <lastBuildDate>Thu, 20 Jul 2023 16:51:55 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Best Practices for Giving Effective Feedback in Engineering Management</title>
+        <description>&lt;p&gt;Feedback is a fundamental part of management, especially in the field of engineering where precision, continual learning, and improvement are crucial. It is a powerful tool for guiding your team’s performance, fostering professional development, and building strong relationships. However, giving feedback effectively can be a challenging skill to master.&lt;/p&gt;
+
+&lt;p&gt;This article explores the best practices for giving effective feedback in engineering management.&lt;/p&gt;
+
+&lt;h2 id=&quot;understanding-feedback&quot;&gt;Understanding Feedback&lt;/h2&gt;
+
+&lt;p&gt;Feedback refers to the information that you provide to your team members about their performance, behavior, or outcomes. It can be positive (reinforcing good performance) or constructive (guiding improvements). Feedback is not just about pointing out what’s wrong or right, but about opening a dialogue to promote understanding, learning, and growth.&lt;/p&gt;
+
+&lt;p&gt;As an engineering manager, your role in giving feedback is to guide your team towards achieving their goals and the organization’s objectives, support their professional development, and foster a positive and productive work environment.&lt;/p&gt;
+
+&lt;h2 id=&quot;best-practices-for-giving-effective-feedback&quot;&gt;Best Practices for Giving Effective Feedback&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Be Specific and Clear&lt;/strong&gt; - Effective feedback is specific and clear, focusing on observable actions or outcomes rather than vague attributes. Instead of saying, “You did a good job,” say, “The way you debugged that complex code issue was impressive. Your systematic approach helped us meet the project deadline.” Specific feedback helps the recipient understand exactly what they did well or need to improve.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Be Timely&lt;/strong&gt; - Feedback is most effective when it is given promptly after the action or outcome. This ensures that the details are fresh in everyone’s mind and allows for immediate learning or reinforcement. However, also consider the recipient’s readiness to receive feedback and the appropriateness of the timing and setting.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Focus on the Action, Not the Person&lt;/strong&gt; - When giving feedback, focus on the action or outcome, not the person. This helps to separate the issue from the individual and prevents the feedback from being perceived as a personal attack. For example, instead of saying, “You are careless,” say, “I noticed there were several errors in the report. Let’s discuss how we can avoid these mistakes in the future.”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Use “I” Statements&lt;/strong&gt; - Using “I” statements, such as “I noticed,” “I feel,” or “I suggest,” can help to make your feedback more objective and less accusatory. It expresses your perspective rather than blaming or making assumptions about the other person.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Make it a Two-Way Conversation&lt;/strong&gt; - Feedback should be a two-way conversation, not a one-way lecture. Encourage the recipient to share their perspective, ask questions, and suggest solutions. This promotes understanding, buy-in, and collaboration.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Be Constructive and Forward-Looking&lt;/strong&gt; - Constructive feedback focuses on improvement and future performance, rather than dwelling on past mistakes. It identifies what can be done differently or better next time and provides guidance or resources to support improvement.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Balance Positive and Constructive Feedback&lt;/strong&gt; - While constructive feedback is important for learning and improvement, positive feedback is equally important for reinforcing good performance and boosting motivation and confidence. Strive for a balanced mix of positive and constructive feedback.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Consider the Recipient’s Perspective&lt;/strong&gt; - Effective feedback is sensitive to the recipient’s perspective, needs, and emotions. Consider their personality, their understanding of the issue, their readiness to receive feedback, and how they might perceive and react to your feedback. Tailor your feedback approach to suit the recipient.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Be Genuine and Respectful&lt;/strong&gt; - Feedback should be genuine, honest, and respectful. Avoid flattery or criticism that is not sincere or warranted. Show respect for the recipient’s feelings, ideas, and efforts, even when you are discussing areas for improvement.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Follow Up&lt;/strong&gt; - Feedback doesn’t end with the conversation. It’s important to follow up to ensure that the feedback has been understood and acted upon. This could involve discussing a plan for improvement, providing resources or support, reviewing progress, or acknowledging improvements.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;scenarios-and-strategies-in-engineering-management&quot;&gt;Scenarios and Strategies in Engineering Management&lt;/h2&gt;
+
+&lt;p&gt;Let’s consider a few scenarios related to giving feedback in engineering management and strategies to handle them effectively.&lt;/p&gt;
+
+&lt;h3 id=&quot;scenario-1-poor-performance&quot;&gt;Scenario 1: Poor Performance&lt;/h3&gt;
+
+&lt;p&gt;Suppose an engineer on your team, Alice, is consistently failing to meet her deadlines, causing delays in the project.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Strategy&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Have a private conversation with Alice about her performance. Be specific and objective about the issue (“I’ve noticed that the last three tasks have been submitted past the deadline”), and express your concern about its impact on the project. Encourage Alice to share her perspective and challenges. Discuss a plan for improvement and offer your support. Follow up regularly to review progress.&lt;/p&gt;
+
+&lt;h3 id=&quot;scenario-2-outstanding-performance&quot;&gt;Scenario 2: Outstanding Performance&lt;/h3&gt;
+
+&lt;p&gt;Imagine a situation where a junior engineer, Bob, has demonstrated an exceptional performance by solving a complex problem that even senior engineers were struggling with.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Strategy&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Acknowledge Bob’s achievement promptly and publicly. Be specific about what he did well (“Your solution to the complex problem was impressive and helped us move forward in the project”). Express your appreciation and confidence in his abilities. This positive feedback will boost Bob’s motivation and confidence and set a positive example for the team.&lt;/p&gt;
+
+&lt;h3 id=&quot;scenario-3-unprofessional-behavior&quot;&gt;Scenario 3: Unprofessional Behavior&lt;/h3&gt;
+
+&lt;p&gt;Consider a situation where a team member, Carol, frequently interrupts others during meetings, making some team members feel disrespected and unheard.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Strategy&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Address the issue privately with Carol. Focus on the behavior, not the person (“I’ve noticed that during meetings, there are times when others are interrupted”). Explain its impact on the team. Ask Carol for her perspective and discuss how meetings can be more respectful and inclusive. Follow up to ensure the behavior changes.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Giving effective feedback is a critical skill in engineering management. It involves being specific, timely, action-focused, constructive, balanced, considerate, genuine, and respectful. It’s about engaging in a two-way conversation to promote understanding, learning, and growth, and following up to ensure feedback is acted upon.&lt;/p&gt;
+
+&lt;p&gt;By implementing the best practices discussed in this article, you can give feedback effectively, guiding your team’s performance, supporting their professional development, and fostering a positive and productive work environment.&lt;/p&gt;
+
+&lt;p&gt;Remember, feedback is not just about correcting mistakes or enforcing standards. It’s about showing your team that you care about their success, growth, and well-being. So, approach feedback with empathy, openness, and dedication, and make a positive difference in your team’s performance, development, and morale.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 16 Jul 2023 06:00:00 +0100</pubDate>
+        <link>https://pyartez.github.io/management/best-practices-for-giving-effective-feedback-in-engineering-management.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/management/best-practices-for-giving-effective-feedback-in-engineering-management.html</guid>
+        
+        <category>feedback</category>
+        
+        <category>management</category>
+        
+        
+        <category>management</category>
+        
+      </item>
     
       <item>
         <title>Best Practices for Managing Employee Career Development in Engineering Management</title>
@@ -1381,199 +1477,6 @@ Abstractions should not depend on details. Details (concrete implementations) sh
         <pubDate>Mon, 18 Apr 2022 06:00:00 +0100</pubDate>
         <link>https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html</link>
         <guid isPermaLink="true">https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html</guid>
-        
-        <category>swift</category>
-        
-        <category>architecture</category>
-        
-        
-        <category>architecture</category>
-        
-      </item>
-    
-      <item>
-        <title>SOLID Principles in Swift - Open / Closed Principle</title>
-        <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
-
-&lt;p&gt;In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage&lt;/li&gt;
-  &lt;li&gt;Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies&lt;/li&gt;
-  &lt;li&gt;Rigidity: A change requires a lot of effort because it affects several parts of the project&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So what are the SOLID principles?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change&lt;/li&gt;
-  &lt;li&gt;Open-Closed Principle - Software should be open for extension but closed for modification&lt;/li&gt;
-  &lt;li&gt;Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program&lt;/li&gt;
-  &lt;li&gt;Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface&lt;/li&gt;
-  &lt;li&gt;Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In this article we will focus on the Open-Closed Principle.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-does-it-mean&quot;&gt;What does it mean?&lt;/h2&gt;
-
-&lt;p&gt;So the open-closed principle states:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Software should be open for extension but closed for modification&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;What exactly does this mean? I think out of all the principles this is the hardest to understand. Mostly due to the fact the explanation leaves far too much open to interpretation. A simple Google search will offer up several examples of how this principle works. In this article I will present my take on the principle and how to build software that will comply with it.&lt;/p&gt;
-
-&lt;p&gt;Let’s focus on a type that by design, violates the open closed principle.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;enums&quot;&gt;Enums&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html&quot;&gt;Enums&lt;/a&gt; are a very powerful tool in Swift. They are first class types and such can have associated values and conform to protocols for example. However when used at the boundary of a particular system or module they can present a particular problem.&lt;/p&gt;
-
-&lt;p&gt;Let’s imagine an analytics system where we can log events. This is a design pattern I’ve seen in many places:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newsList&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;newsDetail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sendEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;params&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;
-        
-        &lt;span class=&quot;c1&quot;&gt;// Send data to analytics network&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;newsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;News List&quot;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;newsDetail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;News detail&quot;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;newsList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[:]&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;newsDetail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Let’s look at what we have here.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The first thing that is defined is an enum that houses all the different analytics events that are available. Some with associated values.&lt;/li&gt;
-  &lt;li&gt;Next we have our analytics controller, this takes an event as a parameter, takes information from the event and would then send that on to our analytics system.&lt;/li&gt;
-  &lt;li&gt;Here we have extended the AnalyticsEvent enum to add 2 variables, one for title and one for params that contain a switch for each of our events.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;On the surface or at first look this might appear an ok solution. We have hidden our implementation of the analytics network inside our AnalyticsController and setup a defined set of events that we can support.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
-
-&lt;p&gt;Now lets look at the problems that this approach causes.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;What happens if we need to add new events to our analytics system?&lt;/li&gt;
-  &lt;li&gt;What if our analytics system was part of a separate package or module?&lt;/li&gt;
-  &lt;li&gt;What happens when we have a lot of events?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So first of all, every time we need to add / update or remove any of the events in our analytics system we need to modify the enum. We can’t just implement new events and have them be compatible with the system. Also if the number of events becomes very large then the code will grow large in size. Making it hard to read, maintain and a bit of a mess. Also the enum now has multiple responsibilities, as it covers many events breaking the &lt;a href=&quot;/architecture/solid-principles-in-swift-single-responsibility-principle.html&quot;&gt;single responsibility principle&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The second issue which is probably the more important one, is let’s say we are breaking our app down in to separate packages. This Analytics Controller and Event would be in a separate package, what if we wanted to re-use it across different projects? Both of these scenarios become very difficult because we are using an enum that would need to be updated to accommodate events for different apps. The package would need constantly updating as new events were added.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;the-solution&quot;&gt;The Solution&lt;/h3&gt;
-
-&lt;p&gt;So we have identified some issues with the above implementation, how can we change it to make solve these issues we have identified? Look at the new example:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NewsListEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;News List&quot;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[:]&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;NewsDetailEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;News detail&quot;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sendEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AnalyticsEvent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;params&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;
-        
-        &lt;span class=&quot;c1&quot;&gt;// Send data to analytics network&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Let’s look at how we have changed the example:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;First of all we have now removed the enum. Using an enum as a huge list of possible options is considered a code smell. Especially when it involves something that may change often. If you have a finite number of states that is unlikely to change, that is more suited to an enum than a list of analytics events. We have refactored those enum cases into 2 separate classes now.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;We have switched the enum for a protocol that exposes the necessary items required by our analytics controller (we could have potentially done this in the previous example however we would still have the enum).&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;So what advantages does this have over the previous implementation?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;With the events now being in separate classes we are now following the &lt;a href=&quot;/architecture/solid-principles-in-swift-single-responsibility-principle.html&quot;&gt;single responsibility principle&lt;/a&gt;, each event has its own class that can be updated whenever they need to be.&lt;/li&gt;
-  &lt;li&gt;Now that we are using a protocol and not an enum, we are now able to add new events to our app without ever having to touch the analytics system. Simply create a new class and make it conform to AnalyticsEvent, and we can use it with the analytics controller.&lt;/li&gt;
-  &lt;li&gt;Further to that we could have our analytics system in a separate reusable package, then our client apps could define their own set of events to use with the system.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Our analytics code is now open for extension, but does not need to be modified to support new events. Unlike our enum example.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 07 May 2021 06:00:00 +0100</pubDate>
-        <link>https://pyartez.github.io/architecture/solid-principles-in-swift-open-closed-principle.html</link>
-        <guid isPermaLink="true">https://pyartez.github.io/architecture/solid-principles-in-swift-open-closed-principle.html</guid>
         
         <category>swift</category>
         
