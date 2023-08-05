@@ -5,9 +5,98 @@
     <description>Has been building software for over 17 years! Looking to share some of the knowledge picked up along the way.</description>
     <link>https://pyartez.github.io/</link>
     <atom:link href="https://pyartez.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 20 Jul 2023 16:51:55 +0100</pubDate>
-    <lastBuildDate>Thu, 20 Jul 2023 16:51:55 +0100</lastBuildDate>
+    <pubDate>Sat, 05 Aug 2023 09:49:19 +0100</pubDate>
+    <lastBuildDate>Sat, 05 Aug 2023 09:49:19 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Structuring Your First 1-to-1 as an Engineering Manager</title>
+        <description>&lt;p&gt;Your first 1-to-1 meeting with each team member is a foundational event in your tenure as an engineering manager. It sets the tone for your relationship and is your opportunity to begin building trust, understanding, and alignment. However, this initial meeting can feel somewhat daunting. How do you structure it to ensure it’s effective and beneficial?&lt;/p&gt;
+
+&lt;p&gt;This article explores how to structure your first 1-to-1 meeting as an engineering manager.&lt;/p&gt;
+
+&lt;h2 id=&quot;understanding-the-purpose-of-a-1-to-1&quot;&gt;Understanding the Purpose of a 1-to-1&lt;/h2&gt;
+
+&lt;p&gt;The 1-to-1 meeting is a dedicated time for the manager and the employee to have a private, focused conversation. It serves multiple purposes, such as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Building a personal relationship&lt;/li&gt;
+  &lt;li&gt;Discussing progress, challenges, and support&lt;/li&gt;
+  &lt;li&gt;Providing and seeking feedback&lt;/li&gt;
+  &lt;li&gt;Exploring professional development opportunities&lt;/li&gt;
+  &lt;li&gt;Aligning on goals and expectations&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first 1-to-1 meeting with each team member is particularly important as it lays the foundation for these ongoing discussions and your working relationship.&lt;/p&gt;
+
+&lt;h2 id=&quot;structuring-your-first-1-to-1-meeting&quot;&gt;Structuring Your First 1-to-1 Meeting&lt;/h2&gt;
+
+&lt;p&gt;While there is no one-size-fits-all structure for a 1-to-1 meeting, here are some steps you can take to structure your first meeting effectively:&lt;/p&gt;
+
+&lt;h3 id=&quot;1-set-clear-objectives&quot;&gt;1. Set Clear Objectives&lt;/h3&gt;
+&lt;p&gt;Start by identifying what you want to achieve in the meeting. This could include getting to know the team member, understanding their role and contributions, discussing their aspirations and concerns, and establishing a communication channel.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-allocate-enough-time&quot;&gt;2. Allocate Enough Time&lt;/h3&gt;
+&lt;p&gt;Your first 1-to-1 meeting may take longer than subsequent ones because there’s more ground to cover. Allocate enough time to have a meaningful conversation without rushing - typically, one hour should suffice.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-prepare-ahead&quot;&gt;3. Prepare Ahead&lt;/h3&gt;
+&lt;p&gt;Prepare for the meeting by reviewing the team member’s role, responsibilities, performance, and any previous feedback or issues. Also prepare a list of topics or questions to discuss, focusing on understanding and building a relationship, rather than just tasks and performance.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-start-with-a-personal-connection&quot;&gt;4. Start With a Personal Connection&lt;/h3&gt;
+&lt;p&gt;Begin the meeting by building rapport. You could talk briefly about your background and management approach, and express your enthusiasm and expectations for your relationship. Also, encourage them to share about themselves - their interests, experiences, and motivations.&lt;/p&gt;
+
+&lt;h3 id=&quot;5-seek-understanding&quot;&gt;5. Seek Understanding&lt;/h3&gt;
+&lt;p&gt;Spend a substantial part of the meeting seeking to understand the team member. Ask open-ended questions about their role, accomplishments, challenges, support needs, aspirations, and feedback. Listen attentively and empathetically, and show appreciation for their insights and candor.&lt;/p&gt;
+
+&lt;h3 id=&quot;6-share-your-perspective-and-expectations&quot;&gt;6. Share Your Perspective and Expectations&lt;/h3&gt;
+&lt;p&gt;While it’s important to focus on the team member, also share your perspective and expectations as a manager. This could include your objectives, your management style, your expectations for communication and performance, and how you intend to support their success.&lt;/p&gt;
+
+&lt;h3 id=&quot;7-discuss-next-steps&quot;&gt;7. Discuss Next Steps&lt;/h3&gt;
+&lt;p&gt;End the meeting by discussing the next steps. This could include actions to address any issues or requests, scheduling the next 1-to-1 meeting, or setting goals or priorities for the coming period. Also, reassure them that they can always reach out to you with any concerns, ideas, or requests.&lt;/p&gt;
+
+&lt;h3 id=&quot;8-follow-up&quot;&gt;8. Follow Up&lt;/h3&gt;
+&lt;p&gt;After the meeting, follow up promptly on any actions or commitments. This shows that you take the 1-to-1 meeting seriously and that you respect their input and needs.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-sample-agenda-for-your-first-1-to-1-meeting&quot;&gt;A Sample Agenda for Your First 1-to-1 Meeting&lt;/h2&gt;
+
+&lt;p&gt;Here’s a sample agenda to help you structure your first 1-to-1 meeting as an engineering manager:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Introduction (5 minutes)&lt;/li&gt;
+  &lt;li&gt;Personal sharing (10 minutes)&lt;/li&gt;
+  &lt;li&gt;Discussion about their role, achievements, and challenges (15 minutes)&lt;/li&gt;
+  &lt;li&gt;Discussion about their aspirations, concerns, and feedback (15 minutes)&lt;/li&gt;
+  &lt;li&gt;Sharing your perspective and expectations (10 minutes)&lt;/li&gt;
+  &lt;li&gt;Discussion about next steps and closing (5 minutes)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tips-for-effective-1-to-1-meetings&quot;&gt;Tips for Effective 1-to-1 Meetings&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Be present&lt;/strong&gt; - Focus fully on the team member and the conversation, without distractions or multi-tasking.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Be flexible&lt;/strong&gt; - Adapt the structure and style of the meeting to suit the team member’s needs and preferences.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Be respectful&lt;/strong&gt; - Show respect for the team member’s ideas, emotions, and efforts, and honor their time and confidentiality.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Be open&lt;/strong&gt; - Encourage open, candid communication, and be open to feedback and learning yourself.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Your first 1-to-1 meeting as an engineering manager is a crucial step towards building a strong, productive relationship with your team members. By structuring the meeting effectively, you can create a positive, beneficial experience that lays the groundwork for ongoing communication, trust, and alignment.&lt;/p&gt;
+
+&lt;p&gt;Remember, a 1-to-1 meeting is not just a managerial task, but an opportunity to connect with your team members, appreciate their contributions, and support their success. So, approach these meetings with curiosity, empathy, and dedication, and make the most of the opportunity to influence your team’s performance, satisfaction, and growth.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Aug 2023 06:00:00 +0100</pubDate>
+        <link>https://pyartez.github.io/management/structuring-your-first-1-to-1-as-an-engineering-manager.html</link>
+        <guid isPermaLink="true">https://pyartez.github.io/management/structuring-your-first-1-to-1-as-an-engineering-manager.html</guid>
+        
+        <category>feedback</category>
+        
+        <category>management</category>
+        
+        
+        <category>management</category>
+        
+      </item>
     
       <item>
         <title>Best Practices for Giving Effective Feedback in Engineering Management</title>
@@ -1248,235 +1337,6 @@ Abstractions should not depend on details. Details (concrete implementations) sh
         <pubDate>Tue, 03 May 2022 06:00:00 +0100</pubDate>
         <link>https://pyartez.github.io/architecture/solid-principles-in-swift-interface-segragation-principle.html</link>
         <guid isPermaLink="true">https://pyartez.github.io/architecture/solid-principles-in-swift-interface-segragation-principle.html</guid>
-        
-        <category>swift</category>
-        
-        <category>architecture</category>
-        
-        
-        <category>architecture</category>
-        
-      </item>
-    
-      <item>
-        <title>SOLID Principles in Swift - Liskov Substitution Principle</title>
-        <description>&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
-
-&lt;p&gt;In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage&lt;/li&gt;
-  &lt;li&gt;Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies&lt;/li&gt;
-  &lt;li&gt;Rigidity: A change requires a lot of effort because it affects several parts of the project&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So what are the SOLID principles?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change&lt;/li&gt;
-  &lt;li&gt;Open-Closed Principle - Software should be open for extension but closed for modification&lt;/li&gt;
-  &lt;li&gt;Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program&lt;/li&gt;
-  &lt;li&gt;Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface&lt;/li&gt;
-  &lt;li&gt;Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In this article we will focus on the Liskov Substitution Principle.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-does-it-mean&quot;&gt;What does it mean?&lt;/h2&gt;
-
-&lt;p&gt;So the Liskov Substitution Principle states:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Derived classes must be substitutable for their base classes&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;What exactly does this mean? In a basic sense it for example if you have a function that accepts a type of class which is a parent of other classes, any class that subclasses the parent class should be able to be passed in without it breaking the program.&lt;/p&gt;
-
-&lt;p&gt;See a summary of the main points of the principle below:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Contra variance of method parameter types in the sub type.&lt;/li&gt;
-  &lt;li&gt;Covariance of method return types in the sub type.&lt;/li&gt;
-  &lt;li&gt;New exceptions cannot be thrown by the methods in the sub type, except if they are sub types of exceptions thrown by the methods of the super type.&lt;/li&gt;
-  &lt;li&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/li&gt;
-  &lt;li&gt;Apply at the least the same rules to all output parameters as applied by the parent class.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let’s take a look at what these different rules mean for subclasses.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-parent-class&quot;&gt;The Parent Class&lt;/h2&gt;
-
-&lt;p&gt;First of all, let’s define our parent class or base class that contains some functionality. Let’s use a vehicle class as an example, this vehicle has a throttle which can be set at any value between 0 and 100.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-    
-    &lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nf&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Let’s step through it:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;First of all we define a custom error to throw if the throttle is not within bounds&lt;/li&gt;
-  &lt;li&gt;Here we define our vehicle class that has a throttle variable to store the value being set&lt;/li&gt;
-  &lt;li&gt;We have a function to set the throttle value, there is a guard statement to check whether the value being set is in the appropriate range. If it is not, we throw an error, if it is we set the value&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;validation-rules-on-input-parameters&quot;&gt;Validation rules on input parameters&lt;/h2&gt;
-
-&lt;p&gt;Now let’s create a subclass that breaks the principle. We will make a lorry class that inherits from the super class but adds its own restrictions to the throttle function, only allowing the throttle to be set between 0 and 60 for example.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lorry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nf&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        
-        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;So what is happening here? We have subclassed the Vehicle class and overriden the setThrottle method. Now what we have done here is we have added a guard statement to check if the throttle is between 0 and 60. We throw an error saying out of bounds if outside of that, if it is within bounds we call the super class method.&lt;/p&gt;
-
-&lt;p&gt;Why is this a problem? Well imagine we are building a system / class that interacts with the Vehicle class. Now based on the Vehicle class you would expect to be able to set the throttle to anything between 0 and a 100. However now, if someone chooses to pass a Lorry subclass to your system / class, you will not be able to set the throttle above 60. Depending on how this other class or system is built this may have unintended side effects as you can’t set the values that you are expecting without getting an error.&lt;/p&gt;
-
-&lt;p&gt;This example breaks the rule:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;errors-in-the-liskov-principle&quot;&gt;Errors in the liskov principle&lt;/h2&gt;
-
-&lt;p&gt;Let’s modify our example to see how we could break the principle by throwing different errors. Let’s modify the Lorry subclass:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;LorryError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lorry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nf&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;contains&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;LorryError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        
-        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;So what is happening here:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;We have added a new Error type called LorryError&lt;/li&gt;
-  &lt;li&gt;When we have our bounds exception we are throwing this new error type instead of the one provided by the super class&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Why does that cause a problem? To find out let’s take a look at the error handling code:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// 1&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;vehicle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;// 2&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vehicle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setThrottle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;throttle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;110&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;VehicleError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outOfBounds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;// 3&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;System shutdown&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;c1&quot;&gt;// 4&lt;/span&gt;
-    &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Show generic error&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Let’s step through this code:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;We are creating a Vehicle super class object.&lt;/li&gt;
-  &lt;li&gt;We are calling our function with a value considered out of bounds&lt;/li&gt;
-  &lt;li&gt;We catch the outOfBounds exception and print a system shutdown message&lt;/li&gt;
-  &lt;li&gt;We have a generic catch for other errors where we show a generic error message&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now if we run this code we see the below message in the console as expected:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;System shutdown&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;So what happens if we replace our Lorry subclass with its new error and put it in place of the Vehicle super class? If we change line one to read:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;vehicle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Vehicle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lorry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;If we run the code above we will now see a different error:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Show generic error&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The error handling code is not aware of subclass specific errors so is no longer able to handle them accordingly. Imagine a mission critical system that needs to shut down if an out of bounds happens, in this case the error would be missed as it would require the error handling class to have knowledge of all possible sub types in order to handle all the errors appropriate. Defeating the point of using the super class and thus breaking the principle:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;New exceptions cannot be thrown by the methods in the sub type, except if they are sub types of exceptions thrown by the methods of the super type.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;contra-variance-and-covariance-of-parameters-and-return-types&quot;&gt;Contra variance and Covariance of parameters and return types&lt;/h2&gt;
-
-&lt;p&gt;In the list of rules you may recall seeing two items talking about contra variance and covariance of parameters and return types. What does that mean exactly?&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Contra variance of method parameter types in the sub type.&lt;/li&gt;
-  &lt;li&gt;Covariance of method return types in the sub type.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;contra-variance-of-method-parameter-types-in-the-sub-type&quot;&gt;Contra variance of method parameter types in the sub type&lt;/h3&gt;
-
-&lt;p&gt;Contra variance means that we can use change the type of method parameter to a super class of the type but not a subclass. This rules works basically in combination with the rule below:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Don’t implement stricter validation rules on input parameters than those implemented by the parent class.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;What it means is, we can use a super class of a parameter, thus ‘weakening’ the restrictions of the method, but not a subclass of that type which would tighten the restrictions of the method.&lt;/p&gt;
-
-&lt;h3 id=&quot;covariance-of-method-return-types-in-the-sub-type&quot;&gt;Covariance of method return types in the sub type&lt;/h3&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-6959344114005358&quot; data-ad-slot=&quot;4928663865&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;Covariance means that the type being used can be a sub type of the class provided by the super class function return type. Similarly, this works in the same way as the 5th rule:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Apply at the least the same rules to all output parameters as applied by the parent class.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Now both of these rules aren’t possible to be broken as part of Swift. It’s not possible to overload functions providing alternative type specifications, at least while still referring to the super class type. We can override methods and provide different parameter types and return types but this requires the calling class to know the type of the subclass. When referring to the super class, the super class implementation is always called regardless of subclass functions with different params.&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 18 Apr 2022 06:00:00 +0100</pubDate>
-        <link>https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html</link>
-        <guid isPermaLink="true">https://pyartez.github.io/architecture/solid-principles-in-swift-liskov-substitution-principle.html</guid>
         
         <category>swift</category>
         
