@@ -199,6 +199,8 @@
             
                 
             
+                
+            
         </div>
         
      -->
@@ -265,6 +267,411 @@
 
 
                 
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2023-05-09T06:00:00+01:00" itemprop="datePublished">9 May, 2023</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/architecture/">architecture</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://pyartez.github.io/architecture/solid-principles-in-swift-dependency-inversion-principle.html">SOLID Principles in Swift - Dependency Inversion Principle</a></h2>
+    </header>
+
+    <div class="post-content">
+        <h2 id="background">Background</h2>
+
+<p>In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principles / guidelines, that when followed when developing a software system, make it more likely that the system will be easier to extend and maintain over time. Let’s take a look at the problems that they seek to solve:</p>
+
+<ul>
+  <li>Fragility: A change may break unexpected parts, it is very difficult to detect if you don’t have a good test coverage</li>
+  <li>Immobility: A component is difficult to reuse in another project or in multiple places of the same project because it has too many coupled dependencies</li>
+  <li>Rigidity: A change requires a lot of effort because it affects several parts of the project</li>
+</ul>
+
+<p>So what are the SOLID principles?</p>
+
+<ul>
+  <li>Single Responsibility Principle - A class should have only a single responsibility / have only one reason to change</li>
+  <li>Open-Closed Principle - Software should be open for extension but closed for modification</li>
+  <li>Liskov Substitution Principle - Objects in a program should be replaceable with instances of their sub types without altering the correctness of the program</li>
+  <li>Interface Segregation Principle - Many client-specific interfaces are better than one general-purpose interface</li>
+  <li>Dependency Inversion Principle - High level modules should not depend on low level modules. Both should depend on abstractions</li>
+</ul>
+
+<p>In this article we will focus on the Dependency Inversion Principle.</p>
+
+<h2 id="what-does-it-mean">What does it mean?</h2>
+
+<p>This principle has 2 main components described below:</p>
+
+<blockquote>
+  <p>High-level modules should not import anything from low-level modules. Both should depend on abstractions (e.g., interfaces)
+Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions</p>
+</blockquote>
+
+<p>I’ve interviewed many iOS developers over the years and I struggle to recall a single person who has actually got this part of the SOLID principles 100% right. I think a large part of this comes from the fact many use simple architectures such as MVVM that don’t break applications down into smaller layers and components/modules. This isn’t a criticism, not every app needs a VIPER/Clean architecture approach with multiple layers.</p>
+
+<p>Most iOS developers I speak to come to the conclusion that this principle just means using protocols instead of concrete classes and injecting dependencies to help with testing/mocking. While this principle does rely on this to work it is not the primary purpose of the principle and exposes an issue once you start to depend on abstractions used across multiple layers / modules.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="setup">Setup</h2>
+
+<p>Lets setup a simple example in Xcode where we have two separate modules that depend on each other in order to provide some functionality.</p>
+
+<p>If we create a simple Swift UI project using Xcode, then using File -&gt; New -&gt; Package create 2 new swift packages and add them to the project. One called LibraryA and one called LibraryB. Be sure to select your project in the ‘Add to’ drop down when naming your libraries. You should have something that looks like below Xcode.</p>
+
+<p><img src="/assets/images/packages-setup.png" alt="Swift Packages Setup" title="Swift Packages Setup" /></p>
+
+<p>Let’s start by adding a protocol and some custom data structure that we are going to be using across the 2 libraries we are working. Add a file called Protocol.swift in LibraryA and add the following code below:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">MyData</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MyData</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">subTitle</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We have a simple one function protocol and a small struct, this is what we will be using to separate dependencies between our 2 libraries.</p>
+
+<p>Next, lets create an implementation in LibraryA that has these protocols as a dependency. Create a file in LibraryA with the name ImplementationA:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationA</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span>
+    
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">something</span> <span class="o">=</span> <span class="n">something</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>This is just a simple class that has the MyProtocol protocol has a dependency. Simple enough so far!</p>
+
+<p>Now let’s create a class in LibraryB that implements the protocol that is being used in our class in LibraryA. Create a class in LibraryB called ImplementationB:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">LibraryA</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationB</span><span class="p">:</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">LibraryA</span><span class="o">.</span><span class="kt">MyData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Do something"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We have our class in LibraryB that is implementing the protocol we previously created in LibraryA. For this reason you will notice that we have to import LibraryA in this class as well. There is one additional step we need to do before this will compile correctly, we need to define our dependency in our package file. Let’s open the LibraryB package file and edit it to add the dependency between the 2 packages:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="c1">// Assign LibraryA as dependency</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../LibraryA"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="c1">// Add dependency to target</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryBTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>We won’t go into all the options you need in the swift package file but hopefully by reading this you can see we have defined a dependency and added it to our LibraryB target. If you attempt to build the project it should compile successfully.</p>
+
+<p>Now let’s look at the structure of these 2 libraries and their relationship to each other.</p>
+
+<p><img src="/assets/images/libraryb-to-a.png" alt="LibraryB to LibraryA Dependency" title="LibraryB to LibraryA Dependency" /></p>
+
+<p>As you can see, we have LibraryA, this contains the protocols and LibraryB that implements the protocols. In order for LibraryB to implement the protocols it needs a dependency to LibraryA in order to work.</p>
+
+<h2 id="problem-1">Problem 1</h2>
+
+<p>Now what happens if we want to use the protocols in another Library? Let’s call this LibraryC? At moment the protocols are contained in LibraryA where they are being used and implemented by Library B.</p>
+
+<ul>
+  <li>We can’t use the protocols in another library without adding LibraryA which may contain code and other assets we don’t want.</li>
+  <li>We could copy the protocols to LibraryC, however if you needed LibraryA and LibraryC in the same project you would get class clashes.</li>
+  <li>We would need to edit LibraryB to add another dependency in this case. What happens if we are not the owners of LibraryB? How would we even do this?</li>
+</ul>
+
+<p>One solution we can try is moving the protocols from LibraryA to LibraryB. This reverses the dependencies and helps to solve the problems highlighted above. Let’s go ahead and do this now.</p>
+
+<ul>
+  <li>Copy the Protocols.swift file we created from LibraryA to LibraryB</li>
+  <li>Remove the import of LibraryA from the implementationB.swift</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationB</span><span class="p">:</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">MyData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Do something"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li>Add an import of LibraryB to the top of implementationA.swift</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">LibraryB</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationA</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span>
+    
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">something</span> <span class="o">=</span> <span class="n">something</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li>Update the LibraryB package file to remove the LibraryA dependency</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="c1">// Assign LibraryA as dependency</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="c1">// Add dependency to target</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryBTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>Update the LibraryA package file to add the LibraryB dependency</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../LibraryB"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryATests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>Now let’s see a diagram of what we have done. Now if we look at our 2 libraries at a high level the dependencies look like this.</p>
+
+<p><img src="/assets/images/librarya-to-b.png" alt="LibraryA to LibraryB Dependency" title="LibraryA to LibraryB Dependency" /></p>
+
+<p>So now, our LibraryA has a dependency on LibraryB. LibraryA is using the protocols that are defined AND implemented in LibraryB! Problem solved… right… Not entirely.</p>
+
+<p>If we review the problems we discussed earlier, if LibraryC wanted to make use of the protocols and implementation in LibraryB that is now possible as LibraryB has no knowledge of LibraryA or LibraryC. However this creates a new problem…</p>
+
+<h2 id="problem-2">Problem 2</h2>
+
+<p>What if LibraryA and LibraryC want to use different implementations of the protocols from each other? What if we introduced LibraryD that wanted to implement the protocols and be used by another library such as LibraryC? In order to facilitate this we would need to create a dependency between LibraryD and LibraryB. What problems does this create?</p>
+
+<p>We are introducing a dependency to a library we don’t need, in order to implement the protocols within it. In our example there isn’t much in LibraryB but imagine LibraryB had lots of other code and its own dependencies? Now we are including all of those in our project in order to have access to the protocols.</p>
+
+<p><img src="/assets/images/librarya-to-b-problems.png" alt="LibraryA to LibraryB Dependency Problems" title="LibraryA to LibraryB Dependency Problems" /></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>This is where Dependency Inversion comes in. What we need to do is create a separate library for the protocols and any data that passes through them. Then, we make the dependencies between our different libraries to that one, thus removing the dependencies between our different layers. Let’s do that now.</p>
+
+<ul>
+  <li>Create a new package and add it to your project, naming it Protocols. Now move the Protocols.swift file that we created earlier into the Protocols package. Your Xcode project file explorer should look like below:</li>
+</ul>
+
+<p><img src="/assets/images/packages-protocol-setup.png" alt="Protocols in own package" title="Protocols in own package" /></p>
+
+<ul>
+  <li>Now lets edit the dependencies of our packages so that both LibraryA and LibraryB depend on protocols. Your package files for LibraryA and B should now look like the below:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../Protocols"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryA"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Protocols"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryATests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryA"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, and make them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Dependencies declare other packages that this package depends on.</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="s">"../Protocols"</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package. A target can define a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package, and on products in packages this package depends on.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryB"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Protocols"</span><span class="p">]),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"LibraryBTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"LibraryB"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>Now update the imports of your implementation files so that they import Protocols instead. Your implementation files should look like the below:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">Protocols</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationA</span> <span class="p">{</span>
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span>
+    
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">something</span><span class="p">:</span> <span class="kt">MyProtocol</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">something</span> <span class="o">=</span> <span class="n">something</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">Foundation</span>
+<span class="kd">import</span> <span class="kt">Protocols</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImplementationB</span><span class="p">:</span> <span class="kt">MyProtocol</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">func</span> <span class="nf">doSomething</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">MyData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">print</span><span class="p">(</span><span class="s">"Do something"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Let’s have a look at what we have done here. We have moved the dependencies between the layers into a separate package and are now pointing both sides at that rather than one way or the other. Let’s update our diagram to show how this helps us.</p>
+
+<p><img src="/assets/images/dependency-inversion.png" alt="Dependency Inversion" title="Dependency Inversion" /></p>
+
+<p>Now if we want to use LibraryA, B, C, or D it does not matter in our dependency graph. They all point to the protocols and data and can be used interchangeably without the need to modify the libraries, so they depend on each other. We also avoid importing any unnecessary classes that we don’t need in order to satisfy the dependencies.</p>
+
+<p>This is what dependency inversion is. It’s separating protocols and data dependencies from the dependencies themselves and putting them into their own package. This way you completely separate the layers from each other, and they can be used together without any knowledge of each other. Awesome!</p>
+
+
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=SOLID Principles in Swift - Dependency Inversion Principle&p[summary]=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&p[url]=https://pyartez.github.io/architecture/solid-principles-in-swift-dependency-inversion-principle.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/architecture/solid-principles-in-swift-dependency-inversion-principle.html&text=Background
+
+In this series of posts we are going to be covering the SOLID principles of software development. These are a set of principl...&hashtags=swift,architecture," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
+                
+                <li><a href="https://pyartez.github.io/tag/architecture">architecture</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-6959344114005358"
+     data-ad-slot="8843896136"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
@@ -3337,311 +3744,6 @@ Pretty much every app nowadays requires you to connect to the internet to access
 </script>
 
 
-<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul>
-            <li><time datetime="2020-06-03T10:00:00+01:00" itemprop="datePublished">3 Jun, 2020</time></li>
-            
-                <li class="cats">
-                    
-                        <a href="/categories/type-erasure/">type-erasure</a>
-                    
-                </li>
-            
-        </ul>
-        <h2 itemprop="name headline"><a href="https://pyartez.github.io/type-erasure/what-is-type-erasure.html">What is type erasure in Swift</a></h2>
-    </header>
-
-    <div class="post-content">
-        <h2 id="intro">Intro</h2>
-
-<ul>
-  <li>Wtf is type erasure?</li>
-  <li>Why do I need it?</li>
-  <li>This seems complicated?</li>
-  <li>Isn’t there a simpler way?</li>
-</ul>
-
-<p>These are are just some of the questions I found myself asking once I first starting exploring type erasure. Like many other developers, I have been making use of protocols in my code to remove dependencies and make my classes easy to unit test. It wasn’t until I then started to add generics to my protocols that I discovered the need to apply type erasure.</p>
-
-<p>Having read many blog posts and guides about type erasure I still came away confused as to what it was, why it was needed and why it seemed to add so much complexity. By trying to add generics to protocols in a project I was working on I finally saw the light! I am going to try and walk you through the topic using an example which is similar to the one I was trying to solve in my project. Hopefully this will help those of you who are looking to understand the topic further in the same way it helped me.</p>
-
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
-
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-
-<h2 id="generics-and-associated-types">Generics and Associated Types</h2>
-
-<p>I am assuming that as you are here you have a fairly advanced knowledge of Swift and have potentially begun or have been using protocols with generics in your code. Below is a simple protocol called Fetchable. The idea of the protocol is to go and fetch some objects of type FetchType from somewhere and call the completion handler with the result once it’s finished whatever it is doing.</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">protocol</span> <span class="kt">Fetchable</span> <span class="p">{</span>
-    <span class="kd">associatedtype</span> <span class="kt">FetchType</span>
-
-    <span class="kd">func</span> <span class="nf">fetch</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">FetchType</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>Now that we have our protocols lets create a couple of structs to implement the protocol.</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">User</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span>
-    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
-<span class="p">}</span>
-
-<span class="kd">struct</span> <span class="kt">UserFetch</span><span class="p">:</span> <span class="kt">Fetchable</span> <span class="p">{</span>
-    <span class="kd">typealias</span> <span class="kt">FetchType</span> <span class="o">=</span> <span class="kt">User</span>
-
-    <span class="kd">func</span> <span class="nf">fetch</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">FetchType</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="p">{</span>
-        <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="kt">User</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="s">"Phil"</span><span class="p">)</span>
-        <span class="nf">completion</span><span class="p">?(</span><span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="n">user</span><span class="p">))</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>So here we have created a dummy data class, User. Our fetch struct has implemented the generic protocol and has specified the type of object that will be returned in the protocol using a typealias. Everything here is great, we can implement this protocol as many times as we like and return whatever object types we want without the need to create a new protocol for each one.</p>
-
-<h2 id="the-problem">The problem</h2>
-
-<p>Now, here in lies the problem. If we wish to hold a reference to an object that has implemented this protocol. How do we know what type it is going to return? See the below example:</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">SomeStruct</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="nv">userFetch</span><span class="p">:</span> <span class="kt">Fetchable</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>What you will also find here is that you will see an error, something like the below</p>
-
-<blockquote>
-  <p>Protocol ‘Fetchable’ can only be used as a generic constraint because it has Self or associated type requirements</p>
-</blockquote>
-
-<p>So we can’t even use this type as a reference to the object, as it has an associated type which we cannot see at this point and have no way of specifying.</p>
-
-<p>Now we could do something like below, however this creates a dependency between SomeStruct and the userFetch object. If we are following the SOLID principles we want to avoid having dependencies and hide implementation details.</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">SomeStruct</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="nv">userFetch</span><span class="p">:</span> <span class="kt">UserFetch</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>Ok, so let’s try adding a type like we do with other generic types such as arrays and dictionaries:</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">SomeStruct</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="nv">userFetch</span><span class="p">:</span> <span class="kt">Fetchable</span><span class="o">&lt;</span><span class="kt">User</span><span class="o">&gt;</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>If you try the above you will probably end up with an error something like this:</p>
-
-<blockquote>
-  <p>Cannot specialize non-generic type ‘Fetchable’</p>
-</blockquote>
-
-<p>See generic protocols, unlike generic types cannot have their type inferred in the type declaration. The type is only specified during implementation.</p>
-
-<h3 id="type-erasure-to-the-rescue">Type Erasure to the rescue</h3>
-
-<p>So this is where type erasure comes in. In order for us to know the type returned we need to implement a new class that can be used to infer the type of object returned so that we know what to expect when we call fetch.</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// 1</span>
-<span class="kd">struct</span> <span class="kt">AnyFetchable</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Fetchable</span> <span class="p">{</span>
-    <span class="c1">// 2</span>
-    <span class="kd">typealias</span> <span class="kt">FetchType</span> <span class="o">=</span> <span class="kt">T</span>
-
-    <span class="c1">// 3</span>
-    <span class="kd">private</span> <span class="k">let</span> <span class="nv">_fetch</span><span class="p">:</span> <span class="p">(((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span>
-
-    <span class="c1">// 4</span>
-    <span class="kd">init</span><span class="o">&lt;</span><span class="kt">U</span><span class="p">:</span> <span class="kt">Fetchable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">fetchable</span><span class="p">:</span> <span class="kt">U</span><span class="p">)</span> <span class="k">where</span> <span class="kt">U</span><span class="o">.</span><span class="kt">FetchType</span> <span class="o">==</span> <span class="kt">T</span> <span class="p">{</span>
-        <span class="n">_fetch</span> <span class="o">=</span> <span class="n">fetchable</span><span class="o">.</span><span class="n">fetch</span>
-    <span class="p">}</span>
-
-    <span class="c1">// 5</span>
-    <span class="kd">func</span> <span class="nf">fetch</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="p">{</span>
-        <span class="nf">_fetch</span><span class="p">(</span><span class="n">completion</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>Whoooa! There is a lot going on here so let us go through it piece by piece to explain what is happening.</p>
-
-<ol>
-  <li>Here our AnyFetchable class is implementing the Fetchable protocol. But also we see that we now have a generic type specification. This means that we can specify what type is being used while storing a reference to this struct.</li>
-  <li>Our generic type T being specified in the line above is then used in the typealias and mapped to the FetchType associated value of the protocol.</li>
-  <li>Now this is where things get fiddly. In order for us to erase the type of the injected class we must first <strong>create an attribute which is a closure with a matching signature for each function in the protocol</strong>. In this scenario we only have 1 method which is the fetch method. Here you can see the fetch attribute has the same method signature as the one in the protocol.</li>
-  <li>Lets break this down a bit. First of all we are saying that this init method is only available for an object that has implemented Fetchable, called U. The where clause at the end of the line is a generic type restriction which states that the FetchType of the Fetchable U must be the same as the one being used in this class. This might not make too much sense right now, but stay with me. When the fetchable type U is passed in, we store a reference to its fetch method in our own internal variable. This is what helps us erase the type, we store a reference to all of the objects methods without actually storing a reference to the object. That way we don’t need to know the type.</li>
-  <li>Here is our implementation of the Fetchable protocols fetch method, however all we are doing is calling the reference to passed in objects fetch method and calling that instead.</li>
-</ol>
-
-<p>Hopefully some of this makes sense, some of this may be new or confusing especially point 4. Let’s show how we can use our class in this example.</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">SomeStruct</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="nv">userFetch</span><span class="p">:</span> <span class="kt">AnyFetchable</span><span class="o">&lt;</span><span class="kt">User</span><span class="o">&gt;</span>
-<span class="p">}</span>
-
-<span class="c1">// 1</span>
-<span class="k">let</span> <span class="nv">userFetch</span> <span class="o">=</span> <span class="kt">UserFetch</span><span class="p">()</span>
-
-<span class="c1">// 2</span>
-<span class="k">let</span> <span class="nv">anyFetchable</span> <span class="o">=</span> <span class="kt">AnyFetchable</span><span class="o">&lt;</span><span class="kt">User</span><span class="o">&gt;</span><span class="p">(</span><span class="n">userFetch</span><span class="p">)</span>
-
-<span class="c1">// 3</span>
-<span class="k">let</span> <span class="nv">someStruct</span> <span class="o">=</span> <span class="kt">SomeStruct</span><span class="p">(</span><span class="nv">userFetch</span><span class="p">:</span> <span class="n">anyFetchable</span><span class="p">)</span>
-
-<span class="c1">// 4</span>
-<span class="n">someStruct</span><span class="o">.</span><span class="n">userFetch</span><span class="o">.</span><span class="n">fetch</span> <span class="p">{</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
-    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">user</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-<ol>
-  <li>First we create an instance of our UserFetch object from earlier in the example that returns our example user.</li>
-  <li>We pass this into our AnyFetchable object. Now remember we had a generic type constraint on our init in point 4 of the previous example. This is being satisfied because we have specified that the AnyFetchable should return a User type, and the UserFetch object we are passing in has the FetchType User.</li>
-  <li>We can now pass in the AnyFetchable to our struct.</li>
-</ol>
-
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
-
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-
-<h3 id="why">Why?</h3>
-
-<p>Now you are probably thinking, why do all of this? Well, let’s try another example:</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// New Dave user struct</span>
-<span class="kd">struct</span> <span class="kt">DaveFetch</span><span class="p">:</span> <span class="kt">Fetchable</span> <span class="p">{</span>
-    <span class="kd">typealias</span> <span class="kt">FetchType</span> <span class="o">=</span> <span class="kt">User</span>
-
-    <span class="kd">func</span> <span class="nf">fetch</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">FetchType</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="p">{</span>
-        <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="kt">User</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="s">"Dave"</span><span class="p">)</span>
-        <span class="nf">completion</span><span class="p">?(</span><span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="n">user</span><span class="p">))</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// Example implementation 2</span>
-<span class="k">let</span> <span class="nv">daveFetch</span> <span class="o">=</span> <span class="kt">DaveFetch</span><span class="p">()</span>
-<span class="k">let</span> <span class="nv">anyDaveFetchable</span> <span class="o">=</span> <span class="kt">AnyFetchable</span><span class="o">&lt;</span><span class="kt">User</span><span class="o">&gt;</span><span class="p">(</span><span class="n">daveFetch</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">someDaveStruct</span> <span class="o">=</span> <span class="kt">SomeStruct</span><span class="p">(</span><span class="nv">userFetch</span><span class="p">:</span> <span class="n">anyDaveFetchable</span><span class="p">)</span>
-
-<span class="n">someDaveStruct</span><span class="o">.</span><span class="n">userFetch</span><span class="o">.</span><span class="n">fetch</span> <span class="p">{</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
-    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">user</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>So here we have created a new object that implements Fetchable and returns a user called Dave. We can then pass this into our SomeStruct using our type erasure class and it works exactly the same. The SomeStruct class doesn’t need to be changed in order to work with the new dave class as it’s type has been erased. In a production app we could inject any class we want as long as it fetches a User, whether that comes from the web, core data, the file system. It doesn’t matter we could switch it at any time without making changes to our SomeStruct class.</p>
-
-<h3 id="finally">Finally</h3>
-
-<p>The last example here is that we can use our Any class for other types, not just User. See the example below:</p>
-
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Product Type</span>
-<span class="kd">struct</span> <span class="kt">Product</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">Int</span>
-    <span class="k">let</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span>
-    <span class="k">let</span> <span class="nv">price</span><span class="p">:</span> <span class="kt">String</span>
-<span class="p">}</span>
-
-<span class="kd">struct</span> <span class="kt">ProductFetch</span><span class="p">:</span> <span class="kt">Fetchable</span> <span class="p">{</span>
-    <span class="kd">typealias</span> <span class="kt">FetchType</span> <span class="o">=</span> <span class="kt">Product</span>
-
-    <span class="kd">func</span> <span class="nf">fetch</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">FetchType</span><span class="p">,</span> <span class="kt">Error</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="p">{</span>
-        <span class="k">let</span> <span class="nv">product</span> <span class="o">=</span> <span class="kt">Product</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="s">"My Product"</span><span class="p">,</span> <span class="nv">price</span><span class="p">:</span> <span class="s">"10.99"</span><span class="p">)</span>
-        <span class="nf">completion</span><span class="p">?(</span><span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="n">product</span><span class="p">))</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">let</span> <span class="nv">productFetch</span> <span class="o">=</span> <span class="kt">ProductFetch</span><span class="p">()</span>
-<span class="k">let</span> <span class="nv">anyProductFetch</span> <span class="o">=</span> <span class="kt">AnyFetchable</span><span class="o">&lt;</span><span class="kt">Product</span><span class="o">&gt;</span><span class="p">(</span><span class="n">productFetch</span><span class="p">)</span>
-<span class="n">anyProductFetch</span><span class="o">.</span><span class="n">fetch</span> <span class="p">{</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
-    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">product</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>Similar to our user example, we have created a new Product object and a fetcher that returns a product object. However we can re-use our AnyFetchable here but specifying the return type as Product.</p>
-
-<p>There is a lot to cover and understand here and hopefully this helps make some sense of type erasure and what it is used for. More importantly how to implement your own Any type erasure class for your own protocols so that they can be referenced in your code.</p>
-
-<p><a href="https://github.com/pyartez/blog-samples">Download the playground</a> and play around with the examples yourself</p>
-
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358" crossorigin="anonymous"></script>
-
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-6959344114005358" data-ad-slot="4928663865"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-
-
-        
-    </div>
-
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=What is type erasure in Swift&p[summary]=Intro
-
-
-  Wtf is type erasure?
-  Why do I need it?
-  This seems complicated?
-  Isn’t there a simpler way?
-
-
-These are are just some of th...&p[url]=https://pyartez.github.io/type-erasure/what-is-type-erasure.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://pyartez.github.io/type-erasure/what-is-type-erasure.html&text=Intro
-
-
-  Wtf is type erasure?
-  Why do I need it?
-  This seems complicated?
-  Isn’t there a simpler way?
-
-
-These are are just some of th...&hashtags=swift,advanced,protocols,generics," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pyartez.github.io/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
-        
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://pyartez.github.io/tag/swift">swift</a></li>
-                
-                <li><a href="https://pyartez.github.io/tag/advanced">advanced</a></li>
-                
-                <li><a href="https://pyartez.github.io/tag/protocols">protocols</a></li>
-                
-                <li><a href="https://pyartez.github.io/tag/generics">generics</a></li>
-                
-            </ul>
-        </div>
-        
-    </footer>
-</article>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6959344114005358"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-format="fluid"
-     data-ad-layout-key="-fb+5w+4e-db+86"
-     data-ad-client="ca-pub-6959344114005358"
-     data-ad-slot="8843896136"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
 
 
 
@@ -3650,8 +3752,10 @@ These are are just some of th...&hashtags=swift,advanced,protocols,generics," re
         <a href="/" class="previous">&larr; Previous</a>
     
 
-    <span class="page_number">Page 2 of 2</span>
+    <span class="page_number">Page 2 of 3</span>
 
+    
+        <a href="/page3/" class="next">Next &rarr;</a>
     
 </div>
 
