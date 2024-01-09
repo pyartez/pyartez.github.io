@@ -205,6 +205,12 @@
             
                 
             
+                
+            
+                
+            
+                
+            
         </div>
         
      -->
@@ -272,6 +278,14 @@
 
                 <h1>Posts Tagged - generics</h1>
 
+
+    
+        
+    
+        
+    
+        
+    
 
     
         
@@ -1005,9 +1019,9 @@ All apps developed require data of some description. This data is stored somewhe
 
 <p>If we hit the URL below, you will get a response with the specified headers that you send in the URL query params.</p>
 
-<p><code class="highlighter-rouge">https://postman-echo.com/response-headers?Cache-Control=max-age=30</code></p>
+<p><code class="language-plaintext highlighter-rouge">https://postman-echo.com/response-headers?Cache-Control=max-age=30</code></p>
 
-<p>We get back a header in the response of <code class="highlighter-rouge">Cache-Control: max-age=30</code>. This means that anyone processing the response should cache the response for 30 seconds at the most before requesting fresh data, as discussed previously.</p>
+<p>We get back a header in the response of <code class="language-plaintext highlighter-rouge">Cache-Control: max-age=30</code>. This means that anyone processing the response should cache the response for 30 seconds at the most before requesting fresh data, as discussed previously.</p>
 
 <p>We can use this to prove how the caching works in URLSession.</p>
 
@@ -1059,7 +1073,7 @@ All apps developed require data of some description. This data is stored somewhe
 
 <p>If we run the above code in our playground we should see the following in the console:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 09:21:36 GMT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 09:21:36 GMT
 Request1 Cache Header: max-age=30
 Request2 date: Tue, 23 Jun 2020 09:21:36 GMT
 Request2 Cache Header: max-age=30
@@ -1078,11 +1092,11 @@ Request2 Cache Header: max-age=30
 
 <p>Let’s modify the URL in our request to set the cache control to 3:</p>
 
-<p><code class="highlighter-rouge">https://postman-echo.com/response-headers?Cache-Control=max-age=3</code></p>
+<p><code class="language-plaintext highlighter-rouge">https://postman-echo.com/response-headers?Cache-Control=max-age=3</code></p>
 
 <p>Now if we run the example above the console messages should look something like this:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 11:34:58 GMT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 11:34:58 GMT
 Request1 Cache Header: max-age=3
 Request2 date: Tue, 23 Jun 2020 11:35:03 GMT
 Request2 Cache Header: max-age=3
@@ -1117,7 +1131,7 @@ Request2 Cache Header: max-age=3
 
 <p>If done correctly we should see something like below in the console:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 12:36:09 GMT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 23 Jun 2020 12:36:09 GMT
 Request1 Cache Header: max-age=3
 The request timed out.
 </code></pre></div></div>
@@ -1184,7 +1198,7 @@ The request timed out.
 
 <p>What we should see in the console is this:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Sun, 28 Jun 2020 07:03:48 GMT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Sun, 28 Jun 2020 07:03:48 GMT
 Request1 Cache Header: max-age=3
 The request timed out.
 cached: Sun, 28 Jun 2020 07:03:48 GMT
@@ -1362,7 +1376,7 @@ cached: Sun, 28 Jun 2020 07:03:48 GMT
 
 <p>If we follow the same steps as before and turn on packet loss using the network conditioner when we hit step 3 we should see a console log like below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 30 Jun 2020 07:53:26 GMT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Request1 date: Tue, 30 Jun 2020 07:53:26 GMT
 Request1 Cache Header: max-age=3
 Request2 date: Tue, 30 Jun 2020 07:53:26 GMT
 Request2 Cache Header: max-age=3
